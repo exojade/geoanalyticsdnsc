@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>MARIPHIL</title>
+  <title>CITY VET</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -42,7 +42,7 @@
     <nav class="navbar navbar-static-top" style="margin-left: 0px;">
       <div class="container">
         <div class="navbar-header">
-          <a href="#" class="navbar-brand">MOTORIZED TRICYCLE OPERATOR'S PERMIT</a>
+          <a href="#" class="navbar-brand">City Vet Office</a>
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
             <i class="fa fa-bars"></i>
           </button>

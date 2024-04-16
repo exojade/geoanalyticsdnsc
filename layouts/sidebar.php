@@ -2,7 +2,7 @@
     <!-- Brand Logo -->
     <a href="#" class="brand-link" class="text-center">
       <img src="resources/panabologo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">MTOP v2</span>
+      <span class="brand-text font-weight-light">CITY VET</span>
     </a>
     <!-- Sidebar -->
     <div class="sidebar">
@@ -36,86 +36,8 @@
       </a>
   </li>
 
-  <li class="nav-item">
-      <a href="mtop_profile?action=list" class="nav-link">
-        <i class="nav-icon fas fa-motorcycle"></i>
-        <p>
-          MTOP
-          <span class="right badge badge-danger"></span>
-        </p>
-      </a>
-  </li>
 
 
-  <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-chart-pie"></i>
-              <p>
-                Transaction
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="pages/charts/chartjs.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Add New</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/charts/flot.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Add from Vacant MTOP</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="award" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Award</p>
-                </a>
-              </li>
-              <!-- <li class="nav-item">
-                <a href="pages/charts/uplot.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>uPlot</p>
-                </a>
-              </li> -->
-            </ul>
-          </li>
-
-
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-history"></i>
-              <p>
-                Logs
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="logs?action=activity" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Activity</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="logs?action=fees" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Fees</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-
-  <li class="nav-item">
-      <a href="users?action=users_list" class="nav-link">
-        <i class="nav-icon fas fa-user"></i>
-        <p>
-          Users
-        </p>
-      </a>
-  </li>
 
 
   
