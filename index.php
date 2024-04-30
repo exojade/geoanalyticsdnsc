@@ -23,18 +23,7 @@
 					require 'public/dashboard_system/main.php';
 				else if ($request == 'users')
 					require 'public/users_system/users.php';
-				else if ($request == 'mtop_profile')
-					require 'public/mtop_system/mtop.php';
-				else if ($request == 'logs')
-					require 'public/logs_system/logs.php';
-				else if ($request == 'award')
-					require 'public/award_system/award.php';
-
-				else if ($request == 'transaction')
-					require 'public/transaction_system/transaction.php';
-
-				else if ($request == 'ajax_etracsOR')
-					require 'public/ajax_system/ajax_etracsOR.php';
+	
 
 					// ajax_etracsOR
 				
