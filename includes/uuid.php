@@ -19,4 +19,11 @@
 		return substr(bin2hex($bytes), 0, $lenght);
 	}
 
+	function create_trackid($id_type){
+		$g_uuid = generate_uuid();
+		$g_uuid = strtoupper($g_uuid);
+		$generated_id = $id_type . $g_uuid;		
+		return $generated_id;
+	}
+
 ?>

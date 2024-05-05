@@ -13,19 +13,26 @@
 		$request = $request[0];
 		$request = explode('/',$request);
 		$request = $request[1];
-		$countering = array("login", "register", "print", "otp", "role");
+		$countering = array("login", "register", "print", "otp", "role", "static", "newAppointment", 
+		"ourServices", "aboutUs", "contactUs", "google_login");
+		// dump($_SESSION);
 		if (!in_array($request, $countering)){
 			if(empty($_SESSION["dnsc_geoanalytics"]["userid"]) && empty($_SESSION["dnsc_geoanalytics"]["application"])){
-				require 'public/login_system/login.php';
+				require 'public/static_system/index.php';
 			}
 			else{
 				if($request == 'index' || $request == '/' || $request== "")
 					require 'public/dashboard_system/main.php';
 				else if ($request == 'users')
 					require 'public/users_system/users.php';
-	
+				
 
-					// ajax_etracsOR
+				else if ($request == 'static')
+					require 'public/static_system/index.php';
+
+				else if ($request == 'patient')
+					require 'public/patient_system/patient.php';
+
 				
 
 				else if ($request == 'logout'){
@@ -50,5 +57,19 @@
 
 			else if ($request == 'print')
 					require 'public/print_system/print.php';
+			else if ($request == 'home')
+					require 'public/static_system/index.php';
+			else if ($request == 'newAppointment')
+					require 'public/appointment_system/newAppointment.php';
+			else if ($request == 'ourServices')
+					require 'public/static_system/services.php';
+			else if ($request == 'aboutUs')
+					require 'public/static_system/aboutUs.php';
+			else if ($request == 'contactUs')
+					require 'public/static_system/contactUs.php';
+					else if ($request == 'google_login')
+					require 'public/google_login.php';
+
+
 		}
 ?>

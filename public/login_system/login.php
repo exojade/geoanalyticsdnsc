@@ -1,20 +1,21 @@
 <?php
+require("includes/google_class.php"); 
     if ($_SERVER["REQUEST_METHOD"] == "POST")
     {
 		// dump($_POST);
-        $rows = query("SELECT * FROM mtop_users WHERE userName = ?", $_POST["username"]);
+        $rows = query("SELECT * FROM users WHERE username = ?", $_POST["username"]);
         if (count($rows) == 1)
         {
             $row = $rows[0];
-			if (crypt($_POST["password"], $row["userPassword"]) == $row["userPassword"]){
+			if (crypt($_POST["password"], $row["password"]) == $row["password"]){
 				// dump($row);
 				$_SESSION["dnsc_geoanalytics"] = [
-					"userid" => $row["userId"],
-					"uname" => $row["fullName"],
-					"role" => $row["userLevel"],
-					"fullname" => $row["fullName"],
+					"userid" => $row["userid"],
+					"uname" => $row["username"],
+					"role" => $row["role"],
+					"fullname" => $row["fullname"],
 					"profile_image" => "",
-					"application" => "mtop"
+					"application" => "dnsc_geoanalytics"
 				];
 
 				// $activity = $row["fullname"] . " successfully logged in into the system";
@@ -31,6 +32,6 @@
     }
     else
     {
-        renderview("public/login_system/loginform.php", ["title" => "Log In"]);
+        renderview("public/login_system/loginform.php", ["title" => "Log In", "google" => $google]);
     }
 ?>

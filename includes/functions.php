@@ -291,6 +291,15 @@
         // }
     }
 
+
+    function renderFrontPage($template, $values = [])
+    {
+            extract($values);
+            require("layouts/headerFrontPage.php");
+            require("$template");
+    }
+
+
     function renderview($template, $values = []) {
         extract($values);
         require("$template");

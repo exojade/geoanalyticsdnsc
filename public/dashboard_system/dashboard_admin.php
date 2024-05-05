@@ -3,7 +3,7 @@
 <!-- <link rel="stylesheet" href="AdminLTE_new/plugins/jqvmap/jqvmap.min.css"> -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <section class="content-header">
+    <!-- <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
@@ -11,38 +11,93 @@
           </div>
      
         </div>
-      </div><!-- /.container-fluid -->
-    </section>
+      </div>
+    </section> -->
 
     <!-- Main content -->
     <section class="content">
-
       <div class="container-fluid">
+
+
+      <div class="row">
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box">
+              <div class="info-box-content">
+               
+                <span class="info-box-number">
+                  10
+                  <small>%</small>
+                </span>
+                <span class="info-box-text">APPOINTMENTS</span>
+              </div>
+              <span class="info-box-icon bg-info elevation-1"><i class="fas fa-briefcase"></i></span>
+
+            </div>
+          </div>
+          <!-- /.col -->
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+              <div class="info-box-content">
+                <span class="info-box-number">41,410</span>
+                <span class="info-box-text">INQUIRIES</span>
+
+              </div>
+              <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-question"></i></span>
+
+            </div>
+          </div>
+
+          <!-- fix for small devices only -->
+          <div class="clearfix hidden-md-up"></div>
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+              <div class="info-box-content">
+                <span class="info-box-number">760</span>
+                <span class="info-box-text">PENDING PATIENTS</span>
+              </div>
+              <span class="info-box-icon bg-success elevation-1"><i class="fas fa-paw"></i></span>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+              <div class="info-box-content">
+                <span class="info-box-number">2,000</span>
+                <span class="info-box-text">COMPLETED ACTIVITIES</span>
+              </div>
+              <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-check"></i></span>
+            </div>
+          </div>
+        </div>
+
+
         <div class="row">
-          <div class="col-5">
+          <div class="col-6">
 
 
-          <div class="card bg-gradient-gray">
+          <div class="card bg-gradient-gray" id="fullscreenDiv">
               <div class="card-header border-0">
                 <h3 class="card-title">
                   <i class="fas fa-map-marker-alt mr-1"></i>
                   MAP
+                  
                 </h3>
+                <button class="btn btn-info" style="float:right;" id="toggleFullscreen">Toggle Fullscreen</button>
                 <!-- card tools -->
         
                 <!-- /.card-tools -->
               </div>
-              <div class="card-body">
-              <div id="map1" style="height: 400px"></div>
+              <div class="card-body" style="height: 400px; overflow: hidden;">
+              <div id="map1" style="height: 800px;"></div>
   <!-- <button id="focus-single">Focus on Australia</button>
   <button id="focus-multiple">Focus on Australia and Japan</button>
   <button id="focus-coords">Focus on Cyprus</button>
   <button id="focus-init">Return to the initial state</button> -->
+  
               </div>
             </div>
 
 
-
+           
             <!-- Default box -->
            
           </div>
@@ -465,5 +520,22 @@ $('#world-map').vectorMap({
 
 </script> -->
 
+<script>
+$(document).ready(function(){
+    $("#toggleFullscreen").click(function(){
+        var elem = $("#fullscreenDiv").get(0); // Get the DOM element
+        if (!document.fullscreenElement) {
+            elem.requestFullscreen().catch(err => {
+                alert(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+            });
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
+        }
+    });
+});
 
+
+</script>
 <?php require("layouts/footer.php") ?>

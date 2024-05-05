@@ -264,9 +264,8 @@ $('.generic_form_pdf_dropping').submit(function(e) {
 
 <footer class="main-footer">
     <div class="float-right d-none d-sm-block">
-      <b>Version</b> 3.2.0
     </div>
-    <strong>Copyright &copy; <?php echo(date("Y")); ?> <a href="#">City Government of Panabo</a>.</strong> All rights reserved.
+    <strong>Copyright &copy; <?php echo(date("Y")); ?> Animal Health Disease Monitoring Online Checkup Services
   </footer>
     <aside class="control-sidebar control-sidebar-dark">
   </aside>
