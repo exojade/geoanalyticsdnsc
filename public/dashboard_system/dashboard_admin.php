@@ -87,7 +87,7 @@
                 <!-- /.card-tools -->
               </div>
               <div class="card-body" style="height: 400px; overflow: hidden;">
-              <div id="map1" style="height: 800px;"></div>
+              <div id="map1" style="height: 350px;"></div>
   <!-- <button id="focus-single">Focus on Australia</button>
   <button id="focus-multiple">Focus on Australia and Japan</button>
   <button id="focus-coords">Focus on Cyprus</button>
@@ -528,13 +528,16 @@ $(document).ready(function(){
             elem.requestFullscreen().catch(err => {
                 alert(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
             });
+            $("#map1").css("height", "800px"); // Set height to 800px when entering fullscreen
         } else {
             if (document.exitFullscreen) {
                 document.exitFullscreen();
             }
+            $("#map1").css("height", "350px"); // Set height to 400px when exiting fullscreen
         }
     });
 });
+
 
 
 </script>
