@@ -25,6 +25,8 @@
 					require 'public/dashboard_system/main.php';
 				else if ($request == 'users')
 					require 'public/users_system/users.php';
+				else if ($request == 'pets')
+					require 'public/pets_system/pets.php';
 				
 
 				else if ($request == 'static')
@@ -32,6 +34,9 @@
 
 				else if ($request == 'patient')
 					require 'public/patient_system/patient.php';
+
+				else if ($request == 'myAppointments')
+					require 'public/appointment_system/myAppointments.php';
 
 				
 

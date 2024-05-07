@@ -20,6 +20,9 @@
     border-bottom: none !important;
     background-color: #fff !important;
   }
+  .color-red{
+    color:red;
+  }
 </style>
 <body class="hold-transition sidebar-mini layout-fixed">
 <!-- Site wrapper -->

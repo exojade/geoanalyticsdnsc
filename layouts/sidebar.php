@@ -117,7 +117,7 @@
   </li>
 
   <li class="nav-item">
-      <a href="pets" class="nav-link">
+      <a href="myAppointments" class="nav-link">
         <i class="nav-icon fas fa-briefcase"></i>
         <p>
           My Appointments

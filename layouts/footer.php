@@ -2,58 +2,91 @@
 <!-- <script src="AdminLTE_new/dist/js/demo.js"></script> -->
 <script src="AdminLTE_new/plugins/sweetalert2/sweetalert2.min.js"></script>
 <script>
-$('.generic_form_trigger').submit(function(e) {
-  e.preventDefault();
+$(document).on('submit', '.generic_form_trigger', function(e) {
+    e.preventDefault(); // Prevent the default form submission
 
-  e.preventDefault();
-  var url = $(this).data('url');
+    var form = $(this)[0];
+    var formData = new FormData(form);
+    var promptmessage = "";
+    var prompttitle = "";
+    if(typeof($(this).data('title')) != "undefined" ) {
+      promptmessage = $(this).data('message');
+      prompttitle = $(this).data('title');
+    }
+    else{
+      promptmessage = 'This form will be submitted. Are you sure you want to continue?';
+      prompttitle = 'Data submission';
+    }
 
 
-  console.log(url);
+    
+    var url = $(this).data('url');
 
-  Swal.fire({
-  title: 'Do you want to submit the changes?',
-  showCancelButton: true,
-  confirmButtonText: 'Save',
-  }).then((result) => {
-    /* Read more about isConfirmed, isDenied below */
-    if (result.isConfirmed) {
-      Swal.fire({title: 'Please wait...', imageUrl: 'AdminLTE_new/dist/img/loader.gif', showConfirmButton: false});
-      $.ajax({
+    Swal.fire({
+        title: prompttitle,
+        text: promptmessage,
+        type: 'info',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.value) {
+            Swal.fire({ title: 'Please wait...', imageUrl: 'AdminLTE_new/dist/img/loader.gif', showConfirmButton: false });
+            $.ajax({
                 type: 'post',
                 url: url,
-                data: $(this).serialize(),
-                success: function (results) {
-                var o = jQuery.parseJSON(results);
-                console.log(o);
-                if(o.result === "success") {
-                    Swal.close();
-                    Swal.fire({title: "Submit success",
-                    text: o.message,
-                    type:"success"})
-                    .then(function () {
-                    window.location.replace(o.link);
-                    });
-                }
-                else {
-                    Swal.fire({
-                    title: "Error!",
-                    text: o.message,
-                    type:"error"
-                    });
-                    console.log(results);
-                }
+                processData: false,
+                contentType: false,
+                data: formData,
+                success: function(results) {
+                    var o = jQuery.parseJSON(results);
+                    console.log(o);
+                    if (o.result === "success") {
+                        swal.close();
+                        Swal.fire({
+                            title: "Submit success",
+                            text: o.message,
+                            type: "success"
+                        }).then(function () {
+                          if(typeof(o.newlink) != "undefined" && o.newlink !== null) {
+                          if(o.newlink == "newlink"){
+                            console.log(o);
+                            if(o.link == "refresh")
+                            window.location.reload();
+                            else if(o.link == "not_refresh")
+                              console.log("");
+                            else
+                              window.open(o.link, '_blank');
+                              // window.location.replace(o.link, "_blank");
+                          }
+                      }
+                      else{
+                        if(o.link == "refresh")
+                        window.location.reload();
+                        else if(o.link == "not_refresh")
+                          console.log("");
+                        else
+                          window.location.replace(o.link);
+
+                      }
+                        });
+                    } else {
+                        Swal.fire({
+                            title: "Error!",
+                            text: o.message,
+                            type: "error"
+                        });
+                        console.log(results);
+                    }
                 },
                 error: function(results) {
-                console.log(results);
-                swal("Error!", "Unexpected error occur!", "error");
+                    console.log(results);
+                    Swal.fire("Error!", "Unexpected error occured!", "error");
                 }
             });
-    } else if (result.isDenied) {
-    
-    }
-  })
+        }
     });
+});
 
 
 
