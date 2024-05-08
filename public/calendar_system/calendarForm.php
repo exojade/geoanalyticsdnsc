@@ -11,6 +11,14 @@
   <link rel="stylesheet" href="AdminLTE_new/dist/css/adminlte.min.css">
 <div class="content-wrapper">
 
+<div id="eventModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2 id="eventTitle"></h2>
+    <p id="eventDetails"></p>
+  </div>
+</div>
+
     <section class="content">
       <div class="container-fluid">
         <div class="row">
@@ -123,23 +131,58 @@
           // if so, remove the element from the "Draggable Events" list
           info.draggedEl.parentNode.removeChild(info.draggedEl);
         }
-      }
+      },
+      eventClick: function(calEvent, jsEvent, view) {
+      // Open the modal
+      $('#eventModal').show();
+
+      // Populate modal with event data
+      $('#eventTitle').text(calEvent.title);
+      $('#eventDetails').text('Start: ' + calEvent.start.format('YYYY-MM-DD HH:mm:ss'));
+
+      // Close the modal when close button is clicked
+      $('.close').click(function() {
+        $('#eventModal').hide();
+      });
+    }
     });
 
     calendar.render();
 
+
     $.ajax({
-    url: 'get_events.php', // Path to your PHP script
-    type: 'GET',
-    success: function(response) {
+        type : 'post',
+        url : 'calendar', //Here you will fetch records 
+        data: {
+             action: "calendarApi"
+        },
+        success: function(response) {
         // Parse the JSON response and add the events to the calendar
         calendar.addEventSource(response);
     },
-    error: function(xhr, status, error) {
-        // Handle errors
-        console.error(error);
-    }
-});
+        error: function(xhr, status, error) {
+            // Handle errors
+            console.error(error);
+        }
+    });
+
+  //   $('#calendar').fullCalendar({
+  //   // FullCalendar options
+   
+  // });
+
+    // $.ajax({
+    // url: 'get_events.php', // Path to your PHP script
+    // type: 'GET',
+    // success: function(response) {
+    //     // Parse the JSON response and add the events to the calendar
+    //     calendar.addEventSource(response);
+    // },
+    //     error: function(xhr, status, error) {
+    //         // Handle errors
+    //         console.error(error);
+    //     }
+    // });
     // $('#calendar').fullCalendar()
 
     /* ADDING EVENTS */
