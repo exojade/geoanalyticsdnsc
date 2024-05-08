@@ -55,7 +55,7 @@
   </li>
 
   <li class="nav-item">
-      <a href="index" class="nav-link">
+      <a href="appointment" class="nav-link">
         <i class="nav-icon fas fa-briefcase"></i>
         <p>
           Appointments
@@ -65,7 +65,7 @@
   </li>
 
   <li class="nav-item">
-      <a href="index" class="nav-link">
+      <a href="calendar" class="nav-link">
         <i class="nav-icon fas fa-calendar"></i>
         <p>
           Calendar

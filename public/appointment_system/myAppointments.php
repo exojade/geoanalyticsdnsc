@@ -1,4 +1,52 @@
 <?php
+require("includes/google_class.php");  
+
+// $google->setAccessToken($_SESSION["dnsc_geoanalytics"]['accessToken']);
+// $service = new Google_Service_Calendar($google);
+// $calendarId= "15df82f54cf28baa57c00d9fc76503ed9d5b0fcaef7ec5595fc7e04a87fb72f2@group.calendar.google.com";
+// $optParams = array(
+// 	'maxResults' => 10,
+// 	'orderBy' => 'startTime',
+// 	'singleEvents' => true,
+// 	// 'timeMin' => date(format: 'c'),
+// );
+
+// $results = $service->events->listEvents($calendarId, $optParams);
+// $events = $results->getItems();
+// // dump($events);
+
+
+// $event = new Google_Service_Calendar_Event(array(
+// 	'summary' => 'CHECKUP for CITY VET',
+// 	'location' => 'City Veterinary Office',
+// 	'description' => 'Book an appointment for checkup',
+// 	'start' => array(
+// 	  'dateTime' => '2024-05-09T09:00:00+08:00',
+// 	  'timeZone' => 'Asia/Manila',
+// 	),
+// 	'end' => array(
+// 	  'dateTime' => '2024-05-09T17:00:00+08:00',
+// 	  'timeZone' => 'Asia/Manila',
+// 	),
+// 	'attendees' => array(
+// 	  array('email' => 'bosspanabo2020@gmail.com'),
+// 	//   array('email' => 'sbrin@example.com'),
+// 	),
+// 	'reminders' => array(
+// 	  'useDefault' => FALSE,
+// 	  'overrides' => array(
+// 		array('method' => 'email', 'minutes' => 24 * 60),
+// 		array('method' => 'popup', 'minutes' => 10),
+// 	  ),
+// 	),
+//   ));
+  
+// //   $calendarId = 'primary';
+//   $event = $service->events->insert($calendarId, $event);
+//   dump($event);
+
+
+
 
     if($_SERVER["REQUEST_METHOD"] === "POST") {
 		// dump($_SESSION);
@@ -13,6 +61,12 @@
 			$limitString = " limit " . $limit;
 			$offsetString = " offset " . $offset;
 			$baseQuery = "select * from appointment where clientId = '".$_SESSION["dnsc_geoanalytics"]["userid"]."'";
+
+			$TimeSlot = [];
+			$timeslot = query("select * from timeslot");
+			foreach($timeslot as $row):
+				$TimeSlot[$row["slotId"]] = $row;
+			endforeach;
 
 			// $query = query("select * from pet where clientId = ?", $_SESSION["dnsc_geoanalytics"]["userid"]);
 			if($search == ""):
@@ -29,17 +83,8 @@
 			$i = 0;
 			foreach($data as $row):
 				// dump($row);
-				$data[$i]["action"] = '<a href="pets?action=specific&id='.$row["petId"].'"  class="btn btn-primary btn-block">View</a>';
-				if($row["image"] == ""):
-					if($row["petType"] == "Cat"):
-						$data[$i]["image"] = '<img style="border: 2px solid black;" src="uploads/catVector.jpeg" width="50" height="50">';
-					else:
-						$data[$i]["image"] = '<img style="border: 2px solid black;" src="uploads/dogVector.jpeg" width="50" height="50">';
-					endif;
-
-				else:
-					$data[$i]["image"] = '<img style="border: 2px solid black;" src="'.$row["image"].'" width="50" height="50">';
-				endif;
+				$data[$i]["action"] = '<a href="#"  class="btn btn-warning btn-block">Update</a>';
+				$data[$i]["appointmentDate"] = $row["dateSet"] . " - " . $TimeSlot[$row["timeSet"]]["timeSlot"];
 				// dump();	
                 $i++;
             endforeach;
@@ -51,36 +96,33 @@
             );
             echo json_encode($json_data);
 
+		
+
 			
 
-		elseif($_POST["action"] == "addNewPet"):
+		elseif($_POST["action"] == "addNewAppointment"):
 			// dump($_POST);
+
 			$clientId = $_SESSION["dnsc_geoanalytics"]["userid"];
-			$petId = create_trackid("PET");
-			if (query("insert INTO pet (petId, petName, petType, petBreed, petDescription, clientId) 
-				VALUES(?,?,?,?,?,?)", 
-				$petId, $_POST["petName"] ,$_POST["typePet"], $_POST["petBreed"], $_POST["petDescription"], $clientId) === false)
+			$appointmentId = create_trackid("APP");
+			// dump($appointmentId);
+
+			if (query("insert INTO appointment (appointmentId, dateSet, timeSet, timestampSet, dateScheduled, appointmentStatus, clientId, notes) 
+				VALUES(?,?,?,?,?,?,?,?)", 
+				$appointmentId, $_POST["appointment_date"] ,$_POST["time_taken"], time(), date("Y-m-d"), "PENDING" ,$clientId, $_POST["noteAppointment"]) === false)
 				{
 					echo("not_success");
 				}
-          	else;
-			  if($_FILES["petImage"]["size"] != 0):
-				$target_pdf = "uploads/";
-				$path_parts = pathinfo($_FILES["petImage"]["name"]);
-				$extension = $path_parts['extension'];
-				$target = $target_pdf . $petId. "." . $extension;
-				if(!move_uploaded_file($_FILES['petImage']['tmp_name'], $target)){
-					echo("FAMILY Do not have upload files");
-					exit();
-				}
-			query("update pet set image = '".$target."'
-					where petId = '".$petId."'");
-			endif;
+
+
+
+
+			
 
 			$res_arr = [
 				"result" => "success",
 				"title" => "Success",
-				"message" => "Success on updating data",
+				"message" => "Success on Booking an appointment!",
 				"link" => "refresh",
 				// "html" => '<a href="#">View or Print '.$transaction_id.'</a>'
 				];

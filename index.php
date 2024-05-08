@@ -27,6 +27,8 @@
 					require 'public/users_system/users.php';
 				else if ($request == 'pets')
 					require 'public/pets_system/pets.php';
+				else if ($request == 'calendar')
+					require 'public/calendar_system/calendar.php';
 				
 
 				else if ($request == 'static')
@@ -37,6 +39,8 @@
 
 				else if ($request == 'myAppointments')
 					require 'public/appointment_system/myAppointments.php';
+					else if ($request == 'appointment')
+					require 'public/appointment_system/appointment.php';
 
 				
 
