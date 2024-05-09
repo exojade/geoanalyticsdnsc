@@ -7,7 +7,12 @@ require("includes/google_class.php");
 
 			$events = query("SELECT appointmentId,
 			CONCAT(u.fullname , ' - ' , u.username) AS title,
+
+
+
 			dateSet as start,
+
+
 			CASE
 				WHEN a.appointmentStatus = 'ONGOING' THEN '#43AA8B' -- Green
 				WHEN a.appointmentStatus = 'CANCELLED' THEN '#F02D3A' -- Red
@@ -41,6 +46,39 @@ require("includes/google_class.php");
 			
 			// Output the JSON data
 			echo $jsonEvents;
+		
+		elseif($_POST["action"] == "modalCalendar"):
+			$appointment = query("select a.*, t.timeslot, u.fullname from appointment a
+									left join timeslot t
+									on t.slotId = a.timeSet
+									left join users u
+									on u.userid = a.clientId
+									where a.appointmentId = ?", $_POST["appointmentId"]);
+			$appointment = $appointment[0];
+			$date = date("l, F d, Y", strtotime($appointment["dateSet"]));
+
+			$hint = '
+				<h5>Schedule for Online Checkup : '.$appointment["fullname"].'</h5>
+				<h6>'.$date.' | '.$appointment["timeslot"].'</h6>
+			<br>
+			<h6>Note:</h6>
+                  <p>'.$appointment["notes"].'</p>
+			';
+
+			if($appointment["meetId"] != ""):
+				$hint.='
+				
+				<a class="btn btn-primary" target="_blank" href="'.$appointment["meetId"].'"> Open Google Meet &nbsp; <i class="fas fa-video"></i></a>
+				<br><i><small>'.$appointment["meetId"].'</small></i>
+
+				';
+			endif;
+
+			echo($hint);
+
+			// dump($_POST);
+
+
 		endif;
 		
     }

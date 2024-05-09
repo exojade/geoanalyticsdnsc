@@ -21,34 +21,51 @@
 				require 'public/static_system/index.php';
 			}
 			else{
+				// dump($_SESSION);
+				if($_SESSION["dnsc_geoanalytics"]["role"] == "CLIENT" && $_SESSION["dnsc_geoanalytics"]["fillprofile"] == "NOT DONE"):
+					if($request != "logout"):
+						require 'public/profile_system/profileUpdate.php';
+					else:
+						require 'logout.php';
+					endif;
+				else:
+					
 				if($request == 'index' || $request == '/' || $request== "")
-					require 'public/dashboard_system/main.php';
-				else if ($request == 'users')
-					require 'public/users_system/users.php';
-				else if ($request == 'pets')
-					require 'public/pets_system/pets.php';
-				else if ($request == 'calendar')
-					require 'public/calendar_system/calendar.php';
-				
+				require 'public/dashboard_system/main.php';
+			else if ($request == 'users')
+				require 'public/users_system/users.php';
+			else if ($request == 'pets')
+				require 'public/pets_system/pets.php';
+			else if ($request == 'calendar')
+				require 'public/calendar_system/calendar.php';
+			
 
-				else if ($request == 'static')
-					require 'public/static_system/index.php';
+			else if ($request == 'static')
+				require 'public/static_system/index.php';
 
-				else if ($request == 'patient')
-					require 'public/patient_system/patient.php';
+			else if ($request == 'profileUpdate')
+				require 'public/profile_system/profileUpdate.php';
 
-				else if ($request == 'myAppointments')
-					require 'public/appointment_system/myAppointments.php';
-					else if ($request == 'appointment')
-					require 'public/appointment_system/appointment.php';
+			else if ($request == 'patient')
+				require 'public/patient_system/patient.php';
 
-				
+			else if ($request == 'myAppointments')
+				require 'public/appointment_system/myAppointments.php';
+				else if ($request == 'appointment')
+				require 'public/appointment_system/appointment.php';
 
-				else if ($request == 'logout'){
-				require 'logout.php';
-			}
-				else
-					require 'public/404_system/404.php';
+			
+
+			else if ($request == 'logout'){
+			require 'logout.php';
+		}
+			else
+				require 'public/404_system/404.php';
+			
+				endif;
+
+
+
 			}
 		}
 		else{

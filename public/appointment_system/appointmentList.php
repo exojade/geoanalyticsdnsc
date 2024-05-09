@@ -42,7 +42,7 @@
 
                 <table class="table table-bordered" id="ajax_datatable">
                   <thead>
-                    <th>Action</th>
+                    <th width="13%">Action</th>
                     <th>Client</th>
                     <th>Email</th>
                     <th>Status</th>

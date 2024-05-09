@@ -11,13 +11,27 @@
   <link rel="stylesheet" href="AdminLTE_new/dist/css/adminlte.min.css">
 <div class="content-wrapper">
 
-<div id="eventModal" class="modal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <h2 id="eventTitle"></h2>
-    <p id="eventDetails"></p>
-  </div>
-</div>
+
+<div class="modal fade" id="eventModal">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header bg-primary">
+              <h4 class="modal-title">Appointment</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+       
+            </div>
+     
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+
+
 
     <section class="content">
       <div class="container-fluid">
@@ -133,17 +147,40 @@
         }
       },
       eventClick: function(calEvent, jsEvent, view) {
-      // Open the modal
-      $('#eventModal').show();
 
-      // Populate modal with event data
-      $('#eventTitle').text(calEvent.title);
-      $('#eventDetails').text('Start: ' + calEvent.start.format('YYYY-MM-DD HH:mm:ss'));
+        var rowid = calEvent.event.extendedProps.appointmentId;
+      // Swal.fire({title: 'Please wait...', imageUrl: 'AdminLTE/dist/img/loader.gif', showConfirmButton: false});
+      $.ajax({
+          type : 'post',
+          url : 'calendar', //Here you will fetch records 
+          data: {
+              appointmentId: rowid, action: "modalCalendar"
+          },
+          success : function(data){
+            $('#eventModal .modal-body').html(data);
+            // swal.close();
+            $('#eventModal').modal('show');
 
-      // Close the modal when close button is clicked
-      $('.close').click(function() {
-        $('#eventModal').hide();
+              // Swal.close();
+              // $(".select2").select2();//Show fetched data from database
+          }
       });
+
+   
+
+
+
+      // // Open the modal
+      // $('#eventModal').show();
+
+      // // Populate modal with event data
+      // $('#eventTitle').text(calEvent.title);
+      // // $('#eventDetails').text('Start: ' + calEvent.start.format('YYYY-MM-DD HH:mm:ss'));
+
+      // // Close the modal when close button is clicked
+      // $('.close').click(function() {
+      //   $('#eventModal').hide();
+      // });
     }
     });
 

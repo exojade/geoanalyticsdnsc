@@ -24,13 +24,28 @@
 
         $userid = create_trackid("USR-");
 
-        if (query("insert INTO users (userid, username, password, role, fullname) 
-          VALUES(?,?,?,?,?)", 
-          $userid, $userInfo->getEmail() ,$userInfo->getEmail(), "CLIENT", $userInfo->getName()) === false)
-          {
-              echo("not_success");
-          }
-          else;
+          query("insert INTO users (userid, username, password, role, fullname) 
+            VALUES(?,?,?,?,?)", 
+            $userid, $userInfo->getEmail() ,$userInfo->getEmail(), "CLIENT", $userInfo->getName());
+
+          query("insert INTO client (clientId, clientType, clientStatus) 
+            VALUES(?,?,?)", 
+            $userid, "ONLINE" ,"FOR UPDATE");
+
+       
+            $users = query("select * from users where userid = ?", $userid);
+            $_SESSION["dnsc_geoanalytics"] = [
+              "userid" => $users[0]["userid"],
+              "uname" => $users[0]["username"],
+              "role" => $users[0]["role"],
+              "fillprofile" => "NOT DONE",
+              "fullname" => $users[0]["fullname"],
+              "profile_image" => "",
+              "application" => "dnsc_geoanalytics"
+            ];
+            $_SESSION["dnsc_geoanalytics"]['accessToken'] = $accessToken;
+            
+        
 
 
         // query
@@ -41,15 +56,32 @@
 
         // dump("WALA KA NAREHISTRO");
       else:
-        $_SESSION["dnsc_geoanalytics"] = [
-          "userid" => $users[0]["userid"],
-          "uname" => $users[0]["username"],
-          "role" => $users[0]["role"],
-          "fullname" => $users[0]["fullname"],
-          "profile_image" => "",
-          "application" => "dnsc_geoanalytics"
-        ];
-        $_SESSION["dnsc_geoanalytics"]['accessToken'] = $accessToken;
+
+        $client = query("select * from client where clientId = ?", $users[0]["userid"]);
+        if($client[0]["clientStatus"] == "FOR UPDATE"):
+          $_SESSION["dnsc_geoanalytics"] = [
+            "userid" => $users[0]["userid"],
+            "uname" => $users[0]["username"],
+            "role" => $users[0]["role"],
+            "fillprofile" => "NOT DONE",
+            "fullname" => $users[0]["fullname"],
+            "profile_image" => "",
+            "application" => "dnsc_geoanalytics"
+          ];
+          $_SESSION["dnsc_geoanalytics"]['accessToken'] = $accessToken;
+
+        else:
+          $_SESSION["dnsc_geoanalytics"] = [
+            "userid" => $users[0]["userid"],
+            "uname" => $users[0]["username"],
+            "role" => $users[0]["role"],
+            "fillprofile" => "DONE",
+            "fullname" => $users[0]["fullname"],
+            "profile_image" => "",
+            "application" => "dnsc_geoanalytics"
+          ];
+          $_SESSION["dnsc_geoanalytics"]['accessToken'] = $accessToken;
+        endif;
         // $google->setAccessToken($_SESSION["dnsc_geoanalytics"]['accessToken']);
         // $_SESSION["dnsc_geoanalytics"]['accessToken'] = $google->authenticate($_GET['code']);
       endif;
