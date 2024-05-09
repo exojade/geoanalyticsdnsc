@@ -26,19 +26,15 @@
               <div class="card-body table-responsive">
                 <table class="table table-bordered" id="ajax_datatable">
                   <thead>
-                    <th>Pet</th>
-                    <th>Type</th>
-                    <th>Client</th>
-                    <th>Address</th>
                     <th>Action</th>
+                    <th>Pet Owner</th>
+                    <th>Address</th>
+                    <th>Gender</th>
+                    <th># of Pets</th>
                   </thead>
                 </table>
               </div>
             </div>
-
-
-
-
       </div>
     </section>
   </div>

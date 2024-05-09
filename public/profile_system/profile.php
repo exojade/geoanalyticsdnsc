@@ -1,12 +1,10 @@
 <?php
 
     if($_SERVER["REQUEST_METHOD"] === "POST") {
-		// dump($_SESSION);
-	
-
-			
-
-	
+		
+		if($_POST["action"] == "profileUpdate"):
+			dump($_POST);
+		endif;
     }
 	else {
 		if(!isset($_GET["action"])):

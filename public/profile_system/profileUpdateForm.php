@@ -4,6 +4,8 @@
   <link rel="stylesheet" href="AdminLTE_new/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
   <link rel="stylesheet" href="AdminLTE_new/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" href="AdminLTE_new/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+  <link rel="stylesheet" href="AdminLTE/bower_components/select2/dist/css/select2.min.css">
+  <link rel="stylesheet" href="AdminLTE_new/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="AdminLTE_new/dist/css/adminlte.min.css">
 <div class="content-wrapper">
@@ -28,22 +30,28 @@
 
                 <div class="card-body">
                   <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                       <div class="form-group">
                         <label for="exampleInputEmail1">First Name</label>
-                        <input value="<?php echo($client["firstname"]); ?>" type="text" name="firstname" class="form-control" id="exampleInputEmail1" placeholder="First Name">
+                        <input required value="<?php echo($client["firstname"]); ?>" type="text" name="firstname" class="form-control" id="exampleInputEmail1" placeholder="First Name">
                       </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                       <div class="form-group">
                         <label for="exampleInputEmail1">Middle Name</label>
-                        <input type="text" value="<?php echo($client["middlename"]); ?>" name="middlename" class="form-control" id="exampleInputEmail1" placeholder="Middle Name">
+                        <input  type="text" value="<?php echo($client["middlename"]); ?>" name="middlename" class="form-control" id="exampleInputEmail1" placeholder="Middle Name">
                       </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                       <div class="form-group">
                         <label for="exampleInputEmail1">Last Name</label>
-                        <input type="text" value="<?php echo($client["lastname"]); ?>" name="lastname" class="form-control" id="exampleInputEmail1" placeholder="Last Name">
+                        <input required type="text" value="<?php echo($client["lastname"]); ?>" name="lastname" class="form-control" id="exampleInputEmail1" placeholder="Last Name">
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Name Extension</label>
+                        <input  type="text" value="<?php echo($client["nameExtension"]); ?>" name="nameExtension" class="form-control" id="exampleInputEmail1" placeholder="Ex. Sr. Jr. II III">
                       </div>
                     </div>
                   </div>
@@ -95,7 +103,7 @@
                           <div class="col-md-12">
                             <div class="form-group">
                               <label>Street / House Number / Purok</label>
-                              <input value="<?php echo($scholar["address_home"]); ?>" name="address_home" required type="text" class="form-control"  placeholder="Street / House Number / Purok">
+                              <input value="<?php echo($client["address"]); ?>" name="address" required type="text" class="form-control"  placeholder="Street / House Number / Purok">
                             </div>
                           </div>
                       </div>
@@ -104,17 +112,17 @@
                           <div class="col-md-4">
                             <div class="form-group">
                               <label>Birthdate</label>
-                              <input max="<?php echo date('Y-m-d'); ?>" value="<?php echo($scholar["birthdate"]); ?>" name="birthdate" required type="date" class="form-control"  placeholder="Birthdate">
+                              <input  max="<?php echo date('Y-m-d'); ?>" value="<?php echo($client["birthDate"]); ?>" name="birthDate" required type="date" class="form-control"  placeholder="Birthdate">
                             </div>
                           </div>
                           <div class="col-md-4">
                             <div class="form-group">
                               <label>Sex</label>
-                              <select name="gender" class="form-control select2" >
-                                <?php if($scholar["sex"] == ""): ?>
+                              <select required name="gender" class="form-control select2" >
+                                <?php if($client["gender"] == ""): ?>
                                   <option disabled selected value="">Please select Sex</option>
                                 <?php else: ?>
-                                  <option selected value="<?php echo($scholar["sex"]); ?>"><?php echo($scholar["sex"]); ?></option>
+                                  <option selected value="<?php echo($client["gender"]); ?>"><?php echo($client["gender"]); ?></option>
                                   <option disabled value="">Please select Sex</option>
                                 <?php endif; ?>
                                 <option value="Male">Male</option>
@@ -124,18 +132,15 @@
                           </div>
 
                           <div class="col-md-4">
-                            <div class="form-group">
-                              <label>Contact Number</label>
-                              <select name="gender" class="form-control select2" >
-                                <?php if($scholar["sex"] == ""): ?>
-                                  <option disabled selected value="">Please select Sex</option>
-                                <?php else: ?>
-                                  <option selected value="<?php echo($scholar["sex"]); ?>"><?php echo($scholar["sex"]); ?></option>
-                                  <option disabled value="">Please select Sex</option>
-                                <?php endif; ?>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                              </select>
+                          <div class="form-group">
+                              <label>Contact Number:</label>
+                              <div class="input-group">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                </div>
+                                <input name="contactNumber" required type="text" class="form-control" data-inputmask='"mask": "(+63) 9999999999"' data-mask>
+                              </div>
+                              <!-- /.input group -->
                             </div>
                           </div>
                       </div>
@@ -159,6 +164,8 @@
   </div>
   <?php require("layouts/footer.php") ?>
 
+<script src="AdminLTE/bower_components/select2/dist/js/select2.full.min.js"></script>
+
 <script src="AdminLTE_new/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="AdminLTE_new/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
 <script src="AdminLTE_new/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
@@ -171,10 +178,95 @@
 <script src="AdminLTE_new/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
 <script src="AdminLTE_new/plugins/datatables-buttons/js/buttons.print.min.js"></script>
 <script src="AdminLTE_new/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+<script src="AdminLTE_new/plugins/inputmask/jquery.inputmask.min.js"></script>
+<script type="text/javascript" src="node_modules/philippine-location-json-for-geer/build/phil.min.js"></script>
 
 
 <script>
+  $('[data-mask]').inputmask()
+    $('#region_select').select2({
+      placeholder: 'Please select Region'
+    });
+    $('#province_select').select2({
+      placeholder: 'Please select Province'
+    });
+
+    $('#city_mun_select').select2({
+      placeholder: 'Please select City / Municipality'
+    });
+
+    $('#barangay_select').select2({
+      placeholder: 'Please select Barangay'
+    });
+    
+
+
+    
+    var selectedRegion = '';
+    var selectedCity = '';
   
+    var all_region = Philippines.sort(Philippines.regions,"A");
+    <?php if($client["region"] != ""): ?>
+      html = "<option value='<?php echo($client["region"]); ?>' selected><?php echo($client["region"]); ?></option>";
+    <?php else: ?>
+      html = "<option value='' disabled selected></option>";
+    <?php endif; ?>
+    for(var key in all_region) {
+      // console.log(all_province[key].name);
+        html += "<option value=" + all_region[key].reg_code  + ">" +all_region[key].name + "</option>"
+    }
+    document.getElementById("region_select").innerHTML = html;
+
+
+
+
+
+  $('#region_select').change(function(){
+    $('#true_region').val($( "#region_select option:selected" ).text());
+    province = Philippines.getProvincesByRegion($(this).val(), 'A');
+    selectedRegion = $(this).val();
+ 
+    html = "<option value='' disabled selected></option>";
+    for(var key in province) {
+      // console.log(city_mun[key].name);
+        html += "<option value=" + province[key].prov_code  + ">" +province[key].name + "</option>"
+    }
+    document.getElementById("province_select").innerHTML = html;
+});
+
+
+
+
+$('#province_select').change(function(){
+    $('#true_province').val($( "#province_select option:selected" ).text());
+    city_mun = Philippines.getCityMunByProvince($(this).val(), 'A');
+    html = "<option value='' disabled selected></option>";
+    for(var key in city_mun) {
+      // console.log(city_mun[key].name);
+        html += "<option value=" + city_mun[key].mun_code  + ">" +city_mun[key].name + "</option>"
+    }
+    document.getElementById("city_mun_select").innerHTML = html;
+});
+
+
+$('#city_mun_select').change(function(){
+    $('#true_city_mun').val($( "#city_mun_select option:selected" ).text());
+    barangay = Philippines.getBarangayByMun($(this).val(), 'A');
+    html = "<option value='' disabled selected></option>";
+    for(var key in barangay) {
+      // console.log(city_mun[key].name);
+        html += "<option value=" + barangay[key].mun_code  + ">" +barangay[key].name + "</option>"
+    }
+    document.getElementById("barangay_select").innerHTML = html;
+  
+
+    // console.log(Philippines.getZipCode(selectedRegion, selectedProvince));
+});
+
+$('#barangay_select').change(function(){
+    $('#true_barangay').val($( "#barangay_select option:selected" ).text());
+
+});
 
 
             $('.sampleDatatable').DataTable({
