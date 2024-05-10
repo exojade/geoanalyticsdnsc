@@ -13,14 +13,7 @@
         <div class="card">
               <div class="card-header">
                 <h5 class="m-0">PET PATIENTS RECORD
-                <div class="form-group" style="float:right;">
-                  <div class="input-group mb-3">
-                    <select class="form-control select2" name="department" id="department_select" >
-                    <option value="" selected disabled>Select Client here</option>
-                 
-                    </select>
-                    </div>
-                </div>
+              
                 </h5>
               </div>
               <div class="card-body table-responsive">
@@ -78,11 +71,11 @@ var datatable =
                      }
                 },
                 'columns': [
-                    { data: 'name', "orderable": false },
-                    { data: 'loans_amount', "orderable": false  },
-                    { data: 'department', "orderable": false  },
-                    { data: 'position', "orderable": false  },
-                    { data: 'position', "orderable": false  },
+                    { data: 'action', "orderable": false },
+                    { data: 'name', "orderable": false  },
+                    { data: 'address', "orderable": false  },
+                    { data: 'gender', "orderable": false  },
+                    { data: 'pets', "orderable": false  },
                 ],
                 "footerCallback": function (row, data, start, end, display) {
                     // var api = this.api(), data;

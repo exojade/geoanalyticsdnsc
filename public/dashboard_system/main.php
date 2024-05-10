@@ -1,6 +1,6 @@
 <?php
 // dump($_SESSION);
-require("includes/google_class.php"); 
+// require("includes/google_class.php"); 
 
 use Google\Client;
 use Google\Service\Calendar;

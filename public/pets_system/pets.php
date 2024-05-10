@@ -55,7 +55,7 @@
 
 		elseif($_POST["action"] == "addNewPet"):
 			// dump($_POST);
-			$clientId = $_SESSION["dnsc_geoanalytics"]["userid"];
+			$clientId = $_POST["clientId"];
 			$petId = create_trackid("PET");
 			if (query("insert INTO pet (petId, petName, petType, petBreed, petDescription, clientId) 
 				VALUES(?,?,?,?,?,?)", 

@@ -19,7 +19,6 @@
       $userInfo = $service->userinfo->get();
 
       $users = query("select * from users where username = ?",  $userInfo->getEmail());
-      // dump($users);
       if(empty($users)):
 
         $userid = create_trackid("USR-");
@@ -56,8 +55,9 @@
 
         // dump("WALA KA NAREHISTRO");
       else:
-
+       
         $client = query("select * from client where clientId = ?", $users[0]["userid"]);
+        //  dump($client);
         if($client[0]["clientStatus"] == "FOR UPDATE"):
           $_SESSION["dnsc_geoanalytics"] = [
             "userid" => $users[0]["userid"],
@@ -86,7 +86,7 @@
         // $_SESSION["dnsc_geoanalytics"]['accessToken'] = $google->authenticate($_GET['code']);
       endif;
 
-
+     
       redirect("index");
  
 

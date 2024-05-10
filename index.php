@@ -53,6 +53,8 @@
 				require 'public/appointment_system/myAppointments.php';
 				else if ($request == 'appointment')
 				require 'public/appointment_system/appointment.php';
+				else if ($request == 'medical')
+				require 'public/medical_system/medical.php';
 
 			
 

@@ -14,7 +14,7 @@ MySQL - 10.4.20-MariaDB : Database - cityvet
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 CREATE DATABASE /*!32312 IF NOT EXISTS*/`cityvet` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
 
-USE `cityvet`;
+USE `cityvetdb`;
 
 /*Table structure for table `appointment` */
 

@@ -36,9 +36,9 @@
 
   <li class="nav-item">
       <a href="index" class="nav-link">
-        <i class="nav-icon fas fa-user"></i>
+        <i class="nav-icon fas fa-tachometer-alt"></i>
         <p>
-          Profile
+          Dashboard
           <span class="right badge badge-danger"></span>
         </p>
       </a>
@@ -87,6 +87,18 @@
 
   <li class="nav-item">
       <a href="index" class="nav-link">
+        <i class="nav-icon fas fa-bacteria"></i>
+        <p>
+          Disease
+          <span class="right badge badge-danger"></span>
+        </p>
+      </a>
+  </li>
+
+
+
+  <li class="nav-item">
+      <a href="index" class="nav-link">
         <i class="nav-icon fas fa-prescription"></i>
         <p>
           Prescription
@@ -107,7 +119,7 @@
   </li>
 
   <li class="nav-item">
-      <a href="pets" class="nav-link">
+      <a href="patient?action=specific&id=<?php echo($_SESSION["dnsc_geoanalytics"]["userid"]); ?>" class="nav-link">
         <i class="nav-icon fas fa-paw"></i>
         <p>
           My Pets
