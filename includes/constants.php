@@ -1,5 +1,5 @@
 <?php
-    define("DATABASE", "cityvet");
+    define("DATABASE", "cityvetdb");
     define("USERNAME", "root");
     define("PASSWORD", "");
     define("PORT", "3306");

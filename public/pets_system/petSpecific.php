@@ -228,7 +228,16 @@ $pet = $pet[0];
                         <?php echo($row["prescription"]); ?>
                         <?php
                           if($row["prescription"] != ""):
-                            echo('<br><button class="btn btn-primary btn-sm"> Print Prescription</button>');
+                            echo('
+                                    <br>
+                                    <form class="generic_form_trigger" data-rule="pets">
+                                      <input type="hidden" name="action" value="printPrescription">
+                                      <input type="hidden" name="checkupId" value="'.$row["checkupId"].'">
+                                      
+                                    <button type="submit" class="btn btn-primary btn-sm"> Print Prescription</button>
+                                    </form>
+                                    
+                                    ');
                           endif;
                         ?>
                         <br>

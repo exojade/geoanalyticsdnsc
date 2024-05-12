@@ -86,7 +86,7 @@
   </li>
 
   <li class="nav-item">
-      <a href="index" class="nav-link">
+      <a href="disease" class="nav-link">
         <i class="nav-icon fas fa-bacteria"></i>
         <p>
           Disease
