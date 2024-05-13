@@ -10,7 +10,27 @@
   <link rel="stylesheet" href="AdminLTE_new/dist/css/adminlte.min.css">
 <div class="content-wrapper">
 
-<?php $pet = query("select * from pet where petId = ?", $_GET["id"]); ?>
+<style>
+  #sectionTable td{
+    border: 0px;
+    padding: 0px;
+  }
+  #sectionTable th{
+    border: 0px;
+    padding: 0px;
+  }
+</style>
+
+<?php $pet = query("select *, CONCAT(
+  FLOOR(DATEDIFF(CURRENT_DATE(), pet.petDob) / 365), ' years, ',
+  FLOOR((DATEDIFF(CURRENT_DATE(), pet.petDob) % 365) / 30), ' months, ',
+  DATEDIFF(CURRENT_DATE(), pet.petDob) % 30, ' days'
+) AS petAge from pet where petId = ?", $_GET["id"]); ?>
+
+<?php $pet = $pet[0]; ?>
+<?php $client = query("select * from client where clientId = ?", $pet["clientId"]); ?>
+<?php $client = $client[0]; ?>
+
 <?php $medicalRecords = query("select * from checkup where petId = ? order by dateCheckup desc", $_GET["id"]); ?>
 
 <?php $diseases = query("select * from disease"); ?>
@@ -26,9 +46,7 @@ foreach($disease as $row):
   $Disease[$row["checkupId"]][$row["diseaseId"]] = $row["diseaseName"];
 endforeach; ?>
 
-<?php
-$pet = $pet[0];
-?>
+
 
 
 <div class="modal fade" id="modalNewMedical">
@@ -121,71 +139,126 @@ $pet = $pet[0];
           </div>
         </div>
 
+
+
+
+        <?php foreach($medicalRecords as $row): ?>
+
+          <div class="modal fade" id="medRecordModal_<?php echo($row["checkupId"]); ?>">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header bg-primary">
+                <h4 class="modal-title">Medical Record: <?php echo($row["checkupId"]); ?></h4>
+              </div>
+              <div class="modal-body">
+              <table class="table" id="sectionTable">
+                    <tr>
+                      <th>Pet Name:</th>
+                      <td><?php echo($pet["petName"]); ?></td>
+                      <th>Specie Type:</th>
+                      <td><?php echo($pet["petType"]); ?></td>
+                    </tr>
+                    <tr>
+                      <th>Type of Consultation:</th>
+                      <td><?php echo($row["type"]); ?></td>
+                      <th>Date of Consultation:</th>
+                      <td><?php echo($row["dateCheckup"]); ?></td>
+                    </tr>
+                    <tr>
+                      <th>Diagnosis:</th>
+                      <td><?php echo($row["diagnosis"]); ?></td>
+                      <th>Treatment:</th>
+                      <td><?php echo($row["treatment"]); ?></td>
+                    </tr>
+                  </table>
+
+                  <hr>
+                  <h5><b>Symptoms</b></h5>
+                  <?php echo($row["symptoms"]); ?>
+
+                  <hr>
+                  <h3>Rx [Prescription]</h3>
+                  <?php echo($row["prescription"]); ?>
+                  <br>
+                  <form class="generic_form_trigger" data-url="pets">
+                      <input type="hidden" name="action" value="printPrescription">
+                      <input type="hidden" name="checkupId" value="<?php echo($row["checkupId"]); ?>">
+                    <button type="submit" class="btn btn-primary btn-sm"> Print Prescription</button>
+                  </form>
+
+                  <hr>
+                  <h5><b>Doctor's Notes</b></h5>
+                  <?php echo($row["doctorsNote"]); ?>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                <!-- <button type="submit" class="btn btn-primary">Save changes</button> -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <?php endforeach; ?>
+        
+
+
+
+
+
+
     <section class="content">
       <div class="container-fluid">
       <div class="row">
-          <div class="col-md-3">
+          <div class="col-md-12">
 
-            <!-- Profile Image -->
-            <div class="card card-primary card-outline">
-              <div class="card-body box-profile">
-                <div class="text-center">
-                  <?php if($pet["image"] == ""): ?>
-                    <?php if($pet["petType"] == "Cat"): ?>
-                      <img class="profile-user-img img-fluid img-circle"
-                       src="uploads/catVector.jpeg">
-                    <?php else: ?>
-                      <img class="profile-user-img img-fluid img-circle"
-                       src="uploads/dogVector.jpeg">
-                    <?php endif; ?>
-                    <?php else: ?>
-                      <img class="profile-user-img img-fluid img-circle" src="<?php echo($pet["image"]); ?>">
-                  <?php endif; ?>
-                  
-                </div>
-
-                <h3 class="profile-username text-center"><?php echo($pet["petName"]); ?></h3>
-                <p class="text-muted text-center"><?php echo($pet["petType"]); ?></p>
-
-              </div>
-              <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-
-            <!-- About Me Box -->
-            <div class="card card-primary">
+          <div class="card card-info">
               <div class="card-header">
-                <h3 class="card-title">About The Pet</h3>
+                <h3 class="card-title">Pet Owner's Information</h3>
               </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                <strong> Breed</strong>
-
-                <p class="text-muted">
-                 <?php echo($pet["petBreed"]); ?>
-                </p>
-
-                <hr>
-                <strong>Description</strong>
-                  <p class="text-muted"><?php echo($pet["petDescription"]); ?></p>
-                <hr>
-                <strong> Owner</strong>
-                <p class="text-muted"><?php echo($pet["petDescription"]); ?></p>
-                <hr>
-              </div>
-              <!-- /.card-body -->
+    
+                <div class="card-body">
+                  <div class="row">
+                  
+                    <div class="col-md-12">
+                    <table class="table" id="sectionTable">
+                    <tr>
+                      <th>Pet Name:</th>
+                      <td><?php echo($pet["petName"]); ?></td>
+                      <th>Specie Type:</th>
+                      <td><?php echo($pet["petType"]); ?></td>
+                    </tr>
+                    <tr>
+                      <th>Breed:</th>
+                      <td><?php echo($pet["petBreed"]); ?></td>
+                      <th>Gender:</th>
+                      <td><?php echo($pet["petGender"]); ?></td>
+                    </tr>
+                    <tr>
+                      <th>Condition:</th>
+                      <td><?php echo($pet["petCondition"]); ?></td>
+                      <th>Age:</th>
+                      <td><?php echo($pet["petAge"]); ?></td>
+                    </tr>
+                    <tr>
+                      <th>Description:</th>
+                      <td><?php echo($pet["petDescription"]); ?></td>
+                      <th>Owner's Name:</th>
+                      <td><?php echo($client["lastname"] . ", " . $client["firstname"]); ?></td>
+                      
+                    </tr>
+                  </table>
+                    </div>
+                  </div>
+                </div>
             </div>
-            <!-- /.card -->
           </div>
-          <!-- /.col -->
-          <div class="col-md-9">
+          <div class="col-md-12">
             <div class="card">
               <div class="card-header p-2">
-                <?php if($_SESSION["dnsc_geoanalytics"]["role"] == "admin"): ?>
-              <a style="float:right;" class="btn btn-warning" href="#" data-toggle="modal" data-target="#modalNewMedical">Add New Medical Record</a>
-                <?php endif; ?>
+      
                 <ul class="nav nav-pills">
                   <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Medical History</a></li>
+                  <li class="nav-item"><a class="nav-link" href="#vaccination" data-toggle="tab">Vaccination</a></li>
                   <!-- <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">Timeline</a></li> -->
                   <!-- <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Settings</a></li> -->
                 </ul>
@@ -193,21 +266,34 @@ $pet = $pet[0];
               <div class="card-body">
                 <div class="tab-content">
                   <div class="active tab-pane" id="activity">
-                  <table class="table table-bordered table-hover sampleDatatable">
+
+                  <?php if($_SESSION["dnsc_geoanalytics"]["role"] == "admin"): ?>
+              <a style="float:right;" class="btn btn-warning" href="#" data-toggle="modal" data-target="#modalNewMedical">Add New Medical Record</a>
+              <br>
+              <br>
+                <?php endif; ?>
+
+                  <table class="table table-bordered table-striped table-hover sampleDatatable">
                   <thead>
                   <tr>
+                    <th>Action</th>
                     <th>Date</th>
                     <th>Type</th>
                     <th>Service</th>
+                    <th>Diagnosis</th>
+                    <th>Treatment</th>
                     <th>Disease</th>
                   </tr>
                   </thead>
                   <tbody>
                     <?php foreach($medicalRecords as $row): ?>
                     <tr data-widget="expandable-table" aria-expanded="false">
+                      <td><a href="#" data-toggle="modal" data-target="#medRecordModal_<?php echo($row["checkupId"]); ?>" class="btn btn-primary btn-block">Open Record</a></td>
                       <td><?php echo($row["dateCheckup"]); ?></td>
                       <td><?php echo($row["type"]); ?></td>
                       <td><?php echo($row["service"]); ?></td>
+                      <td><?php echo($row["diagnosis"]); ?></td>
+                      <td><?php echo($row["treatment"]); ?></td>
                       <?php
                       $rowdecease = "";
                       if(isset($Disease[$row["checkupId"]])):
@@ -216,39 +302,8 @@ $pet = $pet[0];
                       endif;
                       ?>
                       <td><?php echo($rowdecease); ?></td>
-
-                    </tr>
-                    <tr class="expandable-body">
-                      <td colspan="4">
-                        <div class="content">
-                        <h5>Symptoms</h5>
-                        <?php echo($row["symptoms"]); ?>
-                        <br>
-                        <h5>Prescriptions</h5>
-                        <?php echo($row["prescription"]); ?>
-                        <?php
-                          if($row["prescription"] != ""):
-                            echo('
-                                    <br>
-                                    <form class="generic_form_trigger" data-rule="pets">
-                                      <input type="hidden" name="action" value="printPrescription">
-                                      <input type="hidden" name="checkupId" value="'.$row["checkupId"].'">
-                                      
-                                    <button type="submit" class="btn btn-primary btn-sm"> Print Prescription</button>
-                                    </form>
-                                    
-                                    ');
-                          endif;
-                        ?>
-                        <br>
-                        <br>
-                        <h5>Doctor's Note</h5>
-                        <?php echo($row["doctorsNote"]); ?>
-                        </div>
-                      </td>
                     </tr>
                     <?php endforeach; ?>
-                    
                   </tbody>
                  
                   
@@ -291,10 +346,11 @@ $pet = $pet[0];
 <script>
   
   $('#diseaseSelect').select2({
-    placeholder: 'Select a disease' // Replace 'Select a disease' with your desired placeholder text
+    placeholder: 'Select a disease', // Replace 'Select a disease' with your desired placeholder text
 });
   $('.summernote').summernote()
             $('.sampleDatatable').DataTable({
+              ordering: false,
             });
 
 </script> 

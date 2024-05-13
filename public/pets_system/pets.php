@@ -104,6 +104,7 @@
 
 					$mpdf = new \Mpdf\Mpdf([
 						'mode' => 'utf-8', 'format' => 'A4',
+						'debug' => true,
 						'margin_top' => 15,
 						'margin_left' => 5,
 						'margin_right' => 5,

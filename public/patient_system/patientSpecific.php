@@ -1,7 +1,11 @@
 <?php
 $client = query("select * from client where clientId = ?", $_GET["id"]);
 $client = $client[0];
-$pets = query("select * from pet where clientId = ?", $_GET["id"]);
+$pets = query("select *, CONCAT(
+  FLOOR(DATEDIFF(CURRENT_DATE(), pet.petDob) / 365), ' years, ',
+  FLOOR((DATEDIFF(CURRENT_DATE(), pet.petDob) % 365) / 30), ' months, ',
+  DATEDIFF(CURRENT_DATE(), pet.petDob) % 30, ' days'
+) AS petAge from pet where clientId = ?", $_GET["id"]);
 
 ?>
 
@@ -13,6 +17,17 @@ $pets = query("select * from pet where clientId = ?", $_GET["id"]);
   <link rel="stylesheet" href="AdminLTE_new/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="AdminLTE_new/dist/css/adminlte.min.css">
+
+  <style>
+  #sectionTable td{
+    border: 0px;
+    padding: 0px;
+  }
+  #sectionTable th{
+    border: 0px;
+    padding: 0px;
+  }
+</style>
   <div class="content-wrapper">
     <section class="content">
       <div class="container-fluid">
@@ -51,6 +66,34 @@ $pets = query("select * from pet where clientId = ?", $_GET["id"]);
                   <input required type="text" name="petBreed" class="form-control" id="exampleInputEmail1" placeholder="---">
                 </div>
               </div>
+
+
+              <div class="col-md-4">
+              <div class="form-group">
+                  <label for="exampleInputEmail1">Date of Birth <span class="color-red">*</span></label>
+                  <input required type="date" name="petDob" class="form-control" id="exampleInputEmail1" placeholder="---">
+                </div>
+              </div>
+              <div class="col-md-8">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Gender <span class="color-red">*</span></label>
+                  <select required class="form-control" name="typePet">
+                  <option value="" selected disabled>Please select gender of pet</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Pet Condition </label>
+                  <input required type="text" name="petBreed" class="form-control" id="exampleInputEmail1" placeholder="Ex. Healthy, Sick">
+                </div>
+              </div>
+
+
+
               <div class="col-md-12">
                 <div class="form-group">
                   <label>Pet Description</label>
@@ -78,52 +121,41 @@ $pets = query("select * from pet where clientId = ?", $_GET["id"]);
 
 
       <div class="row">
-          <div class="col-md-3">
-            <div class="card card-primary card-outline">
-              <div class="card-body box-profile">
-                <div class="text-center">
-                  <img class="profile-user-img img-fluid img-circle"
-                       src="AdminLTE_new/dist/img/user4-128x128.jpg"
-                       alt="User profile picture">
-                </div>
-                <br>
-                <h3 class="profile-username text-center"><?php echo($client["lastname"] . " " . $client["nameExtension"] .  ", " . $client["firstname"] . " " . $client["middlename"]); ?></h3>
-                <br>
-                <a href="#" class="btn btn-warning btn-block"><b>Update Profile</b></a>
-              </div>
-              <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-
-            <!-- About Me Box -->
-            <div class="card card-primary">
+          <div class="col-md-12">
+          <div class="card card-info">
               <div class="card-header">
-                <h3 class="card-title">About the Pet Owner</h3>
+                <h3 class="card-title">Pet Owner's Information</h3>
               </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                <strong><i class="fas fa-map-marker-alt mr-11"></i> Address</strong>
-
-                <p class="text-muted">
-                  <?php echo($client["province"] . ", " . $client["cityMun"] . ", " . strtoupper($client["barangay"]) . ", " . $client["address"]); ?>
-                </p>
-
-                <hr>
-
-                <strong><i class="fas fa-map-marker-alt mr-1"></i> Contact Number</strong>
-                  <p class="text-muted"><?php echo($client["contactNumber"]); ?></p>
-                <hr>
-
-                <strong><i class="fas fa-pencil-alt mr-1"></i> Gender</strong>
-
-                <p class="text-muted"><?php echo($client["gender"]); ?></p>
-              </div>
-              <!-- /.card-body -->
+    
+                <div class="card-body">
+                  <div class="row">
+                  
+                    <div class="col-md-12">
+                    <table class="table" id="sectionTable">
+                    <tr>
+                      <th>Owner's Name:</th>
+                      <td><?php echo($client["lastname"] . " " . $client["nameExtension"] .  ", " . $client["firstname"] . " " . $client["middlename"]); ?></td>
+                      <th>Gender:</th>
+                      <td><?php echo($client["gender"]); ?></td>
+                    </tr>
+                    <tr>
+                      
+                      <!-- <th>School Year:</th>
+                      <td>2023-2024</td> -->
+                    </tr>
+                    <tr>
+                    <th>Contact Number:</th>
+                      <td><?php echo($client["contactNumber"]); ?></td>
+                      <th>Address:</th>
+                      <td><?php echo($client["province"] . ", " . $client["cityMun"] . ", " . strtoupper($client["barangay"]) . ", " . $client["address"]); ?></td>
+                    </tr>
+                  </table>
+                    </div>
+                  </div>
+                </div>
             </div>
-            <!-- /.card -->
           </div>
-          <!-- /.col -->
-          <div class="col-md-9">
+          <div class="col-md-12">
             <div class="card">
               <div class="card-header p-2">
               <a style="float:right;" class="btn btn-warning" data-target="#modalNewPet" data-toggle="modal">ADD NEW PET</a>
@@ -140,10 +172,13 @@ $pets = query("select * from pet where clientId = ?", $_GET["id"]);
                   <table id="example2" class="table table-bordered table-hover">
                   <thead>
                   <tr>
-                    <th>Action</th>
-                    <th>Pet</th>
+                    <th width="7%">Action</th>
+                    <th>Pet Name</th>
                     <th>Type</th>
                     <th>Breed</th>
+                    <th>Gender</th>
+                    <th>Pet Age</th>
+                    <th>Condition</th>
                     <th>Description</th>
                   </tr>
                   </thead>
@@ -151,10 +186,19 @@ $pets = query("select * from pet where clientId = ?", $_GET["id"]);
 
                   <?php foreach($pets as $row): ?>
                     <tr>
-                      <td><a href="pets?action=specific&id=<?php echo($row["petId"]); ?>"  class="btn btn-primary btn-block">View</a></td>
+                      <td>
+                      <div class="btn-group" style="width: 100%;">
+                        <a href="pets?action=specific&id=<?php echo($row["petId"]); ?>" class="btn btn-info">Visit</a>
+                        <button type="button" class="btn btn-warning">Update</button>
+                      </div>
+                        <!-- <a   class="btn btn-primary btn-block">View</a> -->
+                      </td>
                       <td><?php echo($row["petName"]); ?></td>
                       <td><?php echo($row["petType"]); ?></td>
                       <td><?php echo($row["petBreed"]); ?></td>
+                      <td><?php echo($row["petGender"]); ?></td>
+                      <td><?php echo($row["petAge"]); ?></td>
+                      <td><?php echo($row["petCondition"]); ?></td>
                       <td><?php echo($row["petDescription"]); ?></td>
                     </tr>
                   <?php endforeach; ?>
@@ -341,7 +385,7 @@ $pets = query("select * from pet where clientId = ?", $_GET["id"]);
       "paging": true,
       "lengthChange": false,
       "searching": false,
-      "ordering": true,
+      "ordering": false,
       "info": true,
       "autoWidth": false,
       "responsive": true,
