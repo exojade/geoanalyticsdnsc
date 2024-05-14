@@ -20,10 +20,14 @@
                 <table class="table table-bordered" id="ajax_datatable">
                   <thead>
                     <th>Action</th>
-                    <th>Pet Owner</th>
-                    <th>Address</th>
-                    <th>Genders</th>
-                    <th># of Pets</th>
+                    <th>Owner</th>
+                    <th>Pet</th>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Service</th>
+                    <th>Diagnosis</th>
+                    <th>Treatment</th>
+                    <th>Disease</th>
                   </thead>
                 </table>
               </div>
@@ -64,10 +68,10 @@ var datatable =
                 'serverMethod': 'post',
                 
                 'ajax': {
-                    'url':'patient',
+                    'url':'medical',
                      'type': "POST",
                      "data": function (data){
-                        data.action = "patientRecords";
+                        data.action = "medicalRecordMasterList";
                      }
                 },
                 'columns': [
@@ -76,6 +80,10 @@ var datatable =
                     { data: 'address', "orderable": false  },
                     { data: 'gender', "orderable": false  },
                     { data: 'pets', "orderable": false  },
+                    { data: 'action', "orderable": false },
+                    { data: 'name', "orderable": false  },
+                    { data: 'address', "orderable": false  },
+                    { data: 'gender', "orderable": false  },
                 ],
                 "footerCallback": function (row, data, start, end, display) {
                     // var api = this.api(), data;

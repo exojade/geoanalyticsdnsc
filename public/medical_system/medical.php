@@ -42,8 +42,11 @@
 
 
 
-			dump($_POST);
+			
 
+
+		elseif($_POST["action"] == "medicalRecordMasterList"):
+			dump($_POST);
 
 		endif;
 
