@@ -76,7 +76,7 @@
 
 
   <li class="nav-item">
-      <a href="index" class="nav-link">
+      <a href="medical" class="nav-link">
         <i class="nav-icon fas fa-notes-medical"></i>
         <p>
           Medical History

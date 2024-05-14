@@ -50,7 +50,7 @@
     }
 	else {
 		if(!isset($_GET["action"])):
-			render("public/pets_system/petsList.php",[]);
+			render("public/medical_system/medicalList.php",[]);
 		else:
 			if($_GET["action"] == "specific"):
 				render("public/pets_system/petSpecific.php",[]);

@@ -340,25 +340,11 @@ require("includes/google_class.php");
                 </div>
               </div>
             </div>
-
 			<button type="submit" class="btn btn-primary">Submit</button>
-
-			
 			';
-
-
-
-
-			
-
-			// foreach($)
-
-
-
 			echo($hint);
-
 		elseif($_POST["action"] == "acceptAppointment"):
-			
+			// dump($_SESSION);
 
 			query("update appointment set dateSet = ?, timeSet = ?, appointmentStatus = 'ONGOING' where appointmentId = ?", $_POST["appointment_date"], $_POST["timeSlot"], $_POST["appointmentId"]);
 			$appointment = query("select a.*, u.*, t.timeSlot, t.startTime, t.endTime from appointment a
@@ -399,7 +385,7 @@ require("includes/google_class.php");
 				  'timeZone' => 'Asia/Manila',
 				),
 				'attendees' => array(
-				//   array('email' => 'bosspanabo2020@gmail.com'),
+				  array('email' => $_SESSION["dnsc_geoanalytics"]["uname"]),
 				  array('email' => ''.$appointment["username"].''),
 				//   array('email' => 'sbrin@example.com'),
 				),
