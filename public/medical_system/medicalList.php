@@ -22,7 +22,7 @@
                     <th>Action</th>
                     <th>Pet Owner</th>
                     <th>Address</th>
-                    <th>Gender</th>
+                    <th>Genders</th>
                     <th># of Pets</th>
                   </thead>
                 </table>
