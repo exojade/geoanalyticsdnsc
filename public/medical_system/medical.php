@@ -47,6 +47,17 @@
 
 		elseif($_POST["action"] == "medicalRecordMasterList"):
 			dump($_POST);
+			$draw = isset($_POST["draw"]) ? $_POST["draw"] : 1;
+            $offset = $_POST["start"];
+            $limit = $_POST["length"];
+            $search = $_POST["search"]["value"];
+
+			$limitString = " limit " . $limit;
+			$offsetString = " offset " . $offset;
+
+			$baseQuery = "select * from client " . $where;
+
+
 
 		endif;
 
