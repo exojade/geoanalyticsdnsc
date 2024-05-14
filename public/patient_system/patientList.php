@@ -13,6 +13,7 @@
         <div class="card">
               <div class="card-header">
                 <h5 class="m-0">PET PATIENTS RECORD
+                  <a href="profile?action=profileAdd" style="float:right;" class="btn btn-warning">Add New Client</a>
               
                 </h5>
               </div>

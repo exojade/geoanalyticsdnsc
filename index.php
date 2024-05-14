@@ -47,7 +47,8 @@
 			else if ($request == 'ajaxMapDisease')
 				require 'public/ajax_system/ajaxMapDisease.php';
 			
-
+			else if ($request == 'profile')
+				require 'public/profile_system/profile.php';
 			else if ($request == 'static')
 				require 'public/static_system/index.php';
 
