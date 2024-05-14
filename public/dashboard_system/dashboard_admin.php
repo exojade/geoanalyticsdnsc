@@ -1,6 +1,7 @@
 
 <!-- <link rel="stylesheet" href="AdminLTE/bower_components/jvectormap/jquery-jvectormap.css"> -->
 <!-- <link rel="stylesheet" href="AdminLTE_new/plugins/jqvmap/jqvmap.min.css"> -->
+<link rel="stylesheet" href="AdminLTE_new/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <!-- <section class="content-header">
@@ -85,9 +86,36 @@
                 <br>
                 <br>
                 <br>
+                <div class="row">
+                <div class="col-sm-6">
+                    <!-- checkbox -->
+                    <div class="form-group clearfix">
+                      <div class="icheck-primary d-inline">
+                        <input type="checkbox" id="checkboxPrimary1" value="parvo" onchange="updateMapColors(event, 'parvo')" >
+                        <label for="checkboxPrimary1">
+                        PARVO
+                        </label>
+                      </div>
+                      <div class="icheck-primary d-inline">
+                        <input type="checkbox" id="checkboxPrimary2" value="flu" onchange="updateMapColors(event, 'flu')">
+                        <label for="checkboxPrimary2">
+                        FLU
+                        </label>
+                      </div>
+                      <div class="icheck-primary d-inline">
+                        <input type="checkbox" id="checkboxPrimary3" value="dengue" onchange="updateMapColors(event, 'dengue')">
+                        <label for="checkboxPrimary3">
+                        DENGUE
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+<!-- 
+
                 <input type="checkbox" id="parvoCheckbox" value="parvo" onchange="updateMapColors()"> PARVO
                 <input type="checkbox" id="fluCheckbox" value="flu" onchange="updateMapColors()"> FLU
-                <input type="checkbox" id="dengueCheckbox" value="dengue" onchange="updateMapColors()"> DENGUE
+                <input type="checkbox" id="dengueCheckbox" value="dengue" onchange="updateMapColors()"> DENGUE -->
 
                 <!-- card tools -->
         
@@ -195,6 +223,8 @@
       // $('#focus-init').click(function(){
       //   $('#map1').vectorMap('set', 'focus', {scale: 1, x: 0.5, y: 0.5, animate: true});
       // });
+
+      
       $('#thisTheMap').vectorMap({
         map: 'usa_en',
         panOnDrag: true,
@@ -216,7 +246,7 @@
         // },
         series: {
           regions: [{
-            scale: ['#C8EEFF', '#0071A4'],
+            scale: ['#FFF2CC', '#833C0C'],
             normalizeFunction: 'polynomial',
             values: {
               "1": 16.63,
@@ -240,15 +270,8 @@
             }
           }]
         },
-
-
-
-        
-
-
-
-
       });
+      
 
       var diseaseData = {
         parvo: [1, 2, 3, 4, 5], // Dummy data for PARVO
@@ -257,14 +280,84 @@
     };
 
     // Function to update map colors based on selected diseases
-    function updateMapColors() {
+    function updateMapColors(event, disease) {
+      // alert(disease)
 
-      $('#thisTheMap').vectorMap('get', 'mapObject').remove();
+      var checkbox = event.target;
+            // Get the ID of the checkbox
+            var checkboxId = checkbox.id;
+            // alert(checkboxId);
+
+      var checkEd = $('#'+checkboxId).prop('checked');
+      console.log(checkEd);
+      if(checkEd == false){
+        $('#thisTheMap').vectorMap('get', 'mapObject').remove();
 
 
+        $('#thisTheMap').vectorMap({
+        map: 'usa_en',
+        panOnDrag: true,
+        backgroundColor: 'transparent',
+        regionStyle: {
+        initial: {
+            fill: '#fff',
+            'fill-opacity': 1,
+            stroke: '#000', // Set stroke color to black
+            'stroke-width': 3, // Adjusted stroke width
+            'stroke-opacity': 1 // Adjusted stroke opacity
+        }
+    },
+        // focusOn: {
+        //   x: 0.5,
+        //   y: 0.5,
+        //   scale: 2,
+        //   animate: true
+        // },
+        series: {
+          regions: [{
+            scale: ['#FFF2CC', '#833C0C'],
+            normalizeFunction: 'polynomial',
+            values: {
+              "1": 16.63,
+              "17": 351.02,
+              "12": 5745.13,
+              "15": 15.34,
+              // "38": 0.15,
+              // "37": 986.26,
+              // "32": 770.31,
+              // "35": 174.79,
+              // "2": 8.81,
+              // "3": 17.17,
+              // "25": 438.88,
+              // "4": 126.52,
+              // "5": 1476.91,
+              // "6": 5.69,
+              // "7": 0.55,
+              // "21": 285.21,
+              // "17": 15.69,
+              // "18": 5.57
+            }
+          }]
+        },
+      });
 
+      }
 
-      var jsonData = '{"1": 16.63, "17": 351.02,"12": 5745.13,"15": 15.34,"38": 0.15,"37": 986.26,"32": 770.31,"35": 174.79,"2": 8.81,"3": 17.17,"25": 438.88,"4": 126.52,"5": 1476.91,"6": 5.69,"7": 0.55,"21": 285.21,"18": 5.57}';
+      else{
+
+        var jsonData = "";
+        $.ajax({
+          type : 'post',
+          url : 'ajaxMapDisease', //Here you will fetch records 
+          data: {
+              disease: disease, action: "mapDisease"
+          },
+          success : function(data){
+            
+            jsonData = data;
+
+            $('#thisTheMap').vectorMap('get', 'mapObject').remove();
+        // var jsonData = '{"1": 16.63, "17": 351.02,"12": 5745.13,"15": 15.34,"38": 0.15,"37": 986.26,"32": 770.31,"35": 174.79,"2": 8.81,"3": 17.17,"25": 438.88,"4": 126.52,"5": 1476.91,"6": 5.69,"7": 0.55,"21": 285.21,"18": 5.57}';
 
 // Parse the JSON into a JavaScript object
 var dataObject = JSON.parse(jsonData);
@@ -272,7 +365,7 @@ var dataObject = JSON.parse(jsonData);
 // Constructing the series object dynamically
 var series = {
     regions: [{
-        scale: ['#C8EEFF', '#0071A4'],
+        scale: ['#FFF2CC', '#833C0C'],
         normalizeFunction: 'polynomial',
         values: {}
     }]
@@ -318,6 +411,44 @@ $('#thisTheMap').vectorMap({
 
 
       });
+            
+            // $('#eventModal .modal-body').html(data);
+            // // swal.close();
+            // $('#eventModal').modal('show');
+
+              // Swal.close();
+              // $(".select2").select2();//Show fetched data from database
+          }
+      });
+
+
+      console.log(jsonData);
+    
+
+      }
+
+
+      
+
+     
+
+
+
+
+      //   if (document.getElementById('parvoCheckbox').checked) {
+      //       selectedDiseases = selectedDiseases.concat(diseaseData.parvo);
+      //   }
+      //   if (document.getElementById('fluCheckbox').checked) {
+      //       selectedDiseases = selectedDiseases.concat(diseaseData.flu);
+      //   }
+      //   if (document.getElementById('dengueCheckbox').checked) {
+      //       selectedDiseases = selectedDiseases.concat(diseaseData.dengue);
+      //   }
+
+
+
+
+  
 
 
       
@@ -485,12 +616,12 @@ $(document).ready(function(){
             elem.requestFullscreen().catch(err => {
                 alert(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
             });
-            $("#map1").css("height", "800px"); // Set height to 800px when entering fullscreen
+            $("#thisTheMap").css("height", "800px"); // Set height to 800px when entering fullscreen
         } else {
             if (document.exitFullscreen) {
                 document.exitFullscreen();
             }
-            $("#map1").css("height", "350px"); // Set height to 400px when exiting fullscreen
+            $("#thisTheMap").css("height", "350px"); // Set height to 400px when exiting fullscreen
         }
     });
 });

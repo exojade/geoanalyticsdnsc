@@ -38,6 +38,14 @@
 				require 'public/pets_system/pets.php';
 			else if ($request == 'calendar')
 				require 'public/calendar_system/calendar.php';
+
+
+			else if ($request == 'disease')
+				require 'public/disease_system/disease.php';
+
+
+			else if ($request == 'ajaxMapDisease')
+				require 'public/ajax_system/ajaxMapDisease.php';
 			
 
 			else if ($request == 'static')
