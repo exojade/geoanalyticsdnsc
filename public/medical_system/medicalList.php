@@ -56,7 +56,7 @@
 
 var datatable = 
             $('#ajax_datatable').DataTable({
-                // "searching": false,
+                "searching": false,
                 "pageLength": 10,
                 language: {
                     searchPlaceholder: "Search Pet Name"
