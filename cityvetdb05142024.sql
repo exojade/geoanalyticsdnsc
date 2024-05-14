@@ -37,7 +37,8 @@ CREATE TABLE `appointment` (
 
 insert  into `appointment`(`appointmentId`,`dateSet`,`timeSet`,`timestampSet`,`dateScheduled`,`appointmentStatus`,`meetId`,`calendarId`,`clientId`,`notes`) values 
 ('APP3C8733167EAF4','2024-05-10','S8','1715243310','2024-05-09','ONGOING','https://meet.google.com/coz-qnqi-dcz',NULL,'USR-FB4DF72C86189','my dog is sick'),
-('APPA2D81FEA262E0','2024-05-21','S1','1715308368','2024-05-10','ONGOING','https://meet.google.com/cyd-rjqy-hec',NULL,'USR-78DEF39E9FBD2','MY CAT IS BLEEDING');
+('APPA2D81FEA262E0','2024-05-21','S1','1715308368','2024-05-10','ONGOING','https://meet.google.com/cyd-rjqy-hec',NULL,'USR-78DEF39E9FBD2','MY CAT IS BLEEDING'),
+('APPA379E63027E4E','2024-05-15','S4','1715665407','2024-05-14','ONGOING','https://meet.google.com/wie-fgak-wzu',NULL,'USR-FB4DF72C86189','My pet dog is vomiting. I can\'t leave my pet and i dont have wheels. so i need to telemedicine the checkup');
 
 /*Table structure for table `checkup` */
 
@@ -60,7 +61,8 @@ CREATE TABLE `checkup` (
 
 insert  into `checkup`(`checkupId`,`dateCheckup`,`type`,`petId`,`prescription`,`symptoms`,`doctorsNote`,`service`,`diagnosis`,`treatment`) values 
 ('MEDC15336B2D7862','2024-05-10 15:13:03','Online','PET3F75DD6D30DC2','<ol><li>b complex 2x a day</li><li>amoxicillin 3x a day</li></ol>','<ol><li>suka kalibang</li><li>yellow color of vomit</li></ol>','asdasdasdasdadsasdasd','Checkup',NULL,NULL),
-('MED14867AE374111','2024-05-10 15:15:46','Walk-in','PET3F75DD6D30DC2','asdasdadasdasd','<ol><li>mao gihapon</li></ol>','adsadasdasdasdwwwasd','Checkup',NULL,NULL);
+('MED14867AE374111','2024-05-10 15:15:46','Walk-in','PET3F75DD6D30DC2','asdasdadasdasd','<ol><li>mao gihapon</li></ol>','adsadasdasdasdwwwasd','Checkup',NULL,NULL),
+('MED1BF70CCFA11AC','2024-05-14 13:32:20','Walk-in','PETE1BF4AB9476D0','<ol><li>Amoxiclab 3x a day</li><li>Tambal No.2 4x a week after every meal of the pet patient</li><li>tambaling 3x a day</li></ol>','<ol><li>Vomitting</li><li>Weak Posture</li><li>Hard Belly</li></ol>','Food intake should be soft. Avoid contact to sunlight','Checkup','Food Poisoning','made the pet drink a vomitting solution');
 
 /*Table structure for table `checkup_disease` */
 
@@ -152,7 +154,8 @@ insert  into `pet`(`petId`,`petName`,`petType`,`petBreed`,`petAge`,`petDescripti
 ('PET53DD668749F2C','ISSA','Cat','Pure Persian',NULL,'Midnight Black','USR-FB4DF72C86189',NULL,'Male','2023-09-10','Healthy'),
 ('PET1CA8255307B86','Blacky','Dog','Labrador',NULL,'Pure Black','USR-FB4DF72C86189',NULL,'Male','2023-09-10','Healthy'),
 ('PETCCCB9A80E0D46','Hershey','Cat','Persian',NULL,'Grayish','USR-78DEF39E9FBD2',NULL,'Female','2023-01-10','Healthy'),
-('PETBF89B9AE9266B','Miya','Cat','Persian',NULL,'Black and White','USR-78DEF39E9FBD2',NULL,'Female','2023-09-10','Healthy');
+('PETBF89B9AE9266B','Miya','Cat','Persian',NULL,'Black and White','USR-78DEF39E9FBD2',NULL,'Female','2023-09-10','Healthy'),
+('PETE1BF4AB9476D0','HANABI','Dog','GOLDEN RETRIEVER',NULL,'','USR-FB4DF72C86189',NULL,'Female','2023-05-14','HEALTHY');
 
 /*Table structure for table `siteoptions` */
 
