@@ -77,7 +77,7 @@ $pets = query("select *, CONCAT(
               <div class="col-md-8">
                 <div class="form-group">
                   <label for="exampleInputEmail1">Gender <span class="color-red">*</span></label>
-                  <select required class="form-control" name="typePet">
+                  <select required class="form-control" name="petGender">
                   <option value="" selected disabled>Please select gender of pet</option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
@@ -88,7 +88,7 @@ $pets = query("select *, CONCAT(
               <div class="col-md-12">
                 <div class="form-group">
                   <label for="exampleInputEmail1">Pet Condition </label>
-                  <input required type="text" name="petBreed" class="form-control" id="exampleInputEmail1" placeholder="Ex. Healthy, Sick">
+                  <input required type="text" name="petCondition" class="form-control" id="exampleInputEmail1" placeholder="Ex. Healthy, Sick">
                 </div>
               </div>
 
