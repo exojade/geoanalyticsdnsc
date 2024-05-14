@@ -110,12 +110,25 @@ endforeach; ?>
                   </select>
                 </div>
 
+
+                <div class="form-group">
+                  <label>Diagnosis</label>
+                  <input type="text" class="form-control" name="diagnosis" placeholder="Enter here diagnosis">
+                </div>
+
+                <div class="form-group">
+                  <label>Treatment</label>
+                  <input type="text" class="form-control" name="treatment" placeholder="Enter here treatment">
+                </div>
+
                 <div class="form-group">
                   <label for="exampleInputEmail1">Prescriptions (if any)</label>
                   <textarea name="prescriptions" class="summernote" >
                     
                   </textarea>
                 </div>
+
+            
                 <hr>
                 <div class="form-group">
                   <label for="exampleInputEmail1">Doctor's Note (optional)</label>

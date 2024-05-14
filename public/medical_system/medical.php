@@ -7,10 +7,10 @@
 
 			// dump($_POST);
 			$medId = create_trackid("MED");
-			if (query("insert INTO checkup (checkupId, petId, dateCheckup, type, service, symptoms, prescription, doctorsNote) 
-				VALUES(?,?,?,?,?,?,?,?)", 
+			if (query("insert INTO checkup (checkupId, petId, dateCheckup, type, service, symptoms, prescription, doctorsNote, diagnosis, treatment) 
+				VALUES(?,?,?,?,?,?,?,?,?,?)", 
 				$medId, $_POST["petId"] ,date("Y-m-d H:i:s"), $_POST["recordType"], $_POST["service"], $_POST["symptoms"],
-					$_POST["prescriptions"], $_POST["doctorNote"]) === false)
+					$_POST["prescriptions"], $_POST["doctorNote"], $_POST["diagnosis"], $_POST["treatment"]) === false)
 				{
 					echo("not_success");
 				}
