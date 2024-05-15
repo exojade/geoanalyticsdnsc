@@ -163,7 +163,7 @@
                 <!-- /.card-tools -->
               </div>
               <div class="card-body" style="height: 400px; overflow: hidden;">
-              <div id="map" style="height: 350px;"></div>
+              <div id="map" style="height: 400px;"></div>
   <!-- <button id="focus-single">Focus on Australia</button>
   <button id="focus-multiple">Focus on Australia and Japan</button>
   <button id="focus-coords">Focus on Cyprus</button>
@@ -393,6 +393,7 @@ function getColor(d) {
 }
 
 function style(feature) {
+  console.log(feature);
     return {
         fillColor: getColor(feature.properties.density),
         weight: 2,
@@ -496,12 +497,12 @@ $(document).ready(function(){
             elem.requestFullscreen().catch(err => {
                 alert(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
             });
-            $("#thisTheMap").css("height", "800px"); // Set height to 800px when entering fullscreen
+            $("#map").css("height", "800px"); // Set height to 800px when entering fullscreen
         } else {
             if (document.exitFullscreen) {
                 document.exitFullscreen();
             }
-            $("#thisTheMap").css("height", "350px"); // Set height to 400px when exiting fullscreen
+            $("#map").css("height", "400px"); // Set height to 400px when exiting fullscreen
         }
     });
 });
