@@ -8,7 +8,7 @@ $dummyArray = [];
 $i = 1;
 for($i=1; $i<=40;$i++):
 
-    $dummyArray[$i] = rand(1, 999);
+    $dummyArray[$i] = rand(1, 1100);
 endfor;
 
 

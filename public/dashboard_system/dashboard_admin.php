@@ -268,7 +268,7 @@
 var jsonData = [];
 
 
-console.log(jsonData);
+// console.log(jsonData);
     var map = L.map('map').setView([7.358584, 125.649624], 12);
 var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -386,14 +386,14 @@ function getColor(d) {
 }
 
 function style(feature) {
-  console.log(feature);
+  // console.log(feature);
     return {
         fillColor: getColor(feature.properties.density),
         weight: 2,
         opacity: 1,
         color: 'white',
         dashArray: '3',
-        fillOpacity: 0.7
+        fillOpacity: 0.5
     };
 }
 
@@ -490,10 +490,11 @@ $.ajax({
             success: function(data) {
                 // Parse the received JSON data from PHP
                 var densityData = JSON.parse(data);
-                // console.log(data);
+                console.log(panabodataa);
                 // Update the density property of each feature in panabodataa
                 panabodataa.features.forEach(function(feature) {
                     // Get the ID of the feature
+                    console.log(feature.properties.id);
                     var id = feature.properties.id;
                     
                     // Check if the density data for this ID exists
