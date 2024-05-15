@@ -1,7 +1,7 @@
 <?php
 // $_POST);
 
-dump(json_decode($_POST["data"]));
+dump(json_decode($_POST["data"], true));
 
 // // use mikehaertl\pdftk\Pdf;
 

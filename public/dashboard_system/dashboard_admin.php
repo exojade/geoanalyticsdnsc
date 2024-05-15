@@ -18,10 +18,15 @@
     background: rgba(255,255,255,0.8);
     box-shadow: 0 0 15px rgba(0,0,0,0.2);
     border-radius: 5px;
+    color: #000 !important;
 }
 .info h4 {
     margin: 0 0 5px;
-    color: #777;
+    color: #000 !important;
+}
+.info h4:after {
+    margin: 0 0 5px;
+    color: #000 !important;
 }
 
 .legend {
@@ -242,7 +247,7 @@
 <script src="data/point.js"></script>
 <script src="data/polygon.js"></script>
 <script src="data/nepaldata.js"></script>
-<script src="data/panabo.js"></script>
+<script src="data/panabojson.js"></script>
 <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 <script src="data/usstates.js"></script>
 
@@ -271,7 +276,7 @@ $.ajax({
                       OSM  LAYER               
 ===================================================*/
 
-    var map = L.map('map').setView([7.275466, 125.639762], 14);
+    var map = L.map('map').setView([7.358584, 125.649624], 12);
 var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 });
@@ -398,7 +403,7 @@ function style(feature) {
     };
 }
 
-L.geoJson(statesData, {style: style}).addTo(map);
+L.geoJson(panabodataa, {style: style}).addTo(map);
 
 function highlightFeature(e) {
     var layer = e.target;
@@ -438,7 +443,7 @@ function onEachFeature(feature, layer) {
     });
 }
 
-geojson = L.geoJson(statesData, {
+geojson = L.geoJson(panabodataa, {
     style: style,
     onEachFeature: onEachFeature
 }).addTo(map);
@@ -453,9 +458,9 @@ info.onAdd = function (map) {
 
 // method that we will use to update the control based on feature properties passed
 info.update = function (props) {
-    this._div.innerHTML = '<h4>US Population Density</h4>' +  (props ?
-        '<b>' + props.name + '</b><br />' + props.density + ' people / mi<sup>2</sup>'
-        : 'Hover over a state');
+    this._div.innerHTML = '<h4>Disease Density</h4>' +  (props ?
+        '<b>' + props.name + '</b><br />' + props.density + ' </sup>'
+        : 'Hover over a barangay');
 };
 
 info.addTo(map);
