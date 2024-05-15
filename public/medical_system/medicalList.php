@@ -4,7 +4,10 @@
   <link rel="stylesheet" href="AdminLTE_new/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
   <link rel="stylesheet" href="AdminLTE_new/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" href="AdminLTE_new/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+
   <!-- Theme style -->
+
+  <link rel="stylesheet" href="AdminLTE/bower_components/select2/dist/css/select2.min.css">
   <link rel="stylesheet" href="AdminLTE_new/dist/css/adminlte.min.css">
 <div class="content-wrapper">
 
@@ -26,6 +29,54 @@
 
         <div class="card">
               <div class="card-header">
+                <div class="row">
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label>Pet Owner</label>
+                        <select id="petOwnerSelect" class="form-control selectFilter" style="width: 100%;">
+                          <option></option>
+                          <?php foreach($client as $row): ?>
+                              <option value="<?php echo($row["clientId"]); ?>"><?php echo($row["lastname"] . ", " . $row["firstname"]); ?></option>
+                          <?php endforeach; ?>
+                        </select>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <label>From</label>
+                        <input type="date"  class="form-control selectFilter" id="fromDate" placeholder="Enter email">
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <label>To</label>
+                      <input type="date"  class="form-control selectFilter" id="toDate" placeholder="Enter email">
+                    </div>
+                  </div>
+
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <label>Type</label>
+                        <select id="typeSelect" class="form-control selectFilter" style="width: 100%;">
+                          <option disabled selected value="" disabled>Select Type</option>
+                          <option value="Walk-in">Walk-in</option>
+                          <option value="Online">Online</option>
+                        </select>
+                    </div>
+                  </div>
+
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label>Service</label>
+                        <select id="serviceSelect" class="form-control selectFilter" style="width: 100%;">
+                          <option disabled selected value="" disabled>Select Service</option>
+                          <option value="Checkup">Checkup</option>
+                          <option value="Vaccination">Vaccination</option>
+                          <option value="Anti Rabies">Anti Rabies</option>
+                        </select>
+                    </div>
+                  </div>
+                </div>
            
               </div>
               <div class="card-body table-responsive">
@@ -48,7 +99,7 @@
     </section>
   </div>
   <?php require("layouts/footer.php") ?>
-
+  <script src="AdminLTE/bower_components/select2/dist/js/select2.full.min.js"></script>
 <script src="AdminLTE_new/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="AdminLTE_new/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
 <script src="AdminLTE_new/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
@@ -61,9 +112,20 @@
 <script src="AdminLTE_new/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
 <script src="AdminLTE_new/plugins/datatables-buttons/js/buttons.print.min.js"></script>
 <script src="AdminLTE_new/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+<!-- <script src="AdminLTE_new/plugins/select2/js/select2.full.min.js"></script> -->
 
 
 <script>
+
+
+
+
+$('#petOwnerSelect').select2({
+  placeholder: 'Please select Owner'
+    })
+
+
+
   
 
 var datatable = 
@@ -121,5 +183,42 @@ var datatable =
                     // $('#currentTotal').html('$ ' + received.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
                 }
             });
+
+
+
+
+  $('.selectFilter').on('change', function() {
+    // alert("change");
+  var petOwnerSelect = $('#petOwnerSelect').select2('data');
+  var petOwner = '';
+  if (petOwnerSelect[0]) {
+      clientId = petOwnerSelect[0].id;
+  }
+  // alert(id);
+  var from = $('#fromDate').val();
+  var to = $('#toDate').val();
+  // var type = $('#typeSelect').val();
+
+  var type = $('#typeSelect').val() || "";
+  var service = $('#serviceSelect').val() || "";
+  // var service = $('#serviceSelect').val();
+
+
+
+
+
+
+            datatable.ajax.url('medical?action=medicalRecordMasterList&clientId=' + clientId+'&from='+from+'&to='+to+'&service='+service+'&type='+type).load();
+});
+
+
+// $('.selectFilter').on('input change', function() {
+//     alert("change");
+//     // Your code logic here
+// });
+
+
+
+
 
 </script>

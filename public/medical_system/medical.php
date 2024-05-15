@@ -46,7 +46,7 @@
 
 
 		elseif($_POST["action"] == "medicalRecordMasterList"):
-			// dump($_POST);
+			// dump($_REQUEST);
 			$draw = isset($_POST["draw"]) ? $_POST["draw"] : 1;
             $offset = $_POST["start"];
             $limit = $_POST["length"];
@@ -57,7 +57,42 @@
 
 			$where = " where 1=1";
 
-			$baseQuery = "select * from checkup " . $where;
+			if(isset($_REQUEST["clientId"])):
+				if($_REQUEST["clientId"] != ""):
+					$where .=" and clientId = '".$_REQUEST["clientId"]."'";
+				endif;
+			endif;
+
+			if(isset($_REQUEST["type"])):
+				if($_REQUEST["type"] != ""):
+					$where .=" and type = '".$_REQUEST["type"]."'";
+				endif;
+			endif;
+
+			if(isset($_REQUEST["service"])):
+				if($_REQUEST["service"] != ""):
+					$where .=" and service = '".$_REQUEST["service"]."'";
+				endif;
+			endif;
+
+			if(isset($_REQUEST["from"])):
+				if($_REQUEST["from"] != ""):
+					$where .=" and dateCheckup >= '".$_REQUEST["from"]." 00:00:00'";
+				endif;
+			endif;
+
+			if(isset($_REQUEST["to"])):
+				if($_REQUEST["to"] != ""):
+					$where .=" and dateCheckup <= '".$_REQUEST["to"]." 23:59:00'";
+				endif;
+			endif;
+
+
+			
+
+			$baseQuery = "select c.*, p.clientId from checkup c 
+			left join pet p
+			on p.petId = c.petId" . $where;
 
 			$data = query($baseQuery . " order by dateCheckup desc " . $limitString . " " . $offsetString);
 			$all_data = query($baseQuery . " order by dateCheckup desc ");
@@ -119,7 +154,11 @@
     }
 	else {
 		if(!isset($_GET["action"])):
-			render("public/medical_system/medicalList.php",[]);
+
+			$client = query("select * from client");
+			render("public/medical_system/medicalList.php",[
+				"client" => $client
+			]);
 		else:
 			if($_GET["action"] == "specific"):
 				render("public/pets_system/petSpecific.php",[]);
