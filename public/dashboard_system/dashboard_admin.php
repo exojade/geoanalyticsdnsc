@@ -249,7 +249,6 @@
 <script src="data/nepaldata.js"></script>
 <script src="data/panabojson.js"></script>
 <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
-<script src="data/usstates.js"></script>
 
 <script>
 
@@ -324,9 +323,9 @@ Stamen_Watercolor.addTo(map);
                       GEOJSON               
 ===================================================*/
 
-var linedata = L.geoJSON(lineJSON).addTo(map);
-var pointdata = L.geoJSON(pointJSON).addTo(map);
-var nepalData = L.geoJSON(nepaldataa).addTo(map);
+// var linedata = L.geoJSON(lineJSON).addTo(map);
+// var pointdata = L.geoJSON(pointJSON).addTo(map);
+// var nepalData = L.geoJSON(nepaldataa).addTo(map);
 var panabodata = L.geoJSON(panabodataa).addTo(map);
 var polygondata = L.geoJSON(polygonJSON,{
     onEachFeature: function(feature,layer){
@@ -352,8 +351,8 @@ var baseLayers = {
 
 var overlays = {
     "Marker": singleMarker,
-    "PointData":pointdata,
-    "LineData":linedata,
+    // "PointData":pointdata,
+    // "LineData":linedata,
     "PolygonData":polygondata
 };
 
@@ -371,7 +370,7 @@ L.Control.geocoder().addTo(map);
                       Choropleth Map               
 ===================================================*/
 
-L.geoJSON(statesData).addTo(map);
+// L.geoJSON(statesData).addTo(map);
 
 
 function getColor(d) {
@@ -423,7 +422,7 @@ function resetHighlight(e) {
 
 var geojson;
 // ... our listeners
-geojson = L.geoJson(statesData);
+// geojson = L.geoJson(statesData);
 
 function zoomToFeature(e) {
     map.fitBounds(e.target.getBounds());
