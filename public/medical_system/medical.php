@@ -46,7 +46,7 @@
 
 
 		elseif($_POST["action"] == "medicalRecordMasterList"):
-			dump($_POST);
+			// dump($_POST);
 			$draw = isset($_POST["draw"]) ? $_POST["draw"] : 1;
             $offset = $_POST["start"];
             $limit = $_POST["length"];
@@ -55,7 +55,62 @@
 			$limitString = " limit " . $limit;
 			$offsetString = " offset " . $offset;
 
-			$baseQuery = "select * from client " . $where;
+			$where = " where 1=1";
+
+			$baseQuery = "select * from checkup " . $where;
+
+			$data = query($baseQuery . " order by dateCheckup desc " . $limitString . " " . $offsetString);
+			$all_data = query($baseQuery . " order by dateCheckup desc ");
+
+
+			$Clients = [];
+			$clients = query("select * from client");
+			foreach($clients as $row):
+				$Clients[$row["clientId"]] = $row;
+			endforeach;
+
+
+			$Pets = [];
+			$pets = query("select * from pet");
+			foreach($pets as $row):
+				$Pets[$row["petId"]] = $row;
+			endforeach;
+			
+
+
+
+			$i = 0;
+			foreach($data as $row):
+				// dump($row);
+
+				// dump($Clients[$Pets[$row["petId"]]["clientId"]]);
+
+
+				$data[$i]["action"] = '<a href="patient?action=specific&id='.$row["checkupId"].'" class="btn btn-block btn-sm btn-success">View</a>';
+				$data[$i]["owner"] = $Clients[$Pets[$row["petId"]]["clientId"]]["lastname"] . ", " . $Clients[$Pets[$row["petId"]]["clientId"]]["firstname"];
+				$data[$i]["pet"] = $Pets[$row["petId"]]["petName"];
+
+
+
+
+				// $data[$i]["address"] = $row["province"] . ", " . $row["cityMun"] . ", " . strtoupper($row["barangay"]) . ", " . $row["address"];
+				// $data[$i]["pets"] = 0;
+				// if(isset($PetCount[$row["clientId"]])):
+				// 	$data[$i]["pets"] = $PetCount[$row["clientId"]]["count"];
+				// endif;
+
+				
+				// $data[$i]["appointmentDate"] = $row["dateSet"] . " - " . $TimeSlot[$row["timeSet"]]["timeSlot"];
+				// dump();	
+                $i++;
+            endforeach;
+            $json_data = array(
+                "draw" => $draw + 1,
+                "iTotalRecords" => count($all_data),
+                "iTotalDisplayRecords" => count($all_data),
+                "aaData" => $data
+            );
+            echo json_encode($json_data);
 
 
 

@@ -106,6 +106,16 @@
         </p>
       </a>
   </li>
+
+  <li class="nav-item">
+      <a href="index" class="nav-link">
+        <i class="nav-icon fas fa-chart-bar"></i>
+        <p>
+          Data Analysis
+          <span class="right badge badge-danger"></span>
+        </p>
+      </a>
+  </li>
   <?php elseif($_SESSION["dnsc_geoanalytics"]["role"] == "CLIENT"): ?>
 
   <li class="nav-item">

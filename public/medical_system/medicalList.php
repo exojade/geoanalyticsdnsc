@@ -76,14 +76,14 @@ var datatable =
                 },
                 'columns': [
                     { data: 'action', "orderable": false },
-                    { data: 'name', "orderable": false  },
-                    { data: 'address', "orderable": false  },
-                    { data: 'gender', "orderable": false  },
-                    { data: 'pets', "orderable": false  },
-                    { data: 'action', "orderable": false },
-                    { data: 'name', "orderable": false  },
-                    { data: 'address', "orderable": false  },
-                    { data: 'gender', "orderable": false  },
+                    { data: 'owner', "orderable": false  },
+                    { data: 'pet', "orderable": false  },
+                    { data: 'dateCheckup', "orderable": false  },
+                    { data: 'type', "orderable": false  },
+                    { data: 'service', "orderable": false },
+                    { data: 'diagnosis', "orderable": false  },
+                    { data: 'treatment', "orderable": false  },
+                    { data: 'treatment', "orderable": false  },
                 ],
                 "footerCallback": function (row, data, start, end, display) {
                     // var api = this.api(), data;
