@@ -254,18 +254,7 @@
 <script>
 
 
-$.ajax({
-          type : 'post',
-          url : 'ajaxMap', //Here you will fetch records 
-          data: {
-              action: "ajaxMap",
-              data: JSON.stringify(panabodataa)
-          },
-          success : function(data){
-            
-    
-          }
-      });
+
 
   </script>
 
@@ -276,6 +265,10 @@ $.ajax({
                       OSM  LAYER               
 ===================================================*/
 
+var jsonData = [];
+
+
+console.log(jsonData);
     var map = L.map('map').setView([7.358584, 125.649624], 12);
 var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -485,6 +478,42 @@ legend.onAdd = function (map) {
 };
 
 legend.addTo(map);
+
+
+
+$.ajax({
+            type: 'post',
+            url: 'ajaxMapDisease',
+            data: {
+                action: "ajaxMapDisease", // Send appropriate action
+            },
+            success: function(data) {
+                // Parse the received JSON data from PHP
+                var densityData = JSON.parse(data);
+                // console.log(data);
+                // Update the density property of each feature in panabodataa
+                panabodataa.features.forEach(function(feature) {
+                    // Get the ID of the feature
+                    var id = feature.properties.id;
+                    
+                    // Check if the density data for this ID exists
+                    if (densityData.hasOwnProperty(id)) {
+                        // Update the density property of the feature
+                        feature.properties.density = densityData[id];
+                    }
+                });
+
+                // Update map layer with the updated density data
+                polygondata.clearLayers(); // Clear existing layer
+                polygondata = L.geoJSON(panabodataa, {
+                    style: style,
+                    onEachFeature: onEachFeature
+                }).addTo(map);
+
+                // Update legend
+                legend.addTo(map); // Update legend with new color scale
+            }
+        });
 
 
 </script>
