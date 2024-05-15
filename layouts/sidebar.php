@@ -108,7 +108,7 @@
   </li>
 
   <li class="nav-item">
-      <a href="index" class="nav-link">
+      <a href="data_analysis" class="nav-link">
         <i class="nav-icon fas fa-chart-bar"></i>
         <p>
           Data Analysis
