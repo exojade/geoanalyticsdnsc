@@ -98,7 +98,7 @@
 
 
   <li class="nav-item">
-      <a href="index" class="nav-link">
+      <a href="prescription" class="nav-link">
         <i class="nav-icon fas fa-prescription"></i>
         <p>
           Prescription

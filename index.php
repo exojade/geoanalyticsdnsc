@@ -51,6 +51,12 @@
 			
 			else if ($request == 'profile')
 				require 'public/profile_system/profile.php';
+
+
+			else if ($request == 'data_analysis')
+				require 'public/data_analysis_system/data_analysis.php';
+
+
 			else if ($request == 'static')
 				require 'public/static_system/index.php';
 
