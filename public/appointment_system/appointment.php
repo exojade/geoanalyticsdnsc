@@ -252,11 +252,18 @@ require("includes/google_class.php");
 			$i = 0;
 			foreach($data as $row):
 				// dump($row);
-				$data[$i]["action"] = '<a href="#" data-toggle="modal" data-id="'.$row["appointmentId"].'" data-target="#modalAppointment" class="btn btn-sm btn-success">Accept</a>
-										<form class="generic_form_trigger" style="display:inline;" data-url="appointment">
-											<input type="hidden" name="action" value="cancelAppointment">
+				$data[$i]["action"] = '
+				<form class="generic_form_trigger" style="display:inline;" data-url="appointment">
+				<input type="hidden" name="action" value="cancelAppointment">
+				<div class="btn-group" width="100%">
+                        <a href="#" data-toggle="modal" data-id="'.$row["appointmentId"].'" data-target="#modalAppointment" class="btn btn-sm btn-success">Accept</a>
+                      
+											
 											<button class="btn btn-sm btn-danger">Cancel</button>
-										</form>
+									
+                      </div>
+					  </form>
+	
 				';
 
 				$data[$i]["client"] = $Client[$row["clientId"]]["fullname"];
