@@ -203,7 +203,9 @@ endforeach; ?>
                   <h5><b>Doctor's Notes</b></h5>
                   <?php echo($row["doctorsNote"]); ?>
               </div>
+             
               <div class="modal-footer">
+                
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
                 <!-- <button type="submit" class="btn btn-primary">Save changes</button> -->
               </div>

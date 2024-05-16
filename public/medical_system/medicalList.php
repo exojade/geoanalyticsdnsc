@@ -10,7 +10,16 @@
   <link rel="stylesheet" href="AdminLTE/bower_components/select2/dist/css/select2.min.css">
   <link rel="stylesheet" href="AdminLTE_new/dist/css/adminlte.min.css">
 <div class="content-wrapper">
-
+<style>
+  #sectionTable td{
+    border: 0px;
+    padding: 0px;
+  }
+  #sectionTable th{
+    border: 0px;
+    padding: 0px;
+  }
+</style>
 
 <section class="content-header">
       <div class="container-fluid">
@@ -22,6 +31,30 @@
         </div>
       </div><!-- /.container-fluid -->
     </section>
+
+    <div class="modal fade" id="medicalRecordModal">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content ">
+              <div class="modal-header bg-primary">
+      
+					    <h3 class="modal-title text-center">Medical Record</h3>
+              </div>
+              <div class="modal-body" style="-webkit-user-select: none;  /* Chrome all / Safari all */
+              -moz-user-select: none;     /* Firefox all */
+              -ms-user-select: none;  ">
+                  <!-- <form class="generic_form" url="employees" autocomplete="off"> -->
+                    <div class="fetched-data"></div>
+                    <br>
+                    <br>
+                      <div class="box-footer">
+                        <button class=" btn btn-primary btn-flat pull-right" data-dismiss="modal" aria-label="Close">Close</button>
+                        <!-- <button type="submit" class="btn btn-primary btn-flat pull-right">Submit</button> -->
+                      </div>
+                  <!-- </form> -->
+              </div>
+            </div>
+          </div>
+        </div>
 
 
     <section class="content">
@@ -125,6 +158,24 @@ $('#petOwnerSelect').select2({
     })
 
 
+    $('#medicalRecordModal').on('show.bs.modal', function (e) {
+        var rowid = $(e.relatedTarget).data('id');
+        Swal.fire({title: 'Please wait...', imageUrl: 'AdminLTE/dist/img/loader.gif', showConfirmButton: false});
+        $.ajax({
+            type : 'post',
+            url : 'medical', //Here you will fetch records 
+            data: {
+                checkupId: rowid, action: "medicalRecordModal"
+            },
+            success : function(data){
+                $('#medicalRecordModal .fetched-data').html(data);
+                Swal.close();
+                // $(".select2").select2();//Show fetched data from database
+            }
+        });
+     });
+
+
 
   
 
@@ -157,7 +208,7 @@ var datatable =
                     { data: 'service', "orderable": false },
                     { data: 'diagnosis', "orderable": false  },
                     { data: 'treatment', "orderable": false  },
-                    { data: 'treatment', "orderable": false  },
+                    { data: 'disease', "orderable": false  },
                 ],
                 "footerCallback": function (row, data, start, end, display) {
                     // var api = this.api(), data;

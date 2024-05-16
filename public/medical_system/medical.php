@@ -105,6 +105,19 @@
 			endforeach;
 
 
+			$Disease = [];
+			$disease = query("select cd.*, d.diseaseName from checkup_disease cd
+								left join disease d
+								on d.diseaseId = cd.diseaseId");
+			foreach($disease as $row):
+				$Disease[$row["checkupId"]][$row["diseaseName"]] = $row;
+			endforeach;
+
+			// dump($Disease);
+
+
+
+
 			$Pets = [];
 			$pets = query("select * from pet");
 			foreach($pets as $row):
@@ -121,10 +134,20 @@
 				// dump($Clients[$Pets[$row["petId"]]["clientId"]]);
 
 
-				$data[$i]["action"] = '<a href="patient?action=specific&id='.$row["checkupId"].'" class="btn btn-block btn-sm btn-success">View</a>';
+				$data[$i]["action"] = '<a href="#" data-toggle="modal" data-target="#medicalRecordModal" data-id="'.$row["checkupId"].'" class="btn btn-block btn-sm btn-success">Open Record</a>';
 				$data[$i]["owner"] = $Clients[$Pets[$row["petId"]]["clientId"]]["lastname"] . ", " . $Clients[$Pets[$row["petId"]]["clientId"]]["firstname"];
 				$data[$i]["pet"] = $Pets[$row["petId"]]["petName"];
+				$data[$i]["disease"] = "";
 
+				if(isset($Disease[$row["checkupId"]])):
+					$diseaseNames = [];
+					foreach ($Disease[$row["checkupId"]] as $disease) {
+						$diseaseNames[] = $disease['diseaseName'];
+					}
+					
+					// Convert the array of disease names to a comma-separated string
+					$data[$i]["disease"] = implode(', ', $diseaseNames);
+				endif;
 
 
 
@@ -147,7 +170,67 @@
             );
             echo json_encode($json_data);
 
+		elseif($_POST["action"] == "medicalRecordModal"):
 
+			
+			$medRecord = query("select c.*, concat(cl.lastname, ', ' , cl.firstname) as owner,
+								p.petName, p.petType from checkup c
+								left join pet p
+								on p.petId = c.petId
+								left join client cl
+								on cl.clientId = p.clientId
+								where checkupId = ?", $_POST["checkupId"]);
+
+			$medRecord = $medRecord[0];
+
+			$hint = '
+			<table class="table" id="sectionTable">
+                    <tr>
+                      <th>Pet Name:</th>
+                      <td>'.$medRecord["petName"].'</td>
+                      <th>Specie Type:</th>
+                      <td>'.$medRecord["petType"].'</td>
+                    </tr>
+                    <tr>
+                      <th>Type of Consultation:</th>
+                      <td>'.$medRecord["type"].'</td>
+                      <th>Date of Consultation:</th>
+                      <td>'.$medRecord["dateCheckup"].'</td>
+                    </tr>
+                    <tr>
+                      <th>Diagnosis:</th>
+                      <td>'.$medRecord["diagnosis"].'</td>
+                      <th>Treatment:</th>
+                      <td>'.$medRecord["treatment"].'</td>
+                    </tr>
+                  </table>
+			
+			';
+			$hint.='
+			<hr>
+                  <h5><b>Symptoms</b></h5>
+                  '.$medRecord["symptoms"].'
+
+                  <hr>
+                  <h3>Rx [Prescription]</h3>
+                  '.$medRecord["prescription"].'
+                  <br>
+                  <form class="generic_form_trigger" data-url="pets">
+                      <input type="hidden" name="action" value="printPrescription">
+                      <input type="hidden" name="checkupId" value="'.$medRecord["checkupId"].'">
+                    <button type="submit" class="btn btn-primary btn-sm"> Print Prescription</button>
+                  </form>
+
+                  <hr>
+                  <h5><b>Doctors Notes</b></h5>
+                  '.$medRecord["doctorsNote"].'
+			
+			
+			';
+
+			echo($hint);
+								
+			// dump($medRecord);
 
 		endif;
 
