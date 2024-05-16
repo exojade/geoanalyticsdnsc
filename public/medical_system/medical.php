@@ -215,7 +215,7 @@
                   <h3>Rx [Prescription]</h3>
                   '.$medRecord["prescription"].'
                   <br>
-                  <form class="generic_form_trigger" data-url="pets">
+                  <form class="generic_form_trigger_no_prompt" data-url="pets">
                       <input type="hidden" name="action" value="printPrescription">
                       <input type="hidden" name="checkupId" value="'.$medRecord["checkupId"].'">
                     <button type="submit" class="btn btn-primary btn-sm"> Print Prescription</button>

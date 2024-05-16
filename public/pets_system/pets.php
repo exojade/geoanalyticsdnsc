@@ -221,7 +221,7 @@
 						"result" => "success",
 						"title" => "Success",
 						"newlink" => "newlink",
-						"message" => "Success on updating data",
+						"message" => "PDF success",
 						"link" => $path,
 						// "html" => '<a href="#">View or Print '.$transaction_id.'</a>'
 						];

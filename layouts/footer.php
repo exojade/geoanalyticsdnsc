@@ -107,7 +107,7 @@ $(document).on('submit', '.generic_form_trigger_no_prompt', function(e) {
       prompttitle = 'Data submission';
     }
     var url = $(this).data('url');
-
+    Swal.fire({ title: 'Please wait...', imageUrl: 'AdminLTE_new/dist/img/loader.gif', showConfirmButton: false });
     $.ajax({
                 type: 'post',
                 url: url,
