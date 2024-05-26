@@ -98,6 +98,8 @@
 										 on p.petId = c.petId
 										 left join client cl
 										 on p.clientId = cl.clientId
+										 left join doctors d
+										 on d.doctorsId = c.doctorId
 										 where checkupId = ?", $_POST["checkupId"]);
 
 					$medRecord = $medRecord[0];
@@ -204,8 +206,8 @@
 								<p style="text-align: left;">for follow-up checkup.</p>
 							</div>
 							<div class="col-xs-5" style="text-align: left !important;">
-								<span style="display: block; text-align: left;" style="font-size: 15px; border-bottom: 1px solid black;"><b>JOHN RAY A. BAUTISTA, DVM</b></span>
-								<br><span style="display: block;text-align: left;" style="font-size: 15px; ">Lic. No. <b style="border-bottom: 1px solid black;">7161</b></span>
+								<span style="display: block; text-align: left;" style="font-size: 15px; border-bottom: 1px solid black;"><b>'.$medRecord["doctorsFirstname"] . ' ' . $medRecord["doctorsMiddlename"] . ' ' . $medRecord["doctorsLastname"] . ', ' . $medRecord["doctorsExtension"] .'</b></span>
+								<br><span style="display: block;text-align: left;" style="font-size: 15px; ">Lic. No. <b style="border-bottom: 1px solid black;">'.$medRecord["doctorsLicenseNumber"].'</b></span>
 								<br><span style="display: block; text-align: left;" style="font-size: 15px;">PTR.: ______________</span>
 							</div>
 						</div>

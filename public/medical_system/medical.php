@@ -7,10 +7,10 @@
 
 			// dump($_POST);
 			$medId = create_trackid("MED");
-			if (query("insert INTO checkup (checkupId, petId, dateCheckup, type, service, symptoms, prescription, doctorsNote, diagnosis, treatment) 
-				VALUES(?,?,?,?,?,?,?,?,?,?)", 
+			if (query("insert INTO checkup (checkupId, petId, dateCheckup, type, service, symptoms, prescription, doctorsNote, diagnosis, treatment, doctorId) 
+				VALUES(?,?,?,?,?,?,?,?,?,?,?)", 
 				$medId, $_POST["petId"] ,date("Y-m-d H:i:s"), $_POST["recordType"], $_POST["service"], $_POST["symptoms"],
-					$_POST["prescriptions"], $_POST["doctorNote"], $_POST["diagnosis"], $_POST["treatment"]) === false)
+					$_POST["prescriptions"], $_POST["doctorNote"], $_POST["diagnosis"], $_POST["treatment"],$_SESSION["dnsc_geoanalytics"]["userid"]) === false)
 				{
 					echo("not_success");
 				}
@@ -174,11 +174,15 @@
 
 			
 			$medRecord = query("select c.*, concat(cl.lastname, ', ' , cl.firstname) as owner,
-								p.petName, p.petType from checkup c
+								p.petName, p.petType,
+								concat(d.doctorsLastname, ', ' , d.doctorsFirstname) as doctor
+								from checkup c
 								left join pet p
 								on p.petId = c.petId
 								left join client cl
 								on cl.clientId = p.clientId
+								left join doctors d
+								on d.doctorsId = c.doctorId
 								where checkupId = ?", $_POST["checkupId"]);
 
 			$medRecord = $medRecord[0];
@@ -202,6 +206,11 @@
                       <td>'.$medRecord["diagnosis"].'</td>
                       <th>Treatment:</th>
                       <td>'.$medRecord["treatment"].'</td>
+                    </tr>
+					<tr>
+                      <th>Doctor Attended:</th>
+                      <td>'.$medRecord["doctor"].'</td>
+                    
                     </tr>
                   </table>
 			

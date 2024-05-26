@@ -31,7 +31,8 @@
 <?php $client = query("select * from client where clientId = ?", $pet["clientId"]); ?>
 <?php $client = $client[0]; ?>
 
-<?php $medicalRecords = query("select * from checkup where petId = ? order by dateCheckup desc", $_GET["id"]); ?>
+<?php $medicalRecords = query("select checkup.*, concat(d.doctorsLastname, ', ' , d.doctorsFirstname) as doctor from checkup left join doctors d
+                                on d.doctorsId = checkup.doctorId where petId = ? order by dateCheckup desc", $_GET["id"]); ?>
 
 <?php $diseases = query("select * from disease"); ?>
 
@@ -183,6 +184,11 @@ endforeach; ?>
                       <th>Treatment:</th>
                       <td><?php echo($row["treatment"]); ?></td>
                     </tr>
+                    <tr>
+                      <th>Doctor Attended:</th>
+                      <td><?php echo($row["doctor"]); ?></td>
+               
+                    </tr>
                   </table>
 
                   <hr>
@@ -282,7 +288,7 @@ endforeach; ?>
                 <div class="tab-content">
                   <div class="active tab-pane" id="activity">
 
-                  <?php if($_SESSION["dnsc_geoanalytics"]["role"] == "admin"): ?>
+              <?php if($_SESSION["dnsc_geoanalytics"]["role"] == "admin" || $_SESSION["dnsc_geoanalytics"]["role"] == "DOCTOR"): ?>
               <a style="float:right;" class="btn btn-warning" href="#" data-toggle="modal" data-target="#modalNewMedical">Add New Medical Record</a>
               <br>
               <br>

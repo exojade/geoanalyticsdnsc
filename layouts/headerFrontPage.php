@@ -86,7 +86,7 @@ $lastWord = basename($path);
                         <a class="nav-link <?php echo ($lastWord == 'aboutUs') ? 'active' : ''; ?>" aria-current="page" href="aboutUs">About Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link <?php echo ($lastWord == 'contactUs') ? 'active' : ''; ?>" aria-current="page" href="contactUs">Contact Us</a>
+                        <a class="nav-link " aria-current="page" href="contactUs">Contact Us</a>
                     </li>
                 </ul>
                 <!-- Admin and staff dropdown -->

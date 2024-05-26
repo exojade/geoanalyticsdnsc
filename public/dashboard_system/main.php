@@ -41,7 +41,7 @@ use Google\Service\Calendar;
 
 		$role = $_SESSION["dnsc_geoanalytics"]["role"];
 		// dump($role);
-		if($role == "admin"){
+		if($role == "admin" || $role == "DOCTOR"){
 			render("public/dashboard_system/dashboard_admin.php",[]);
 		}
 		else if($role == "CLIENT"){

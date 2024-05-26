@@ -77,7 +77,7 @@
 				render("public/patient_system/patientList.php",[]);
 		else:
 			if($_GET["action"] == "specific"):
-				if($_SESSION["dnsc_geoanalytics"]["role"] == "admin"):
+				if($_SESSION["dnsc_geoanalytics"]["role"] == "admin" || $_SESSION["dnsc_geoanalytics"]["role"] == "DOCTOR"):
 					if(!isset($_GET["id"])):
 						render("public/404_system/404form.php",[]);
 					elseif($_GET["id"] == ""):

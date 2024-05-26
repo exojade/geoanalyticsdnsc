@@ -55,6 +55,19 @@
   </li>
 
   <li class="nav-item">
+    <a href="schedule" class="nav-link">
+      <i class="nav-icon fas fa-calendar"></i>
+      <p>
+        Pending Scheds
+        <?php $pending = query("select count(*) as count from checkup_schedule where status = 'PENDING'"); ?>
+        <?php if($pending[0]["count"] != 0): ?>
+          <span class="badge badge-danger right"><?php echo($pending[0]["count"]); ?></span>
+        <?php endif; ?>
+      </p>
+    </a>
+</li>
+
+  <li class="nav-item">
       <a href="appointment" class="nav-link">
         <i class="nav-icon fas fa-briefcase"></i>
         <p>
@@ -116,6 +129,26 @@
         </p>
       </a>
   </li>
+
+  <li class="nav-item">
+      <a href="doctors" class="nav-link">
+        <i class="nav-icon fas fa-stethoscope"></i>
+        <p>
+          Doctors
+          <span class="right badge badge-danger"></span>
+        </p>
+      </a>
+  </li>
+
+  <li class="nav-item">
+      <a href="users" class="nav-link">
+        <i class="nav-icon fas fa-users"></i>
+        <p>
+          Users
+          <span class="right badge badge-danger"></span>
+        </p>
+      </a>
+  </li>
   <?php elseif($_SESSION["dnsc_geoanalytics"]["role"] == "CLIENT"): ?>
 
   <li class="nav-item">
@@ -148,6 +181,66 @@
       </a>
   </li>
 
+
+  <?php elseif($_SESSION["dnsc_geoanalytics"]["role"] == "DOCTOR"): ?>
+
+<li class="nav-item">
+    <a href="index" class="nav-link">
+      <i class="nav-icon fas fa-home"></i>
+      <p>
+        Dashboard
+        <span class="right badge badge-danger"></span>
+      </p>
+    </a>
+</li>
+
+<li class="nav-item">
+      <a href="patient" class="nav-link">
+        <i class="nav-icon fas fa-paw"></i>
+        <p>
+          Pet Patients
+          <span class="right badge badge-danger"></span>
+        </p>
+      </a>
+  </li>
+
+<li class="nav-item">
+    <a href="patient?action=specific&id=<?php echo($_SESSION["dnsc_geoanalytics"]["userid"]); ?>" class="nav-link">
+      <i class="nav-icon fas fa-calendar"></i>
+      <p>
+        Appointment
+        <span class="right badge badge-danger"></span>
+      </p>
+    </a>
+</li>
+
+
+
+
+<li class="nav-item">
+    <a href="schedule" class="nav-link">
+      <i class="nav-icon fas fa-briefcase"></i>
+      <p>
+        For Checkup
+
+        <?php $pending = query("select count(*) as count from checkup_schedule where status = 'PENDING' and doctorId = ?", $_SESSION["dnsc_geoanalytics"]["userid"]); ?>
+        <?php if($pending[0]["count"] != 0): ?>
+          <span class="badge badge-danger right"><?php echo($pending[0]["count"]); ?></span>
+        <?php endif; ?>
+       
+      </p>
+    </a>
+</li>
+
+<li class="nav-item">
+      <a href="data_analysis" class="nav-link">
+        <i class="nav-icon fas fa-chart-bar"></i>
+        <p>
+          Data Analysis
+          <span class="right badge badge-danger"></span>
+        </p>
+      </a>
+  </li>
 
   <?php endif; ?>
 

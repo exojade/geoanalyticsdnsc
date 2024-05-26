@@ -39,10 +39,8 @@
 			else if ($request == 'calendar')
 				require 'public/calendar_system/calendar.php';
 
-
 			else if ($request == 'disease')
 				require 'public/disease_system/disease.php';
-
 
 			else if ($request == 'ajaxMapDisease')
 				require 'public/ajax_system/ajaxMapDisease.php';
@@ -51,6 +49,9 @@
 			
 			else if ($request == 'profile')
 				require 'public/profile_system/profile.php';
+
+			else if ($request == 'schedule')
+				require 'public/schedule_system/schedule.php';
 
 
 			else if ($request == 'data_analysis')
@@ -65,6 +66,8 @@
 
 			else if ($request == 'patient')
 				require 'public/patient_system/patient.php';
+			else if ($request == 'doctors')
+				require 'public/doctors_system/doctors.php';
 
 			else if ($request == 'myAppointments')
 				require 'public/appointment_system/myAppointments.php';
