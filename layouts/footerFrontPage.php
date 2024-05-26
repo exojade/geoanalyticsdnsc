@@ -1,8 +1,8 @@
-<footer class="bg-dark text-white py-2">
+<footer style="background-color: #062D3E;" class="text-white py-2">
     <div class="container">
         <div class="row">
-            <div class="col-md-5">
-                <p>&copy; 2024 Animal Health Disease Monitoring Online Checkup Services</p>
+            <div class="col-md-12">
+                <p style="margin-bottom: 0px;">&copy; 2024 Animal Health Disease Monitoring Online Checkup Services</p>
             </div>
         </div>
     </div>

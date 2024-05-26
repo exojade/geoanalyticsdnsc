@@ -22,6 +22,14 @@
             background-color: #f8f9fa;
         }
 
+        .nav-link{
+            color: #000 !important;
+        }
+
+        .navbar .nav-link.active {
+      color: #88C027 !important; /* Change color to green */
+    }
+
         .section-heading {
             font-size: 3rem;
             margin-bottom: 30px;
@@ -45,35 +53,35 @@
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top bg-dark" id="nav">
+    <nav class="navbar navbar-expand-lg navbar-light" id="nav">
         <div class="container">
             <!-- Navbar Brand -->
             <span>
                 <img src="public/static_system/uploads/LGUlogo.png" height="80" class="navbar-brand d-inline-block align-text-top">
                 <img src="public/static_system/uploads/logocityvet.png" height="80" class="navbar-brand d-inline-block align-text-top">
             </span>
-               <a id="cwadms" class="navbar-brand text-white" href="index.php"> HDMS &nbsp; &nbsp; &nbsp; &nbsp; | </a> &nbsp; &nbsp; &nbsp; &nbsp; 
+            &nbsp; &nbsp; &nbsp; &nbsp; <a id="cwadms" class="navbar-brand" href="index.php"> | </a>
             <!-- Navbar Toggler -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
-            </button>
+            </button> -->
             <!-- Navbar Links -->
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active text-white" aria-current="page" href="home">Home</a>
+                        <a class="nav-link active" aria-current="page" href="home">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="newAppointment">Appointment</a>
+                        <a class="nav-link" href="newAppointment">Appointment</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active text-white" aria-current="page" href="ourServices">Our Services</a>
+                        <a class="nav-link" aria-current="page" href="ourServices">Our Services</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active text-white" aria-current="page" href="aboutUs">About Us</a>
+                        <a class="nav-link" aria-current="page" href="aboutUs">About Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active text-white" aria-current="page" href="contactUs">Contact Us</a>
+                        <a class="nav-link" aria-current="page" href="contactUs">Contact Us</a>
                     </li>
                 </ul>
                 <!-- Admin and staff dropdown -->

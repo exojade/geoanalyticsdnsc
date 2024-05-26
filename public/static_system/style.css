@@ -13,40 +13,6 @@ section{
     display: flex;
 }
 
-section .imgBox{
-    position: relative;
-    width: 50%;
-    height: 100%;
-}
-section .imgBox:before{
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at -3.7% -5%, rgb(113, 213, 225) 0.3%, rgb(73, 146, 226) 90.5%);
-    z-index: 1;
-    mix-blend-mode: screen;
-}
-section .imgBox img{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-section .contentBox{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 50%;
-    height: 100%;
-}
-section .contentBox .formBox{
-    width: 50%;
-}
 section .contentBox .formBox h2{
     color: rgb(24, 15, 15);
     font-weight: 600;
