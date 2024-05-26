@@ -44,9 +44,9 @@
                   <thead>
                     <th width="13%">Action</th>
                     <th>Client</th>
-                    <th>Email</th>
-                    <th>Status</th>
                     <th>Note</th>
+                    <th>Status</th>
+                    <th>Doctor</th>
                     <!-- <th>Meet Link</th> -->
                   </thead>
                 </table>
@@ -127,9 +127,10 @@ var datatable =
                 'columns': [
                     { data: 'action', "orderable": false },
                     { data: 'client', "orderable": false },
-                    { data: 'email', "orderable": false },
-                    { data: 'appointmentStatus', "orderable": false },
                     { data: 'notes', "orderable": false },
+                    { data: 'appointmentStatus', "orderable": false },
+                    { data: 'doctor', "orderable": false },
+
                 ],
                 "footerCallback": function (row, data, start, end, display) {
                     // var api = this.api(), data;

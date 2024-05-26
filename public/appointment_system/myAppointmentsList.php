@@ -17,7 +17,7 @@
               <div class="modal-header bg-primary">
                 <h4 class="modal-title">Book an Appointment</h4>
               </div>
-              <form class="generic_form_trigger" data-url="myAppointments">
+              <form class="generic_form_trigger" autocomplete="off" data-url="myAppointments">
               <div class="modal-body">
                 <input type="hidden" name="action" value="addNewAppointment">
               <div class="row">

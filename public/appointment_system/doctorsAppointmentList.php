@@ -214,7 +214,7 @@ require("includes/google_class.php");
 			</script>
 			");
 
-		elseif($_POST["action"] == "appointmentList" && $_SESSION["dnsc_geoanalytics"]["role"] == "admin"):
+		elseif($_POST["action"] == "appointmentList"):
 
 			$draw = isset($_POST["draw"]) ? $_POST["draw"] : 1;
             $offset = $_POST["start"];
@@ -258,12 +258,7 @@ require("includes/google_class.php");
 			$i = 0;
 			foreach($data as $row):
 				// dump($row);
-				
-
-				$data[$i]["client"] = $Client[$row["clientId"]]["fullname"];
-				$data[$i]["email"] = $Client[$row["clientId"]]["username"];
-				if($row["appointmentStatus"] == "PENDING"):
-					$data[$i]["action"] = '
+				$data[$i]["action"] = '
 				<form class="generic_form_trigger" style="display:inline;" data-url="appointment">
 				<input type="hidden" name="action" value="cancelAppointment">
 				<div class="btn-group" width="100%">
@@ -276,40 +271,10 @@ require("includes/google_class.php");
 					  </form>
 	
 				';
-					$data[$i]["doctor"] = "";
-				elseif($row["appointmentStatus"] == "CANCELLED"):
 
-					$data[$i]["action"] = '
-					<form class="generic_form_trigger" style="display:inline;" data-url="appointment">
-					<input type="hidden" name="action" value="cancelAppointment">
-					<div class="btn-group" width="100%">
-							<a href="#" data-toggle="modal" data-id="'.$row["appointmentId"].'" data-target="#modalAppointment" class="btn btn-sm btn-success">Accept</a>
-						  
-												
-												<button disabled class="btn btn-sm btn-danger">NO ACTION</button>
-										
-						  </div>
-						  </form>
-		
-					';
-					
-					$data[$i]["doctor"] = "";
-				else:
-
-					$data[$i]["action"] = '
-					<form class="generic_form_trigger" style="display:inline;" data-url="appointment">
-					<input type="hidden" name="action" value="cancelAppointment">
-					<div class="btn-group" width="100%">
-						  
-												
-												<button disabled class="btn btn-sm btn-danger">NO ACTION</button>
-										
-						  </div>
-						  </form>
-		
-					';
-					$data[$i]["doctor"] = $Doctors[$row["doctorId"]]["doctorsLastname"] . ", " . $Doctors[$row["doctorId"]]["doctorsFirstname"];
-				endif;
+				$data[$i]["client"] = $Client[$row["clientId"]]["fullname"];
+				$data[$i]["email"] = $Client[$row["clientId"]]["username"];
+				$data[$i]["doctor"] = $Doctors[$row["doctorId"]]["doctorsLastname"] . ", " . $Doctors[$row["doctorId"]]["doctorsFirstname"];
 
 				
 				// $data[$i]["appointmentDate"] = $row["dateSet"] . " - " . $TimeSlot[$row["timeSet"]]["timeSlot"];
@@ -323,100 +288,6 @@ require("includes/google_class.php");
                 "aaData" => $data
             );
             echo json_encode($json_data);
-
-
-		elseif($_POST["action"] == "appointmentList" && $_SESSION["dnsc_geoanalytics"]["role"] == "DOCTOR"):
-
-				$draw = isset($_POST["draw"]) ? $_POST["draw"] : 1;
-				$offset = $_POST["start"];
-				$limit = $_POST["length"];
-				$search = $_POST["search"]["value"];
-	
-				$limitString = " limit " . $limit;
-				$offsetString = " offset " . $offset;
-				$baseQuery = "select a.*, t.timeSlot from appointment a left join timeslot t on t.slotId = a.timeSet where doctorId = '".$_SESSION["dnsc_geoanalytics"]["userid"]."' and appointmentStatus = 'ONGOING' order by timestampSet desc";
-	
-				$TimeSlot = [];
-				$timeslot = query("select * from timeslot");
-				foreach($timeslot as $row):
-					$TimeSlot[$row["slotId"]] = $row;
-				endforeach;
-	
-				$Client = [];
-				$client = query("select * from users");
-				foreach($client as $row):
-					$Client[$row["userid"]] = $row;
-				endforeach;
-	
-				$Doctors = [];
-				$doctors = query("select * from doctors");
-				foreach($doctors as $row):
-					$Doctors[$row["doctorsId"]] = $row;
-				endforeach;
-	
-	
-				if($search == ""):
-					$data = query($baseQuery . " " . $limitString . " " . $offsetString);
-					$all_data = query($baseQuery);
-				else:
-					
-									// dump($query_string);
-					$data = query($baseQuery . " where petName like '%".$search."%'" . " " . $limitString . " " . $offsetString);
-					$all_data = query($baseQuery . " where petName like '%".$search."%'");
-					// $all_data = $data;
-				endif;
-				// dump($query);
-				$i = 0;
-				foreach($data as $row):
-					// dump($row);
-					$data[$i]["action"] = '
-					<form class="generic_form_trigger" style="display:inline;" data-url="appointment">
-					<input type="hidden" name="action" value="markDoneAppointment">
-					<input type="hidden" name="appointmentId" value="'.$row["appointmentId"].'">
-					<div class="btn-group" width="100%">
-						  
-												
-												<button class="btn btn-sm btn-warning">Mark as Done</button>
-										
-						  </div>
-						  </form>
-		
-					';
-	
-					$data[$i]["client"] = $Client[$row["clientId"]]["fullname"];
-					$data[$i]["email"] = $Client[$row["clientId"]]["username"];
-					$data[$i]["doctor"] = "<ul style='list-style-type: none;'>
-												<li>".$row["dateSet"]."</li>
-												<li>".$row["timeSlot"]."</li>
-												<li><a href='".$row["meetId"]."' target='_blank' class='btn btn-info'>Go: ".$row["meetId"]."</a></li>
-											</ul>
-					";
-	
-					
-					// $data[$i]["appointmentDate"] = $row["dateSet"] . " - " . $TimeSlot[$row["timeSet"]]["timeSlot"];
-					// dump();	
-					$i++;
-				endforeach;
-				$json_data = array(
-					"draw" => $draw + 1,
-					"iTotalRecords" => count($all_data),
-					"iTotalDisplayRecords" => count($all_data),
-					"aaData" => $data
-				);
-				echo json_encode($json_data);
-		elseif($_POST["action"] == "markDoneAppointment"):
-			// dump($_POST);
-			query("update appointment set appointmentStatus = 'DONE' where appointmentId = ?", $_POST["appointmentId"]);
-
-			$res_arr = [
-				"result" => "success",
-				"title" => "Success",
-				"message" => "Success on updating data",
-				"link" => "appointment",
-				// "html" => '<a href="#">View or Print '.$transaction_id.'</a>'
-				];
-				echo json_encode($res_arr); exit();
-
 
 		elseif($_POST["action"] == "modalAppointment"):
 			// dump($_POST);

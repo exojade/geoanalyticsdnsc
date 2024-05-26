@@ -72,7 +72,10 @@
         <i class="nav-icon fas fa-briefcase"></i>
         <p>
           Appointments
-          <span class="right badge badge-danger"></span>
+          <?php $pending = query("select count(*) as count from appointment where appointmentStatus = 'PENDING'"); ?>
+        <?php if($pending[0]["count"] != 0): ?>
+          <span class="badge badge-danger right"><?php echo($pending[0]["count"]); ?></span>
+        <?php endif; ?>
         </p>
       </a>
   </li>
@@ -205,11 +208,14 @@
   </li>
 
 <li class="nav-item">
-    <a href="patient?action=specific&id=<?php echo($_SESSION["dnsc_geoanalytics"]["userid"]); ?>" class="nav-link">
+    <a href="appointment" class="nav-link">
       <i class="nav-icon fas fa-calendar"></i>
       <p>
         Appointment
-        <span class="right badge badge-danger"></span>
+        <?php $pending = query("select count(*) as count from appointment where appointmentStatus = 'ONGOING' and doctorId = ?", $_SESSION["dnsc_geoanalytics"]["userid"]); ?>
+        <?php if($pending[0]["count"] != 0): ?>
+          <span class="badge badge-danger right"><?php echo($pending[0]["count"]); ?></span>
+        <?php endif; ?>
       </p>
     </a>
 </li>
