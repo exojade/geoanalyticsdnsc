@@ -6,31 +6,31 @@
         }
         .top-half {
             background-color: white;
-            height: 65%;
+            height: 35%;
             width: 100%;
         }
         .bottom-half {
             background-color: #3A81D3;
-            height: 40%;
+            height: 70%;
             width: 100%;
         }
         .cat {
             position: absolute;
-            bottom: 50%;
+            bottom: 70%;
             left: 20%;
             transform: translate(-50%, 50%);
         }
 
         .liner {
             position: absolute;
-            bottom: 60%;
+            bottom: 70%;
             left: 5%;
             transform: translate(-50%, 50%);
         }
 
         .paws {
             position: absolute;
-            bottom: 60%;
+            bottom: 90%;
             left: 80%;
             transform: translate(-50%, 50%);
         }
@@ -59,8 +59,8 @@
         </div>
         </div>
         <div class="bottom-half"></div>
-        <img src="public/static_system/assets/images/liner.png" class="liner" alt="Cat Image">
-        <img src="public/static_system/assets/images/cat.png" class="cat" alt="Cat Image">
+        <!-- <img src="public/static_system/assets/images/liner.png" class="liner" alt="Cat Image"> -->
+        <img style="width: 400px;" src="public/static_system/assets/images/cat.png" class="cat" alt="Cat Image">
         <img style="width: 120px;" src="public/static_system/assets/images/paws.png" class="paws" alt="Cat Image">
         
     </div>
