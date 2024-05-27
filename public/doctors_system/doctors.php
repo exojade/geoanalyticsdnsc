@@ -35,7 +35,7 @@
 			$i = 0;
 			foreach($data as $row):
 				// dump($row);
-				$data[$i]["action"] = '<a href="doctors?action=specific&id='.$row["doctorsId"].'" class="btn btn-block btn-sm btn-success">View</a>
+				$data[$i]["action"] = '<a href="#" class="btn btn-block btn-sm btn-success">View</a>
 										
 				';
 				$data[$i]["name"] = $row["doctorsLastname"] . ", " . $row["doctorsFirstname"];

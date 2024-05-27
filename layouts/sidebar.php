@@ -58,7 +58,7 @@
     <a href="schedule" class="nav-link">
       <i class="nav-icon fas fa-calendar"></i>
       <p>
-        Pending Scheds
+        Pending Walk Ins
         <?php $pending = query("select count(*) as count from checkup_schedule where status = 'PENDING'"); ?>
         <?php if($pending[0]["count"] != 0): ?>
           <span class="badge badge-danger right"><?php echo($pending[0]["count"]); ?></span>
@@ -71,7 +71,7 @@
       <a href="appointment" class="nav-link">
         <i class="nav-icon fas fa-briefcase"></i>
         <p>
-          Appointments
+          Telemedicine
           <?php $pending = query("select count(*) as count from appointment where appointmentStatus = 'PENDING'"); ?>
         <?php if($pending[0]["count"] != 0): ?>
           <span class="badge badge-danger right"><?php echo($pending[0]["count"]); ?></span>
