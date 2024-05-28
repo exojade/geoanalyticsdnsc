@@ -1,69 +1,121 @@
 <?php require("layouts/headerFrontPage.php"); ?>
+<link href="public/static_system/assets/css/template/style.css" rel="stylesheet" />
+  <!-- responsive style -->
+<link href="public/static_system/assets/css/template/responsive.css" rel="stylesheet" />
 <style>
-        .background {
-            position: relative;
-            height: 80vh;
-        }
-        .top-half {
-            background-color: white;
-            height: 35%;
-            width: 100%;
-        }
-        .bottom-half {
-            background-color: #3A81D3;
-            height: 70%;
-            width: 100%;
-        }
-        .cat {
-            position: absolute;
-            bottom: 70%;
-            left: 20%;
-            transform: translate(-50%, 50%);
-        }
+.row>*{
+    padding-left: 0px;
+    padding-right: 0px;
+}
+</style>
+<section class=" slider_section position-relative">
+      <div class="slider_bg_box">
+        <img src="public/static_system/assets/images/newBackground.jpg" alt="">
+      </div>
+      <div class="container">
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+       
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <div class="row">
+                <div class="col-md-7 col-lg-6">
+                  <div class="detail-box">
+                   <br>
+                   <br>
+                   <br>
+                   <br>
+                    <p style="font-size: 25px;">
+                     "Pet grooming straight from the heart. <br> Your pet - our passion, we care."
+                    </p>
+                    <br>
+                   <br>
+                   <br>
+                   <br>
+                   <br>
+                   <br>
+                   <br>
+              
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+           
+            
+          </div>
+        </div>
 
-        .liner {
-            position: absolute;
-            bottom: 70%;
-            left: 5%;
-            transform: translate(-50%, 50%);
-        }
+      </div>
+    </section>
 
-        .paws {
-            position: absolute;
-            bottom: 90%;
-            left: 80%;
-            transform: translate(-50%, 50%);
-        }
-        .content {
-            position: absolute;
-            top: 20%;
-            right: 10%;
-            transform: translateY(-50%);
-        }
+    <style>
+.wedo_section>*{
+    color :#fff;
+}
     </style>
 
-<div class="background">
-        <div class="top-half">
-        <div class="container content">
-            <div class="row">
-                <div class="col-md-6">
-                    <!-- This column is intentionally left blank or can contain some other content -->
-                </div>
-                <div class="col-md-6">
-                    <!-- Content on the right -->
-                    <h1><b>Welcome to Pet Care!</b></h1>
-                    <br>
-                    <p style="color:gray;">"Pet grooming straight from the heart. Your pet - our passion, we care"</p>
-                </div>
+    <section class="wedo_section">
+      <div class="row">
+        <div class="col-md-4 ">
+          <div class="box container" style="background-color: #7BAD23; margin-top:0px;">
+            <div class="img-box">
+              <img src="images/s1.png" alt="">
             </div>
+            <div class="detail-box">
+              <h6>
+              Parvo
+              </h6>
+              <p class="text-justify">
+              a highly contagious viral disease of dogs that commonly causes acute gastrointestinal illness in puppies. 
+              </p>
+            </div>
+            <br>
+            <br>
+            <br>
+            <br>
+          </div>
         </div>
+        <div class="col-md-4">
+          <div class="box container" style="background-color: #3A81D3; margin-top:0px;">
+            <div class="img-box">
+              <img src="images/s2.png" alt="">
+            </div>
+            <div class="detail-box">
+              <h6>
+              Flu
+              </h6>
+              <p class="text-justify">
+              a contagious respiratory illness caused by influenza viruses that infect the nose, throat, and sometimes the lungs.
+              </p>
+            </div>
+            <br>
+            <br>
+            <br>
+            <br>
+          </div>
         </div>
-        <div class="bottom-half"></div>
-        <!-- <img src="public/static_system/assets/images/liner.png" class="liner" alt="Cat Image"> -->
-        <img style="width: 400px;" src="public/static_system/assets/images/cat.png" class="cat" alt="Cat Image">
-        <img style="width: 120px;" src="public/static_system/assets/images/paws.png" class="paws" alt="Cat Image">
-        
-    </div>
+        <div class="col-md-4">
+          <div class="box container" style="background-color: #FF811B; margin-top:0px;">
+            <div class="img-box">
+              <img src="images/s3.png" alt="">
+            </div>
+            <div class="detail-box">
+              <h6>
+              Dengue
+              </h6>
+              <p class="text-justify">
+              a highly contagious viral disease of dogs that commonly causes acute gastrointestinal illness in puppies. 
+              </p>
+            </div>
+            <br>
+            <br>
+            <br>
+            <br>
+          </div>
+        </div>
+      </div>
+  </section>
+  
 
 
 
