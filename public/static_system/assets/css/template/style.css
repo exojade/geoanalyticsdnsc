@@ -421,7 +421,8 @@ a:focus {
 .wedo_section .box .img-box {
   min-width: 125px;
   min-height: 115px;
-  background-color: #5aa469;
+  background-color: #fff;
+  border-radius:50%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;

@@ -58,8 +58,8 @@
       <div class="row">
         <div class="col-md-4 ">
           <div class="box container" style="background-color: #7BAD23; margin-top:0px;">
-            <div class="img-box">
-              <img src="images/s1.png" alt="">
+            <div class="img-box" style="margin-top:20px;">
+              <img src="public/static_system/assets/images/worm.png" alt="">
             </div>
             <div class="detail-box">
               <h6>
@@ -77,8 +77,8 @@
         </div>
         <div class="col-md-4">
           <div class="box container" style="background-color: #3A81D3; margin-top:0px;">
-            <div class="img-box">
-              <img src="images/s2.png" alt="">
+            <div class="img-box" style="margin-top:20px;">
+              <img src="public/static_system/assets/images/flu.png" alt="">
             </div>
             <div class="detail-box">
               <h6>
@@ -96,8 +96,8 @@
         </div>
         <div class="col-md-4">
           <div class="box container" style="background-color: #FF811B; margin-top:0px;">
-            <div class="img-box">
-              <img src="images/s3.png" alt="">
+            <div class="img-box" style="margin-top:20px;">
+              <img src="public/static_system/assets/images/dengue.png" alt="">
             </div>
             <div class="detail-box">
               <h6>
