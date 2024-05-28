@@ -14,6 +14,8 @@
             align-items: center;
             text-decoration: none;
         }
+
+   
 </style>
 <section class=" slider_section position-relative" style="padding:20px 45px 40px 45px !important;">
       <div class="slider_bg_box">
