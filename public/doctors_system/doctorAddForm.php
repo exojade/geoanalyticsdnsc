@@ -183,8 +183,6 @@
 <script src="AdminLTE_new/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 <script src="AdminLTE_new/plugins/inputmask/jquery.inputmask.min.js"></script>
 <script type="text/javascript" src="node_modules/philippine-location-json-for-geer/build/phil.min.js"></script>
-
-
 <script>
   $('[data-mask]').inputmask()
     $('#region_select').select2({
