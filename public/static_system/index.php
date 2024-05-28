@@ -18,17 +18,15 @@
           <div class="carousel-inner">
             <div class="carousel-item active">
               <div class="row">
-                <div class="col-md-7 col-lg-6">
+                <div class="col-md-9 col-lg-9">
                   <div class="detail-box">
                    <br>
-                   <br>
-                   <br>
+                   <h1 style="padding-left:25px; font-size: 55px;">Welcome to Pet Care!</h1>
                    <br>
                     <p style="font-size: 25px;padding-left:25px;">
                      "Pet grooming straight from the heart. <br> Your pet - our passion, we care."
                     </p>
                     <br>
-                   <br>
                    <br>
                    <br>
                    <br>
