@@ -15,6 +15,10 @@
             text-decoration: none;
         }
 
+        body{
+            background-color:#FF811B !important;
+        }
+
    
 </style>
 <section class=" slider_section position-relative" style="padding:20px 45px 40px 45px !important;">

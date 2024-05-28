@@ -54,6 +54,9 @@
             color: #ffffff; /* Change this color to match your footer text */
             padding: 20px 0;
         }
+        .navbar-light{
+    background-color: #fff !important;
+}
     </style>
 </head>
 <?php
