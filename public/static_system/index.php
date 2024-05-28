@@ -24,7 +24,7 @@
                    <br>
                    <br>
                    <br>
-                    <p style="font-size: 25px;">
+                    <p style="font-size: 25px;padding-left:25px;">
                      "Pet grooming straight from the heart. <br> Your pet - our passion, we care."
                     </p>
                     <br>
