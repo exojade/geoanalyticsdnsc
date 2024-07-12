@@ -105,7 +105,7 @@ $pets = query("select *, CONCAT(
                       <label for="exampleInputFile">Image of Pet</label>
                       <br>
                       <input name="petImage"  type="file" accept=".pdf, image/*" id="exampleInputFile">
-                      <p class="help-block">Upload death certificate here!</p>
+                      <p class="help-block">Upload Image here!</p>
                   </div>
                 </div>
             </div>
