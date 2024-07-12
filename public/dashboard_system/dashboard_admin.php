@@ -118,18 +118,39 @@
 
           <div class="card bg-gradient-gray" id="fullscreenDiv">
               <div class="card-header border-0">
-                <h3 class="card-title">
+                <!-- <h3 class="card-title">
                   <i class="fas fa-map-marker-alt mr-1"></i>
                   MAP
                   
-                </h3>
-                <button class="btn btn-info" style="float:right;" id="toggleFullscreen">Toggle Fullscreen</button>
-                <br>
+                </h3> -->
+
+                <div class="form-group clearfix">
+                      <div class="icheck-primary d-inline">
+                        <input type="checkbox" id="parvoCheckbox"  onchange="updateMapColors()" >
+                        <label for="parvoCheckbox">
+                        PARVO
+                        </label>
+                      </div>
+                      <div class="icheck-primary d-inline">
+                        <input type="checkbox" id="fluCheckBox"  onchange="updateMapColors()">
+                        <label for="fluCheckBox">
+                        FLU
+                        </label>
+                      </div>
+                      <div class="icheck-primary d-inline">
+                        <input type="checkbox" id="dengueCheckBox"  onchange="updateMapColors()">
+                        <label for="dengueCheckBox">
+                        DENGUE
+                        </label>
+                      </div>
+                      <button class="btn btn-info" style="float:right;" id="toggleFullscreen">Toggle Fullscreen</button>
+                    </div>
+                
+                <!-- <br>
                 <br>
                 <br>
                 <div class="row">
                 <div class="col-sm-6">
-                    <!-- checkbox -->
                     <div class="form-group clearfix">
                       <div class="icheck-primary d-inline">
                         <input type="checkbox" id="checkboxPrimary1" value="parvo" onchange="updateMapColors(event, 'parvo')" >
@@ -151,7 +172,7 @@
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> -->
 <!-- 
 
                 <input type="checkbox" id="parvoCheckbox" value="parvo" onchange="updateMapColors()"> PARVO
@@ -363,7 +384,7 @@ L.control.layers(baseLayers, overlays).addTo(map);
                       SEARCH BUTTON               
 ===================================================*/
 
-L.Control.geocoder().addTo(map);
+// L.Control.geocoder().addTo(map);
 
 
 /*===================================================
@@ -452,7 +473,7 @@ info.onAdd = function (map) {
 // method that we will use to update the control based on feature properties passed
 info.update = function (props) {
     this._div.innerHTML = '<h4>Disease Density</h4>' +  (props ?
-        '<b>' + props.name + '</b><br />' + props.density + ' </sup>'
+        '<b>' + props.name + '</b><br><br><b>PARVO: </b><span style="float: right;"> ' + props.parvo + '</span> <br><b>DENGUE:</b><span style="float: right;"> '+props.dengue+'</span><br><b>FLU:</b><span style="float: right;"> '+props.flu+'</span><br><b>TOTAL:<span style="float: right;">'+props.density+'</span></b></sup>'
         : 'Hover over a barangay');
 };
 
@@ -479,12 +500,22 @@ legend.onAdd = function (map) {
 legend.addTo(map);
 
 
+        function updateMapColors() {
 
-$.ajax({
+          // parvo = $('#parvoCheckBox').val();
+
+          var parvo = $('#parvoCheckbox').is(':checked');
+          var flu = $('#fluCheckBox').is(':checked');
+          var dengue = $('#dengueCheckBox').is(':checked');
+          // console.log(parvo);
+          $.ajax({
             type: 'post',
             url: 'ajaxMapDisease',
             data: {
-                action: "ajaxMapDisease", // Send appropriate action
+                action: "ajaxMapDisease",
+                parvo: parvo,
+                flu: flu,
+                dengue: dengue,
             },
             success: function(data) {
                 // Parse the received JSON data from PHP
@@ -493,13 +524,18 @@ $.ajax({
                 // Update the density property of each feature in panabodataa
                 panabodataa.features.forEach(function(feature) {
                     // Get the ID of the feature
-                    console.log(feature.properties.id);
+                    // console.log(feature.properties.id);
                     var id = feature.properties.id;
                     
                     // Check if the density data for this ID exists
                     if (densityData.hasOwnProperty(id)) {
                         // Update the density property of the feature
-                        feature.properties.density = densityData[id];
+                        console.log(densityData[id].parvo);
+                        // feature.properties.density = densityData[id];
+                        feature.properties.dengue = densityData[id].dengue;
+                        feature.properties.parvo = densityData[id].parvo;
+                        feature.properties.flu = densityData[id].flu;
+                        feature.properties.density = densityData[id].dengue + densityData[id].parvo + densityData[id].flu;
                     }
                 });
 
@@ -514,6 +550,7 @@ $.ajax({
                 legend.addTo(map); // Update legend with new color scale
             }
         });
+    }
 
 
 </script>

@@ -7,9 +7,30 @@
 $dummyArray = [];
 $i = 1;
 for($i=1; $i<=40;$i++):
+    $dummyArray[$i]["parvo"] = 0;
+    $dummyArray[$i]["dengue"] = 0;
+    $dummyArray[$i]["flu"]  = 0;
 
-    $dummyArray[$i] = rand(1, 1100);
+    if($_REQUEST["parvo"] == "true"):
+        $dummyArray[$i]["parvo"] = rand(1, 200);
+    endif;
+
+    if($_REQUEST["dengue"] == "true"):
+        $dummyArray[$i]["dengue"] = rand(1, 200);
+    endif;
+
+    if($_REQUEST["flu"] == "true"):
+        $dummyArray[$i]["flu"] = rand(1, 200);
+    endif;
+
+
+
+
+    // $dummyArray[$i]["total"]
 endfor;
+
+
+
 
 
 
