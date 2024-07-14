@@ -121,9 +121,9 @@
                     <th>Date</th>
                     <th>Type</th>
                     <th>Service</th>
-                    <th>Diagnosis</th>
-                    <th>Treatment</th>
-                    <th>Disease</th>
+                    <!-- <th>Diagnosis</th> -->
+                    <!-- <th>Treatment</th> -->
+                    <!-- <th>Disease</th> -->
                   </thead>
                 </table>
               </div>
@@ -206,9 +206,9 @@ var datatable =
                     { data: 'dateCheckup', "orderable": false  },
                     { data: 'type', "orderable": false  },
                     { data: 'service', "orderable": false },
-                    { data: 'diagnosis', "orderable": false  },
-                    { data: 'treatment', "orderable": false  },
-                    { data: 'disease', "orderable": false  },
+                    //{ data: 'diagnosis', "orderable": false  },
+                    //{ data: 'treatment', "orderable": false  },
+                    //{ data: 'disease', "orderable": false  },
                 ],
                 "footerCallback": function (row, data, start, end, display) {
                     // var api = this.api(), data;
