@@ -20,7 +20,7 @@
     <!-- Brand Logo -->
     <div class="user-panel mt-3 pb-3 mb-3 text-center">
         <div class="image" style="display:block;">
-            <img style="width: 5rem;" src="resources/panabologo.png" class="img-circle elevation-2" alt="User Image">
+            <!-- <img style="width: 5rem;" src="resources/panabologo.png" class="img-circle elevation-2" alt="User Image"> -->
             <img style="width: 5rem;" src="resources/logocityvet.png" class="img-circle elevation-2" alt="User Image">
         </div>
       </div>

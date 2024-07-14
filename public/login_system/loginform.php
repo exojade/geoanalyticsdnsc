@@ -58,7 +58,7 @@ background-size: 100% auto;
   <div class="card card-outline" style="border-radius:50px; box-shadow: 0 0 0 10px rgba(0, 0, 0, 0.1);">
     <div class="card-header text-center" style="border-bottom: 0px;">
     <center>
-                <img src="public/static_system/uploads/LGUlogo.png" height="100" style="margin: 5px;">
+                <!-- <img src="public/static_system/uploads/LGUlogo.png" height="100" style="margin: 5px;"> -->
                 <img src="public/static_system/uploads/logocityvet.png" height="100" style="margin: 5px;">
             </center>
 

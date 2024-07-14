@@ -70,7 +70,7 @@ $lastWord = basename($path);
         <div class="container">
             <!-- Navbar Brand -->
             <span>
-                <img src="public/static_system/uploads/LGUlogo.png" height="80" class="navbar-brand d-inline-block align-text-top">
+                <!-- <img src="public/static_system/uploads/LGUlogo.png" height="80" class="navbar-brand d-inline-block align-text-top"> -->
                 <img src="public/static_system/uploads/logocityvet.png" height="80" class="navbar-brand d-inline-block align-text-top">
             </span>
             &nbsp; &nbsp; &nbsp; &nbsp; <a id="cwadms" class="navbar-brand" href="index.php"> | </a>
