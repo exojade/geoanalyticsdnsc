@@ -40,7 +40,7 @@
 
               <!-- <iframe src="https://calendar.google.com/calendar/embed?src=15df82f54cf28baa57c00d9fc76503ed9d5b0fcaef7ec5595fc7e04a87fb72f2%40group.calendar.google.com&ctz=Asia%2FManila" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe> -->
 
-                <table class="table table-bordered" id="ajax_datatable">
+                <table class="table table-bordered table-striped" id="ajax_datatable">
                   <thead>
                     <th width="13%">Action</th>
                     <th>Client</th>

@@ -2,6 +2,28 @@
 // dump($_SESSION);
 // require("includes/google_class.php"); 
 
+
+
+
+// $to = 'dnsc_sample@yopmail.com';
+// $subject = 'Test Email';
+// $message = 'This is a test email.';
+// $headers = 'From: no-reply@example.com' . "\r\n" .
+//            'Reply-To: no-reply@example.com' . "\r\n" .
+//            'X-Mailer: PHP/' . phpversion();
+
+// if(mail($to, $subject, $message, $headers)) {
+//     echo 'Email sent!';
+// } else {
+//     echo 'Email sending failed.';
+// }
+
+
+
+
+
+
+
 use Google\Client;
 use Google\Service\Calendar;
 // $google->setAccessToken($_SESSION["dnsc_geoanalytics"]['accessToken']);

@@ -370,17 +370,17 @@ require("includes/google_class.php");
 				foreach($data as $row):
 					// dump($row);
 					$data[$i]["action"] = '
-					<form class="generic_form_trigger" style="display:inline;" data-url="appointment">
+					<form class="generic_form_trigger"  data-url="appointment" >
 					<input type="hidden" name="action" value="markDoneAppointment">
-					<input type="hidden" name="appointmentId" value="'.$row["appointmentId"].'">
-					<div class="btn-group" width="100%">
-						  
-												
-												<button class="btn btn-sm btn-warning">Mark as Done</button>
-										
-						  </div>
-						  </form>
-		
+					<input type="hidden" name="appointmentId" value="'.$row["appointmentId"].'">		
+						<button class="btn btn-sm btn-success btn-block">Mark as Done</button>
+					</form>
+					<a href="#" class="btn btn-sm btn-warning btn-block" style="margin: 5px 0;">Reschedule</a>
+					<form class="generic_form_trigger" data-url="appointment">
+					<input type="hidden" name="action" value="markDoneAppointment">
+					<input type="hidden" name="appointmentId" value="'.$row["appointmentId"].'">		
+						<button class="btn btn-sm btn-danger btn-block">Cancel</button>
+					</form>
 					';
 	
 					$data[$i]["client"] = $Client[$row["clientId"]]["fullname"];
@@ -388,7 +388,8 @@ require("includes/google_class.php");
 					$data[$i]["doctor"] = "<ul style='list-style-type: none;'>
 												<li>".$row["dateSet"]."</li>
 												<li>".$row["timeSlot"]."</li>
-												<li><a href='".$row["meetId"]."' target='_blank' class='btn btn-info'>Go: ".$row["meetId"]."</a></li>
+												<li>&nbsp;</li>
+												<li><a href='".$row["meetId"]."' target='_blank' class='btn btn-sm btn-block btn-info'>Go: ".$row["meetId"]."</a></li>
 											</ul>
 					";
 	
