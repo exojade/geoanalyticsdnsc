@@ -39,6 +39,7 @@
       
 					    <h3 class="modal-title text-center">Medical Record</h3>
               </div>
+              <form class="generic_form_trigger_no_prompt" data-url="pets" style="display: inline;">
               <div class="modal-body" style="-webkit-user-select: none;  /* Chrome all / Safari all */
               -moz-user-select: none;     /* Firefox all */
               -ms-user-select: none;  ">
@@ -47,7 +48,12 @@
                     <br>
                     <br>
                       <div class="box-footer">
-                        <button class=" btn btn-primary btn-flat pull-right" data-dismiss="modal" aria-label="Close">Close</button>
+                        <button class="btn btn-danger btn-flat pull-right" data-dismiss="modal" aria-label="Close">Close</button>
+                        
+                            <input type="hidden" name="action" value="printPrescription">
+                            
+                          <button type="submit" class="btn btn-flat btn-primary"> Print Prescription</button>
+                        </form>
                         <!-- <button type="submit" class="btn btn-primary btn-flat pull-right">Submit</button> -->
                       </div>
                   <!-- </form> -->

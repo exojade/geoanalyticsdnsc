@@ -184,11 +184,21 @@
 								left join doctors d
 								on d.doctorsId = c.doctorId
 								where checkupId = ?", $_POST["checkupId"]);
-
+			// dump($medRecord);
 			$medRecord = $medRecord[0];
 
 			$hint = '
-			<table class="table" id="sectionTable">
+<input type="hidden" name="checkupId" value="'.$medRecord["checkupId"].'">
+
+			<div class="card">
+				<div class="card-body">
+				<table class="table" id="sectionTable">
+				<tr>
+                      <th>Owner Name:</th>
+                      <td>'.$medRecord["owner"].'</td>
+					    <th>Doctor Attended:</th>
+                      <td>'.$medRecord["doctor"].'</td>
+                    </tr>
                     <tr>
                       <th>Pet Name:</th>
                       <td>'.$medRecord["petName"].'</td>
@@ -201,41 +211,131 @@
                       <th>Date of Consultation:</th>
                       <td>'.$medRecord["dateCheckup"].'</td>
                     </tr>
-                    <tr>
-                      <th>Diagnosis:</th>
-                      <td>'.$medRecord["diagnosis"].'</td>
-                      <th>Treatment:</th>
-                      <td>'.$medRecord["treatment"].'</td>
-                    </tr>
+                 
+                  </table>
+
+					</div>
+				</div>';
+
+
+
+				if($medRecord["diagnosis"] != ""):
+					$hint .='<div class="card">
+					<div class="card-body">
+					<table class="table" id="sectionTable">
 					<tr>
-                      <th>Doctor Attended:</th>
-                      <td>'.$medRecord["doctor"].'</td>
-                    
+						  <th>Diagnosis:</th>
+						</tr>
+						<tr>
+						   <td>'.$medRecord["diagnosis"].'</td>
+						</tr>
+					  </table>
+	
+						</div>
+					</div>';
+				endif;
+
+				if($medRecord["symptoms"] != ""):
+					$hint .= '
+					<div class="card">
+					<div class="card-body">
+					<table class="table" id="sectionTable">
+					<tr>
+						  <th>Symptoms:</th>
+						</tr>
+						<tr>
+						   <td>'.$medRecord["symptoms"].'</td>
+						</tr>
+					  </table>
+	
+						</div>
+					</div>
+					';
+				endif;
+
+				if($medRecord["treatment"]!=""):
+					$hint.='
+					<div class="card">
+					<div class="card-body">
+					<table class="table" id="sectionTable">
+					<tr>
+						  <th>Treatment:</th>
+						</tr>
+						<tr>
+						   <td>'.$medRecord["treatment"].'</td>
+						</tr>
+					  </table>
+	
+						</div>
+					</div>
+					';
+	
+				endif;
+
+				if($medRecord["prescription"] !=""):
+					$hint.='
+					<div class="card">
+				<div class="card-body">
+				<table class="table" id="sectionTable">
+				<tr>
+                      <th>Prescription:</th>
+                    </tr>
+                    <tr>
+                       <td>'.$medRecord["prescription"].'</td>
                     </tr>
                   </table>
-			
-			';
-			$hint.='
-			<hr>
-                  <h5><b>Symptoms</b></h5>
-                  '.$medRecord["symptoms"].'
 
-                  <hr>
-                  <h3>Rx [Prescription]</h3>
-                  '.$medRecord["prescription"].'
-                  <br>
-                  <form class="generic_form_trigger_no_prompt" data-url="pets">
-                      <input type="hidden" name="action" value="printPrescription">
-                      <input type="hidden" name="checkupId" value="'.$medRecord["checkupId"].'">
-                    <button type="submit" class="btn btn-primary btn-sm"> Print Prescription</button>
-                  </form>
+					</div>
+				</div>
+				';
+				endif;
 
-                  <hr>
-                  <h5><b>Doctors Notes</b></h5>
-                  '.$medRecord["doctorsNote"].'
+
+
+				
+
+				
+
+		
+				
+
+				// $hint .='
+				// 	<div class="card">
+				// <div class="card-body">
+				// <table class="table" id="sectionTable">
+				// <tr>
+                //       <th>Disease:</th>
+                //     </tr>
+                //     <tr>
+                //        <td>'.$medRecord["prescription"].'</td>
+                //     </tr>
+                //   </table>
+
+				// 	</div>
+				// </div>
+				// ';
+
+			// $hint.='
+			// <hr>
+            //       <h5><b>Symptoms</b></h5>
+            //       '.$medRecord["symptoms"].'
+
+            //       <hr>
+            //       <h3>Rx [Prescription]</h3>
+            //       '.$medRecord["prescription"].'
+            //       <br>
+            //       <form class="generic_form_trigger_no_prompt" data-url="pets">
+            //           <input type="hidden" name="action" value="printPrescription">
+            //           <input type="hidden" name="checkupId" value="'.$medRecord["checkupId"].'">
+            //         <button type="submit" class="btn btn-primary btn-sm"> Print Prescription</button>
+            //       </form>
+
+            //       <hr>
+            //       <h5><b>Doctors Notes</b></h5>
+            //       '.$medRecord["doctorsNote"].'
 			
 			
-			';
+			// ';
 
 			echo($hint);
 								
