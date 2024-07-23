@@ -6,13 +6,14 @@
 			// dump($_POST);
 
 			$clientId = create_trackid("CL-");
+			$barangayId = convertBrgytoNumber($_POST["barangay"]);
 			query("insert INTO client (clientId, firstname, lastname, middlename, nameExtension, region,
 											province, cityMun, barangay, address, contactNumber, clientType,
-											birthDate, gender, clientStatus) 
-            VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", 
+											birthDate, gender, clientStatus, barangayId) 
+            VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", 
             $clientId, $_POST["firstname"], $_POST["lastname"], $_POST["middlename"], $_POST["nameExtension"],
 			$_POST["region"], $_POST["province"], $_POST["cityMun"], $_POST["barangay"], $_POST["address"],
-			$_POST["contactNumber"], "WALK IN", $_POST["birthDate"], $_POST["gender"], "DONE UPDATE");
+			$_POST["contactNumber"], "WALK IN", $_POST["birthDate"], $_POST["gender"], "DONE UPDATE", $barangayId);
 			
 			$res_arr = [
 				"result" => "success",

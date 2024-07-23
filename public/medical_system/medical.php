@@ -18,10 +18,18 @@
 
 
 			  if(isset($_POST["disease"])):
+				$client = query("select c.* from pet p
+								left join client c
+								on c.clientId = p.clientId
+								where p.petId = ?
+								", $_POST["petId"]);
+
+				$barangayId = $client[0]["barangayId"];
+				// dump($client);
 				foreach($_POST["disease"] as $row):
-					if (query("insert INTO checkup_disease (checkupId, diseaseId, petId) 
-					VALUES(?,?,?)", 
-					$medId, $row, $_POST["petId"]) === false)
+					if (query("insert INTO checkup_disease (checkupId, diseaseId, petId, barangay, dateCheckUp) 
+					VALUES(?,?,?,?,?)", 
+					$medId, $row, $_POST["petId"],$barangayId,date("Y-m-d H:i:s")) === false)
 					{
 						echo("not_success");
 					}

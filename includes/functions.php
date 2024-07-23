@@ -8,6 +8,63 @@
         return($number);
     }
 
+    function convertBrgytoNumber($barangay){
+        // Define an associative array mapping barangay names to numbers
+        $barangayMap = array(
+            "A. O. Floirendo" => 1,
+            "Datu Abdul Dadia" => 2,
+            "Buenavista" => 3,
+            "Cacao" => 4,
+            "Cagangohan" => 5,
+            "Consolacion" => 6,
+            "Dapco" => 7,
+            "Gredu (Poblacion)" => 8,
+            "J.P. Laurel" => 9,
+            "Kasilak" => 10,
+            "Katipunan" => 11,
+            "Katualan" => 12,
+            "Kauswagan" => 13,
+            "Kiotoy" => 14,
+            "Little Panay" => 15,
+            "Lower Panaga (Roxas)" => 16,
+            "Mabunao" => 17,
+            "Maduao" => 18,
+            "Malativas" => 19,
+            "Manay" => 20,
+            "Nanyo" => 21,
+            "New Malaga (Dalisay)" => 22,
+            "New Malitbog" => 23,
+            "New Pandan (Pob.)" => 24,
+            "New Visayas" => 25,
+            "Quezon" => 26,
+            "Salvacion" => 27,
+            "San Francisco (Poblacion)" => 28,
+            "San Nicolas" => 29,
+            "San Pedro" => 30,
+            "San Roque" => 31,
+            "San Vicente" => 32,
+            "Santa Cruz" => 33,
+            "Santo Niño (Poblacion)" => 34,
+            "Sindaton" => 35,
+            "Southern Davao" => 36,
+            "Tagpore" => 37,
+            "Tibungol" => 38,
+            "Upper Licanan" => 39,
+            "Waterfall" => 40
+        );
+    
+        // Convert barangay name to lowercase for case-insensitive comparison
+        // $barangayLower = strtolower($barangay);
+    
+        // Check if the barangay exists in the mapping
+        if (isset($barangayMap[$barangay])) {
+            return $barangayMap[$barangay];
+        } else {
+            return null; // Or handle if barangay is not found (optional)
+        }
+    }
+
+
     function to_peso_with_no_prefix($number){
         if($number != ""){
             return(number_format($number, 2, '.', ','));

@@ -4,6 +4,7 @@
 <link rel="stylesheet" href="AdminLTE_new/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+<link rel="stylesheet" href="AdminLTE_new/plugins/daterangepicker/daterangepicker.css">
 
 <style>
         #map{
@@ -124,7 +125,22 @@
                   
                 </h3> -->
 
-                <div class="form-group clearfix">
+                <div class="row">
+                  <div class="col-4">
+                  <div class="form-group">
+
+<div class="input-group">
+  <div class="input-group-prepend">
+    <span class="input-group-text">
+      <i class="far fa-calendar-alt"></i>
+    </span>
+  </div>
+  <input autocomplete="off" type="text" placeholder="Enter Date Here..." class="form-control" id="reservation" onchange="alert('awit')">
+</div>
+<!-- /.input group -->
+</div>
+
+                  <div class="form-group clearfix">
                       <div class="icheck-primary d-inline">
                         <input type="checkbox" id="parvoCheckbox"  onchange="updateMapColors()" >
                         <label for="parvoCheckbox">
@@ -143,8 +159,18 @@
                         DENGUE
                         </label>
                       </div>
-                      <button class="btn btn-info" style="float:right;" id="toggleFullscreen">Toggle Fullscreen</button>
                     </div>
+                    
+                  </div>
+                  <div class="col-4">
+                 
+                  </div>
+                  <div class="col-4">
+                  <button class="btn btn-info" style="float:right;" id="toggleFullscreen">Toggle Fullscreen</button>
+                  </div>
+                </div>
+
+                
                 
                 <!-- <br>
                 <br>
@@ -209,6 +235,8 @@
 <script src="AdminLTE_new/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
 <script src="AdminLTE_new/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
 <script src="AdminLTE_new/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="AdminLTE_new/plugins/moment/moment.min.js"></script>
+<script src="AdminLTE_new/plugins/daterangepicker/daterangepicker.js"></script>
 <script src="AdminLTE_new/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
 <script src="AdminLTE_new/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
 <script src="AdminLTE_new/plugins/jszip/jszip.min.js"></script>
@@ -398,7 +426,8 @@ function getColor(d) {
     return d > 300 ? '#D63230' :
            d > 200  ? '#F39237' :
            d > 100  ? '#2C6E49' :
-                      '#2C6E49';
+           d >= 1  ? '#2C6E49' :
+                      '#5E6572';
 }
 
 function style(feature) {
@@ -475,12 +504,12 @@ info.update = function (props) {
 
 info.addTo(map);
 
-var legend = L.control({position: 'bottomright'});
+var legend = L.control({position: 'bottomleft'});
 
 legend.onAdd = function (map) {
 
     var div = L.DomUtil.create('div', 'info legend'),
-        grades = [0, 10, 20, 50, 100, 200, 500, 1000],
+        grades = [0, 100, 200, 500, 1000],
         labels = [];
 
     // loop through our density intervals and generate a label with a colored square for each interval
@@ -492,14 +521,27 @@ legend.onAdd = function (map) {
 
     return div;
 };
+$('#reservation').daterangepicker({
+        autoUpdateInput: false,
+        locale: {
+            cancelLabel: 'Clear'
+        }
+    });
 
+    $('#reservation').on('apply.daterangepicker', function(ev, picker) {
+        $(this).val(picker.startDate.format('YYYY-MM-DD') + ' to ' + picker.endDate.format('YYYY-MM-DD'));
+        updateMapColors();
+    });
+
+    $('#reservation').on('cancel.daterangepicker', function(ev, picker) {
+        $(this).val('');
+    });
 legend.addTo(map);
-
-
         function updateMapColors() {
 
-          // parvo = $('#parvoCheckBox').val();
-
+          // parvo = $('#reservation').val();
+          // alert(parvo);
+          var dateRange = $('#reservation').val();
           var parvo = $('#parvoCheckbox').is(':checked');
           var flu = $('#fluCheckBox').is(':checked');
           var dengue = $('#dengueCheckBox').is(':checked');
@@ -512,6 +554,7 @@ legend.addTo(map);
                 parvo: parvo,
                 flu: flu,
                 dengue: dengue,
+                dateRange: dateRange,
             },
             success: function(data) {
                 // Parse the received JSON data from PHP
