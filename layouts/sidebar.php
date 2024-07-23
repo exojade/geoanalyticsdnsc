@@ -212,7 +212,7 @@
     <a href="appointment" class="nav-link">
       <i class="nav-icon fas fa-calendar"></i>
       <p>
-        Appointment
+      Telemedicine
         <?php $pending = query("select count(*) as count from appointment where appointmentStatus = 'ONGOING' and doctorId = ?", $_SESSION["dnsc_geoanalytics"]["userid"]); ?>
         <?php if($pending[0]["count"] != 0): ?>
           <span class="badge badge-danger right"><?php echo($pending[0]["count"]); ?></span>
