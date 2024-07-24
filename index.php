@@ -2,7 +2,9 @@
     require("includes/config.php");
     require("includes/uuid.php");
     require("includes/checkhit.php");
+	require("PHPMailer/PHPMailerAutoload.php");
 	ini_set('max_execution_time', '300');
+	
 		$request = $_SERVER['REQUEST_URI'];
 	
 		$constants = get_defined_constants();

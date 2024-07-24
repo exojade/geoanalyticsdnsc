@@ -40,10 +40,8 @@ class GoogleCloudAiplatformV1GenerationConfig extends \Google\Collection
    * @var string
    */
   public $responseMimeType;
-  /**
-   * @var string
-   */
-  public $responseStyle;
+  protected $responseSchemaType = GoogleCloudAiplatformV1Schema::class;
+  protected $responseSchemaDataType = '';
   /**
    * @var string[]
    */
@@ -132,18 +130,18 @@ class GoogleCloudAiplatformV1GenerationConfig extends \Google\Collection
     return $this->responseMimeType;
   }
   /**
-   * @param string
+   * @param GoogleCloudAiplatformV1Schema
    */
-  public function setResponseStyle($responseStyle)
+  public function setResponseSchema(GoogleCloudAiplatformV1Schema $responseSchema)
   {
-    $this->responseStyle = $responseStyle;
+    $this->responseSchema = $responseSchema;
   }
   /**
-   * @return string
+   * @return GoogleCloudAiplatformV1Schema
    */
-  public function getResponseStyle()
+  public function getResponseSchema()
   {
-    return $this->responseStyle;
+    return $this->responseSchema;
   }
   /**
    * @param string[]

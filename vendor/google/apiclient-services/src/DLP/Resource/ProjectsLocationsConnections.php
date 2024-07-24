@@ -37,8 +37,10 @@ class ProjectsLocationsConnections extends \Google\Service\Resource
   /**
    * Create a Connection to an external data source. (connections.create)
    *
-   * @param string $parent Required. Parent resource name in the format:
-   * `projects/{project}/locations/{location}`.
+   * @param string $parent Required. Parent resource name. The format of this
+   * value varies depending on the scope of the request (project or organization):
+   * + Projects scope: `projects/`PROJECT_ID`/locations/`LOCATION_ID +
+   * Organizations scope: `organizations/`ORG_ID`/locations/`LOCATION_ID
    * @param GooglePrivacyDlpV2CreateConnectionRequest $postBody
    * @param array $optParams Optional parameters.
    * @return GooglePrivacyDlpV2Connection
@@ -88,7 +90,7 @@ class ProjectsLocationsConnections extends \Google\Service\Resource
    * id/locations/global`.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string filter Optional. * Supported fields/values - `state` -
+   * @opt_param string filter Optional. Supported field/value: `state` -
    * MISSING|AVAILABLE|ERROR
    * @opt_param int pageSize Optional. Number of results per page, max 1000.
    * @opt_param string pageToken Optional. Page token from a previous page to
@@ -126,7 +128,7 @@ class ProjectsLocationsConnections extends \Google\Service\Resource
    * without location. For example: `organizations/12345678`.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string filter Optional. * Supported fields/values - `state` -
+   * @opt_param string filter Optional. Supported field/value: - `state` -
    * MISSING|AVAILABLE|ERROR
    * @opt_param int pageSize Optional. Number of results per page, max 1000.
    * @opt_param string pageToken Optional. Page token from a previous page to

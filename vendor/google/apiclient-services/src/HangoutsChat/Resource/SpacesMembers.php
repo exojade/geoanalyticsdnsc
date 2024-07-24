@@ -41,15 +41,24 @@ class SpacesMembers extends \Google\Service\Resource
    * specified space. Requires [user
    * authentication](https://developers.google.com/workspace/chat/authenticate-
    * authorize-chat-user). To specify the member to add, set the
-   * `membership.member.name` in the `CreateMembershipRequest`: - To add the
-   * calling app to a space or a direct message between two human users, use
-   * `users/app`. Unable to add other apps to the space. - To add a human user,
-   * use `users/{user}`, where `{user}` can be the email address for the user. For
+   * `membership.member.name` for the human or app member, or set the
+   * `membership.group_member.name` for the group member. - To add the calling app
+   * to a space or a direct message between two human users, use `users/app`.
+   * Unable to add other apps to the space. - To add a human user, use
+   * `users/{user}`, where `{user}` can be the email address for the user. For
    * users in the same Workspace organization `{user}` can also be the `id` for
    * the person from the People API, or the `id` for the user in the Directory
    * API. For example, if the People API Person profile ID for `user@example.com`
    * is `123456789`, you can add the user to the space by setting the
-   * `membership.member.name` to `users/user@example.com` or `users/123456789`.
+   * `membership.member.name` to `users/user@example.com` or `users/123456789`. -
+   * To add or invite a Google group in a named space, use `groups/{group}`, where
+   * `{group}` is the `id` for the group from the Cloud Identity Groups API. For
+   * example, you can use [Cloud Identity Groups lookup
+   * API](https://cloud.google.com/identity/docs/reference/rest/v1/groups/lookup)
+   * to retrieve the ID `123456789` for group email `group@example.com`, then you
+   * can add or invite the group to a named space by setting the
+   * `membership.group_member.name` to `groups/123456789`. Group email is not
+   * supported, and Google groups can only be added as members in named spaces.
    * (members.create)
    *
    * @param string $parent Required. The resource name of the space for which to
@@ -150,13 +159,16 @@ class SpacesMembers extends \Google\Service\Resource
    * /reference/rest/v1/spaces.members#membershiprole)) and type ([`member.type`](
    * https://developers.google.com/workspace/chat/api/reference/rest/v1/User#type)
    * ). To filter by role, set `role` to `ROLE_MEMBER` or `ROLE_MANAGER`. To
-   * filter by type, set `member.type` to `HUMAN` or `BOT`. To filter by both role
-   * and type, use the `AND` operator. To filter by either role or type, use the
-   * `OR` operator. For example, the following queries are valid: ``` role =
+   * filter by type, set `member.type` to `HUMAN` or `BOT`. Developer Preview: You
+   * can also filter for `member.type` using the `!=` operator. To filter by both
+   * role and type, use the `AND` operator. To filter by either role or type, use
+   * the `OR` operator. Either `member.type = "HUMAN"` or `member.type != "BOT"`
+   * is required when `use_admin_access` is set to true. Other member type filters
+   * will be rejected. For example, the following queries are valid: ``` role =
    * "ROLE_MANAGER" OR role = "ROLE_MEMBER" member.type = "HUMAN" AND role =
-   * "ROLE_MANAGER" ``` The following queries are invalid: ``` member.type =
-   * "HUMAN" AND member.type = "BOT" role = "ROLE_MANAGER" AND role =
-   * "ROLE_MEMBER" ``` Invalid queries are rejected by the server with an
+   * "ROLE_MANAGER" member.type != "BOT" ``` The following queries are invalid:
+   * ``` member.type = "HUMAN" AND member.type = "BOT" role = "ROLE_MANAGER" AND
+   * role = "ROLE_MEMBER" ``` Invalid queries are rejected by the server with an
    * `INVALID_ARGUMENT` error.
    * @opt_param int pageSize Optional. The maximum number of memberships to
    * return. The service might return fewer than this value. If unspecified, at

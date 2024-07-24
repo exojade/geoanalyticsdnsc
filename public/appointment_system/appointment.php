@@ -375,7 +375,7 @@ require("includes/google_class.php");
 					<input type="hidden" name="appointmentId" value="'.$row["appointmentId"].'">		
 						<button class="btn btn-sm btn-success btn-block">Mark as Done</button>
 					</form>
-					<a href="#" class="btn btn-sm btn-warning btn-block" style="margin: 5px 0;">Reschedule</a>
+					<a href="#" data-id="'.$row["appointmentId"].'" data-target="#rescheduleModal" data-toggle="modal" class="btn btn-sm btn-warning btn-block" style="margin: 5px 0;">Reschedule</a>
 					<form class="generic_form_trigger" data-url="appointment">
 					<input type="hidden" name="action" value="markDoneAppointment">
 					<input type="hidden" name="appointmentId" value="'.$row["appointmentId"].'">		
@@ -405,6 +405,220 @@ require("includes/google_class.php");
 					"aaData" => $data
 				);
 				echo json_encode($json_data);
+		elseif($_POST["action"] == "rescheduleModal"):
+			
+
+			$appointment = query("select * from appointment where appointmentId = ?", $_POST["appointmentId"]);
+			$appointment = $appointment[0];
+
+
+
+
+
+
+
+
+
+
+			// dump($_POST);
+			$appointment = query("select a.*, u.*, t.timeSlot from appointment a
+								left join users u
+								on a.clientId = u.userid
+								left join timeslot t
+								on t.slotId = a.timeSet
+								where a.appointmentId = ?
+								",$_POST["appointmentId"]);
+
+			$timeslot = query("select * from timeslot where remarks = 'active'");
+			// $doctors = query("select * from doctors");
+			
+
+			$appointment = $appointment[0];
+
+
+			$hint = '
+			<div class="row">
+              <div class="col-md-12">
+			  <input type="hidden" name="action" value="rescheduleAppointment">
+			  <input type="hidden" name="appointmentId" value="'.$appointment["appointmentId"].'">
+
+			  <div class="form-group">
+                    <label for="exampleInputEmail1">Client</label>
+                    <input disabled type="text" value="'.$appointment["fullname"].' - '.$appointment["username"].'" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                  </div>
+
+
+
+              <label for="exampleInputEmail1">Date of Appointment <span class="color-red">*</span></label><br>
+              <div class="input-group">
+              
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                  </div>
+                  <input value="'.$appointment["dateSet"].'" placeholder="Select Date of Appointment here" required type="date" name="appointment_date" class="form-control" >
+              
+                </div>
+
+				<br>
+
+				<div class="form-group">
+                        <label>Time Slot</label>
+                        <select name="timeSlot" class="form-control">';
+						foreach($timeslot as $row):
+							if($row["slotId"] == $appointment["timeSet"]):
+								$hint.='<option selected value="'.$row["slotId"].'">'.$row["timeSlot"].'</option>';
+							else:
+								$hint.='<option value="'.$row["slotId"].'">'.$row["timeSlot"].'</option>';
+							endif;
+						endforeach;
+                        $hint.='</select>
+                      </div>
+          
+			 
+			  </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Reason to move appointment</label>
+                  <textarea required name="reasonformove" class="form-control" rows="3" placeholder="Reason to move"></textarea>
+                </div>
+              </div>
+            </div>
+			<button type="submit" class="btn btn-primary">Submit</button>
+			';
+			echo($hint);
+
+
+
+
+
+
+			// $google->setAccessToken($_SESSION["dnsc_geoanalytics"]['accessToken']);
+			// $service = new Google_Service_Calendar($google);
+			// $calendarId= $appointment["calendarId"];
+
+
+			// $event = $service->events->get($calendarId, $appointment["eventId"]);
+			// // dump($event);
+
+			// $event->setSummary('New Summary'); // change the event title
+			// $event->setLocation('New Location'); // change the event location
+
+			// $start = new Google_Service_Calendar_EventDateTime();
+			// $start->setDateTime('2024-07-31T10:00:00+08:00'); // new start time
+			// $event->setStart($start);
+
+			// $end = new Google_Service_Calendar_EventDateTime();
+			// $end->setDateTime('2024-07-31T11:00:00+08:00'); // new end time
+			// $event->setEnd($end);
+
+
+			// $updatedEvent = $service->events->update($calendarId, $appointment["eventId"], $event, array('sendUpdates' => 'all'));
+			// dump("okay");
+			// $optParams = array(
+			// 	'maxResults' => 10,
+			// 	'orderBy' => 'startTime',
+			// 	'singleEvents' => true,
+			// 	// 'timeMin' => date(format: 'c'),
+			// );
+
+			// $results = $service->events->listEvents($calendarId, $optParams);
+			// $events = $results->getItems();
+			// dump($events);
+
+
+	
+			//   dump($event);
+
+			//   query("update appointment set meetId = ?, calendarId = ?, eventId = ? where appointmentId = ?",
+			//   			 $event->hangoutLink, $calendarId, $event->id, $_POST["appointmentId"]);
+
+		elseif($_POST["action"] == "rescheduleAppointment"):
+			// dump($_POST);	
+			// dump($_SESSION["dnsc_geoanalytics"]["userid"]);
+
+			$appointment = query("select * from appointment where doctorId = ? and timeSet = ? and dateSet = ?", $_SESSION["dnsc_geoanalytics"]["userid"],
+							$_POST["timeSlot"], $_POST["appointment_date"]
+					);
+
+			// dump($appointment);
+
+			if(!empty($appointment)):
+				$res_arr = [
+					"result" => "failed",
+					"title" => "Failed",
+					"message" => "Schedule and time is already taken. Cannot also pick same time and date from the original.",
+					// "link" => "appointment",
+					// "html" => '<a href="#">View or Print '.$transaction_id.'</a>'
+					];
+					echo json_encode($res_arr); exit();
+			endif;
+
+			$appointment = query("select * from appointment where appointmentId = ?", $_POST["appointmentId"]);
+			$appointment = $appointment[0];
+
+			$timeslot = query("select * from timeslot where slotId = ?" , $_POST["timeSlot"]);
+			$timeslot = $timeslot[0];
+			// dump($timeslot);
+
+			$google->setAccessToken($_SESSION["dnsc_geoanalytics"]['accessToken']);
+			$service = new Google_Service_Calendar($google);
+			$calendarId= $appointment["calendarId"];
+
+
+			$event = $service->events->get($calendarId, $appointment["eventId"]);
+			// dump($event);
+
+			$event->setSummary('CHECKUP for CITY VET'); // change the event title
+			$event->setLocation('Panabo City Veterinary Office'); // change the event location
+
+			$newNotes = $appointment["notes"] . " \n\nReschedule Notes: " . $_POST["reasonformove"];
+
+			$event->setDescription($newNotes);
+
+
+			$start = new Google_Service_Calendar_EventDateTime();
+			// dump($timeslot["startTime"]);
+			$start->setDateTime($_POST["appointment_date"] . 'T'.$timeslot["startTime"].':00+08:00'); // new start time
+			// dump($start);
+			$start->setTimeZone('Asia/Manila');
+			$event->setStart($start);
+
+			$end = new Google_Service_Calendar_EventDateTime();
+			$end->setDateTime($_POST["appointment_date"] . 'T'.$timeslot["endTime"].':00+08:00'); // new end time
+			$end->setTimeZone('Asia/Manila');
+			$event->setEnd($end);
+
+			dump($event);
+
+			// $conferenceData = new Google_Service_Calendar_ConferenceData();
+			// $conferenceRequest = new Google_Service_Calendar_CreateConferenceRequest();
+			// $conferenceRequest->setRequestId(time());
+			// $conferenceData->setCreateRequest($conferenceRequest);
+			// $event->setConferenceData($conferenceData);
+
+
+			$updatedEvent = $service->events->update($calendarId, $appointment["eventId"], $event, array('sendUpdates' => 'all'));
+			// dump("okay");
+
+			query("update appointment set dateSet = ?, timeSet =?, notes=? where appointmentId = ? ",
+					$_POST["appointment_date"], $_POST["timeSlot"], $newNotes, $_POST["appointmentId"]);
+
+					$res_arr = [
+						"result" => "success",
+						"title" => "Success",
+						"message" => "Success in updating Schedule",
+						"link" => "appointment",
+						// "html" => '<a href="#">View or Print '.$transaction_id.'</a>'
+						];
+						echo json_encode($res_arr); exit();
+
+
+
+			// query();
+
+
+
+
 		elseif($_POST["action"] == "markDoneAppointment"):
 			// dump($_POST);
 			query("update appointment set appointmentStatus = 'DONE' where appointmentId = ?", $_POST["appointmentId"]);
@@ -504,6 +718,9 @@ require("includes/google_class.php");
 		elseif($_POST["action"] == "acceptAppointment"):
 			// dump($_SESSION);
 
+			$doctor = query("select concat(doctorsFirstname, ' ', doctorsLastname, ' ', doctorsExtension) as doctorName from doctors where doctorsId = ?", $_POST["doctorId"]);
+			$doctorName = $doctor[0]["doctorName"];
+
 			query("update appointment set dateSet = ?, timeSet = ?, doctorId = ?, appointmentStatus = 'ONGOING' where appointmentId = ?", $_POST["appointment_date"], $_POST["timeSlot"], $_POST["doctorId"], $_POST["appointmentId"]);
 			$appointment = query("select doctorUser.username as doctorEmail, a.*, u.*, t.timeSlot, t.startTime, t.endTime from appointment a
 								left join users u
@@ -519,7 +736,9 @@ require("includes/google_class.php");
 
 			$google->setAccessToken($_SESSION["dnsc_geoanalytics"]['accessToken']);
 			$service = new Google_Service_Calendar($google);
-			$calendarId= "15df82f54cf28baa57c00d9fc76503ed9d5b0fcaef7ec5595fc7e04a87fb72f2@group.calendar.google.com";
+			$siteOptions = query("select * from siteoptions");
+			// dump($siteOptions);
+			$calendarId= $siteOptions[0]["calendarId"];
 			// $optParams = array(
 			// 	'maxResults' => 10,
 			// 	'orderBy' => 'startTime',
@@ -531,11 +750,12 @@ require("includes/google_class.php");
 			// $events = $results->getItems();
 			// dump($events);
 
-
+			$description = " Booked an appointment for checkup. \n\nPet Owner: ".$appointment["fullname"]." \n\nNotes: " . $appointment["notes"] . "\n\nVet to attend: " . $doctorName;
+			query("update appointment set notes = ? where appointmentId = ?", $description, $_POST["appointmentId"]);
 			$event = new Google_Service_Calendar_Event(array(
 				'summary' => 'CHECKUP for CITY VET - ' . $appointment["fullname"],
-				'location' => 'City Veterinary Office',
-				'description' => 'Book an appointment for checkup',
+				'location' => 'Panabo City Veterinary Office',
+				'description' => $description,
 				'start' => array(
 				  'dateTime' => ''.$appointment["dateSet"].'T'.$appointment["startTime"].':00+08:00',
 				  'timeZone' => 'Asia/Manila',
@@ -568,10 +788,11 @@ require("includes/google_class.php");
 			  ));
 			
 			//   $calendarId = 'primary';
-			  $event = $service->events->insert($calendarId, $event, ['conferenceDataVersion' => 1]);
-			//   dump($event->hangoutLink);
+			  $event = $service->events->insert($calendarId, $event, array('conferenceDataVersion' => 1, 'sendNotifications' => true));
+			//   dump($event);
 
-			  query("update appointment set meetId = ? where appointmentId = ?", $event->hangoutLink, $_POST["appointmentId"]);
+			  query("update appointment set meetId = ?, calendarId = ?, eventId = ? where appointmentId = ?",
+			  			 $event->hangoutLink, $calendarId, $event->id, $_POST["appointmentId"]);
 
 			$res_arr = [
 				"result" => "success",

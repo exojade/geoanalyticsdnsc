@@ -23,10 +23,6 @@ class CloudAiLargeModelsVisionGenerateVideoResponse extends \Google\Collection
   protected $generatedSamplesType = CloudAiLargeModelsVisionMedia::class;
   protected $generatedSamplesDataType = 'array';
   /**
-   * @var string
-   */
-  public $raiErrorMessage;
-  /**
    * @var int
    */
   public $raiMediaFilteredCount;
@@ -34,8 +30,8 @@ class CloudAiLargeModelsVisionGenerateVideoResponse extends \Google\Collection
    * @var string[]
    */
   public $raiMediaFilteredReasons;
-  protected $raiTextFilteredReasonType = CloudAiLargeModelsVisionFilteredText::class;
-  protected $raiTextFilteredReasonDataType = '';
+  protected $reportingMetricsType = IntelligenceCloudAutomlXpsReportingMetrics::class;
+  protected $reportingMetricsDataType = '';
 
   /**
    * @param CloudAiLargeModelsVisionMedia[]
@@ -50,20 +46,6 @@ class CloudAiLargeModelsVisionGenerateVideoResponse extends \Google\Collection
   public function getGeneratedSamples()
   {
     return $this->generatedSamples;
-  }
-  /**
-   * @param string
-   */
-  public function setRaiErrorMessage($raiErrorMessage)
-  {
-    $this->raiErrorMessage = $raiErrorMessage;
-  }
-  /**
-   * @return string
-   */
-  public function getRaiErrorMessage()
-  {
-    return $this->raiErrorMessage;
   }
   /**
    * @param int
@@ -94,18 +76,18 @@ class CloudAiLargeModelsVisionGenerateVideoResponse extends \Google\Collection
     return $this->raiMediaFilteredReasons;
   }
   /**
-   * @param CloudAiLargeModelsVisionFilteredText
+   * @param IntelligenceCloudAutomlXpsReportingMetrics
    */
-  public function setRaiTextFilteredReason(CloudAiLargeModelsVisionFilteredText $raiTextFilteredReason)
+  public function setReportingMetrics(IntelligenceCloudAutomlXpsReportingMetrics $reportingMetrics)
   {
-    $this->raiTextFilteredReason = $raiTextFilteredReason;
+    $this->reportingMetrics = $reportingMetrics;
   }
   /**
-   * @return CloudAiLargeModelsVisionFilteredText
+   * @return IntelligenceCloudAutomlXpsReportingMetrics
    */
-  public function getRaiTextFilteredReason()
+  public function getReportingMetrics()
   {
-    return $this->raiTextFilteredReason;
+    return $this->reportingMetrics;
   }
 }
 

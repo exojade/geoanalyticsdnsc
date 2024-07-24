@@ -62,7 +62,7 @@ class ProjectsLocationsDataStoresUserEvents extends \Google\Service\Resource
     return $this->call('collect', [$params], GoogleApiHttpBody::class);
   }
   /**
-   * Bulk import of User events. Request processing might be synchronous. Events
+   * Bulk import of user events. Request processing might be synchronous. Events
    * that already exist are skipped. Use this method for backfilling historical
    * user events. Operation.response is of type ImportResponse. Note that it is
    * possible for a subset of the items to be successfully inserted.
@@ -93,6 +93,10 @@ class ProjectsLocationsDataStoresUserEvents extends \Google\Service\Resource
    * `projects/{project}/locations/{location}`.
    * @param GoogleCloudDiscoveryengineV1UserEvent $postBody
    * @param array $optParams Optional parameters.
+   *
+   * @opt_param bool writeAsync If set to true, the user event is written
+   * asynchronously after validation, and the API responds without waiting for the
+   * write.
    * @return GoogleCloudDiscoveryengineV1UserEvent
    * @throws \Google\Service\Exception
    */

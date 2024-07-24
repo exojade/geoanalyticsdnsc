@@ -26,6 +26,22 @@
     </div>
 </div>
 
+
+<div class="modal fade" id="rescheduleModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-primary">
+          <h4 class="modal-title">Reschedule Appointment</h4>
+        </div>
+        <form class="generic_form_trigger" data-url="appointment">
+          <div class="modal-body">
+            <div class="fetched-data"></div>
+          </div>
+        </form>
+      </div>
+    </div>
+</div>
+
     <section class="content">
       <div class="container-fluid">
         <div class="card">
@@ -97,6 +113,26 @@ $('#modalAppointment').on('show.bs.modal', function (e) {
         }
     });
   });
+
+
+
+  $('#rescheduleModal').on('show.bs.modal', function (e) {
+    var rowid = $(e.relatedTarget).data('id');
+    Swal.fire({title: 'Please wait...', imageUrl: 'AdminLTE/dist/img/loader.gif', showConfirmButton: false});
+    $.ajax({
+        type : 'post',
+        url : 'appointment', //Here you will fetch records 
+        data: {
+            appointmentId: rowid, action: "rescheduleModal"
+        },
+        success : function(data){
+            $('#rescheduleModal .fetched-data').html(data);
+            Swal.close();
+            // $(".select2").select2();//Show fetched data from database
+        }
+    });
+  });
+
 
 
 });
