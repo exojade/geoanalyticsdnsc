@@ -71,6 +71,9 @@
 			else if ($request == 'doctors')
 				require 'public/doctors_system/doctors.php';
 
+			else if ($request == 'petBoarding')
+				require 'public/petBoarding_system/petBoarding.php';
+
 			else if ($request == 'myAppointments')
 				require 'public/appointment_system/myAppointments.php';
 				else if ($request == 'appointment')

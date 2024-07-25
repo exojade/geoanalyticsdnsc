@@ -81,6 +81,20 @@
       </a>
   </li>
 
+
+  <li class="nav-item">
+      <a href="petBoarding" class="nav-link">
+        <i class="nav-icon fas fa-home"></i>
+        <p>
+          Pet Boarding
+          <?php $pending = query("select count(*) as count from appointment where appointmentStatus = 'PENDING'"); ?>
+        <?php if($pending[0]["count"] != 0): ?>
+          <span class="badge badge-danger right"><?php echo($pending[0]["count"]); ?></span>
+        <?php endif; ?>
+        </p>
+      </a>
+  </li>
+
   <li class="nav-item">
       <a href="calendar" class="nav-link">
         <i class="nav-icon fas fa-calendar"></i>
@@ -181,6 +195,19 @@
         <p>
           My Appointments
           <span class="right badge badge-danger"></span>
+        </p>
+      </a>
+  </li>
+
+  <li class="nav-item">
+      <a href="petBoarding" class="nav-link">
+        <i class="nav-icon fas fa-home"></i>
+        <p>
+          Pet Boarding
+          <?php $pending = query("select count(*) as count from appointment where appointmentStatus = 'PENDING'"); ?>
+        <?php if($pending[0]["count"] != 0): ?>
+          <span class="badge badge-danger right"><?php echo($pending[0]["count"]); ?></span>
+        <?php endif; ?>
         </p>
       </a>
   </li>
