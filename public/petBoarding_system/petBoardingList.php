@@ -30,7 +30,7 @@
           </div>
 
           <div class="col-sm-6">
-            <a href="#" data-toggle="modal" data-target="#modalNewBoardUser" class="btn btn-primary float-right">ADD NEW</a>
+            <!-- <a href="#" data-toggle="modal" data-target="#modalNewBoardUser" class="btn btn-primary float-right">ADD NEW</a> -->
           </div>
     
         </div>
@@ -125,14 +125,14 @@
 
 
 
-    <div class="modal fade" id="medicalRecordModal">
-          <div class="modal-dialog modal-lg">
+    <div class="modal fade" id="modalPetBoardingApprove">
+          <div class="modal-dialog">
             <div class="modal-content ">
               <div class="modal-header bg-primary">
       
-					    <h3 class="modal-title text-center">Medical Record</h3>
+					    <h3 class="modal-title text-center">Approve Pet Boarding</h3>
               </div>
-              <form class="generic_form_trigger_no_prompt" data-url="pets" style="display: inline;">
+              <form class="generic_form_trigger" data-url="petBoarding" style="display: inline;">
               <div class="modal-body" style="-webkit-user-select: none;  /* Chrome all / Safari all */
               -moz-user-select: none;     /* Firefox all */
               -ms-user-select: none;  ">
@@ -140,13 +140,39 @@
                     <div class="fetched-data"></div>
                     <br>
                     <br>
-                      <div class="box-footer">
-                        <button class="btn btn-danger btn-flat pull-right" data-dismiss="modal" aria-label="Close">Close</button>
+                      <div class="modal-footer">
+                        <button class="btn btn-danger pull-right" data-dismiss="modal" aria-label="Close">Close</button>
                         
-                            <input type="hidden" name="action" value="printPrescription">
-                            
-                          <button type="submit" class="btn btn-flat btn-primary"> Print Prescription</button>
+                          <button type="submit" class="btn btn-success">Approve</button>
                         </form>
+                        <!-- <button type="submit" class="btn btn-primary btn-flat pull-right">Submit</button> -->
+                      </div>
+                  <!-- </form> -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="modal fade" id="modalPetBoardingDetails">
+          <div class="modal-dialog">
+            <div class="modal-content ">
+              <div class="modal-header bg-primary">
+      
+					    <h3 class="modal-title text-center">Approve Pet Boarding</h3>
+              </div>
+              <!-- <form class="generic_form_trigger" data-url="petBoarding" style="display: inline;"> -->
+              <div class="modal-body" style="-webkit-user-select: none;  /* Chrome all / Safari all */
+              -moz-user-select: none;     /* Firefox all */
+              -ms-user-select: none;  ">
+                  <!-- <form class="generic_form" url="employees" autocomplete="off"> -->
+                    <div class="fetched-data"></div>
+                    <br>
+                    <br>
+                      <div class="modal-footer">
+                        <button class="btn btn-danger pull-right" data-dismiss="modal" aria-label="Close">Close</button>
+                        
+                        <!-- </form> -->
                         <!-- <button type="submit" class="btn btn-primary btn-flat pull-right">Submit</button> -->
                       </div>
                   <!-- </form> -->
@@ -164,7 +190,7 @@
                 <div class="row">
                   <div class="col-md-3">
                     <div class="form-group">
-                      <label>Pet Owner</label>
+                      <!-- <label>Pet Owner</label> -->
                         <select id="petOwnerSelect" class="form-control selectFilter" style="width: 100%;">
                           <option></option>
                           <?php foreach($client as $row): ?>
@@ -175,39 +201,26 @@
                   </div>
                   <div class="col-md-2">
                     <div class="form-group">
-                      <label>From</label>
+                      <!-- <label>From</label> -->
                         <input type="date"  class="form-control selectFilter" id="fromDate" placeholder="Enter email">
                     </div>
                   </div>
                   <div class="col-md-2">
                     <div class="form-group">
-                      <label>To</label>
+                      <!-- <label>To</label> -->
                       <input type="date"  class="form-control selectFilter" id="toDate" placeholder="Enter email">
                     </div>
                   </div>
 
-                  <div class="col-md-2">
-                    <div class="form-group">
-                      <label>Type</label>
-                        <select id="typeSelect" class="form-control selectFilter" style="width: 100%;">
-                          <option disabled selected value="" disabled>Select Type</option>
-                          <option value="Walk-in">Walk-in</option>
-                          <option value="Online">Online</option>
-                        </select>
-                    </div>
+                  <div class="col-md-5">
+                  <a href="#" data-toggle="modal" data-target="#modalNewBoardUser" class="btn btn-primary float-right">ADD NEW</a>
+
                   </div>
 
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <label>Service</label>
-                        <select id="serviceSelect" class="form-control selectFilter" style="width: 100%;">
-                          <option disabled selected value="" disabled>Select Service</option>
-                          <option value="Checkup">Checkup</option>
-                          <option value="Vaccination">Vaccination</option>
-                          <option value="Anti Rabies">Anti Rabies</option>
-                        </select>
-                    </div>
-                  </div>
+
+     
+
+           
                 </div>
            
               </div>
@@ -215,11 +228,11 @@
                 <table class="table table-bordered" id="ajax_datatable">
                   <thead>
                     <th>Action</th>
-                    <th>Owner</th>
-                    <th>Pet</th>
-                    <th>Date</th>
-                    <th>Type</th>
-                    <th>Service</th>
+                    <th>Client</th>
+                    <th>Start</th>
+                    <th>End</th>
+                    <th>Pets</th>
+                    <th>Status</th>
                     <!-- <th>Diagnosis</th> -->
                     <!-- <th>Treatment</th> -->
                     <!-- <th>Disease</th> -->
@@ -272,22 +285,43 @@ $('#petOwnerSelect').select2({
     })
 
 
-    $('#medicalRecordModal').on('show.bs.modal', function (e) {
+    $('#modalPetBoardingApprove').on('show.bs.modal', function (e) {
         var rowid = $(e.relatedTarget).data('id');
         Swal.fire({title: 'Please wait...', imageUrl: 'AdminLTE/dist/img/loader.gif', showConfirmButton: false});
         $.ajax({
             type : 'post',
-            url : 'medical', //Here you will fetch records 
+            url : 'petBoarding', //Here you will fetch records 
             data: {
-                checkupId: rowid, action: "medicalRecordModal"
+                petBoardingId: rowid, action: "modalPetBoardingApprove"
             },
             success : function(data){
-                $('#medicalRecordModal .fetched-data').html(data);
+                $('#modalPetBoardingApprove .fetched-data').html(data);
                 Swal.close();
                 // $(".select2").select2();//Show fetched data from database
             }
         });
      });
+
+
+     $('#modalPetBoardingDetails').on('show.bs.modal', function (e) {
+        var rowid = $(e.relatedTarget).data('id');
+        Swal.fire({title: 'Please wait...', imageUrl: 'AdminLTE/dist/img/loader.gif', showConfirmButton: false});
+        $.ajax({
+            type : 'post',
+            url : 'petBoarding', //Here you will fetch records 
+            data: {
+                petBoardingId: rowid, action: "modalPetBoardingDetails"
+            },
+            success : function(data){
+                $('#modalPetBoardingDetails .fetched-data').html(data);
+                Swal.close();
+                // $(".select2").select2();//Show fetched data from database
+            }
+        });
+     });
+
+
+     
 
 
 
@@ -307,19 +341,19 @@ var datatable =
                 'serverMethod': 'post',
                 
                 'ajax': {
-                    'url':'medical',
+                    'url':'petBoarding',
                      'type': "POST",
                      "data": function (data){
-                        data.action = "medicalRecordMasterList";
+                        data.action = "petBoardingList";
                      }
                 },
                 'columns': [
                     { data: 'action', "orderable": false },
-                    { data: 'owner', "orderable": false  },
-                    { data: 'pet', "orderable": false  },
-                    { data: 'dateCheckup', "orderable": false  },
-                    { data: 'type', "orderable": false  },
-                    { data: 'service', "orderable": false },
+                    { data: 'client', "orderable": false  },
+                    { data: 'from_date', "orderable": false  },
+                    { data: 'to_date', "orderable": false  },
+                    { data: 'numberPets', "orderable": false  },
+                    { data: 'display_status', "orderable": false },
                     //{ data: 'diagnosis', "orderable": false  },
                     //{ data: 'treatment', "orderable": false  },
                     //{ data: 'disease', "orderable": false  },
@@ -364,8 +398,8 @@ var datatable =
   var to = $('#toDate').val();
   // var type = $('#typeSelect').val();
 
-  var type = $('#typeSelect').val() || "";
-  var service = $('#serviceSelect').val() || "";
+  // var type = $('#typeSelect').val() || "";
+  // var service = $('#serviceSelect').val() || "";
   // var service = $('#serviceSelect').val();
 
 
