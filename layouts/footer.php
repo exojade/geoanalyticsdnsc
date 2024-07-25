@@ -7,6 +7,7 @@ $(document).on('submit', '.generic_form_trigger', function(e) {
 
     var form = $(this)[0];
     var formData = new FormData(form);
+
     var promptmessage = "";
     var prompttitle = "";
     if(typeof($(this).data('title')) != "undefined" ) {

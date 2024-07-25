@@ -70,6 +70,30 @@
 
     <section class="content">
       <div class="container-fluid">
+
+      <!-- <?php
+        // dump($_SESSION);
+      if($_SESSION["dnsc_geoanalytics"]["role"] == "DOCTOR"):  
+      
+        ?>
+        <div class="alert alert-info alert-dismissible">
+             
+                  <h5><i class="icon fas fa-info"></i> Legends for the Action Buttons</h5>
+                  <div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-success">
+                          <i class="fas fa-check"> MARK AS DONE</i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-warning">
+                          <i class="fas fa-edit"> RESCHEDULE</i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-danger">
+                          <i class="fas fa-times"> CANCEL</i>
+                        </button>
+                      </div>
+
+                </div>
+      <?php endif; ?> -->
+
         <div class="card">
               <div class="card-header">
                 <h4 class="m-0">Appointment List
@@ -83,6 +107,18 @@
               <!-- <iframe src="https://calendar.google.com/calendar/embed?src=15df82f54cf28baa57c00d9fc76503ed9d5b0fcaef7ec5595fc7e04a87fb72f2%40group.calendar.google.com&ctz=Asia%2FManila" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe> -->
 
                 <table class="table table-bordered table-striped" id="ajax_datatable">
+
+                <?php if($_SESSION["dnsc_geoanalytics"]["role"] == "DOCTOR"): ?>
+                  <thead>
+                    <th width="13%">Action</th>
+                    <th>Client</th>
+                    <th>Date</th>
+                    <th>Schedule</th>
+                    <th>Status</th>
+                    <th>Meeting</th>
+                    <!-- <th>Meet Link</th> -->
+                  </thead>
+                <?php else: ?>
                   <thead>
                     <th width="13%">Action</th>
                     <th>Client</th>
@@ -92,6 +128,7 @@
                     <th>Doctor</th>
                     <!-- <th>Meet Link</th> -->
                   </thead>
+                <?php endif; ?>
                 </table>
               </div>
             </div>

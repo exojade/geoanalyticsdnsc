@@ -4,19 +4,12 @@ require("includes/google_class.php");
 
 		if($_POST["action"] == "availSchedules"):
 			// dump($_POST);
-
-			
-			
-			
 			$the_date = $_POST["the_date"];
-
-			
 			// dump($type);
 			$sql = query("select timeSet, count(*) as count from appointment where appointmentStatus in ('PENDING', 'ACCEPTED') and dateSet = ? group by timeSet",
 							$the_date);
 							// dump($sql);
 			$schedules = query("select * from timeslot where remarks = 'active'");
-			
 			$scheduletime = [];
 			foreach($schedules as $s):
 				$scheduletime[$s["slotId"]] = $s;
@@ -26,28 +19,17 @@ require("includes/google_class.php");
 			foreach($sql as $row):
 				$schedules_taken[$row["timeSet"]] = $row;
 			endforeach;
-			// dump($schedules_taken);
-			// dump("awit");
 			foreach($scheduletime as $scheds):
 				$sched = $scheds;
-				// dump($scheds);
-
 				if(isset($schedules_taken[$scheds["slotId"]])):
 					$scheduletime[$scheds["slotId"]]["slotsAvailable"] = $scheduletime[$scheds["slotId"]]["slotsAvailable"] - $schedules_taken[$scheds["slotId"]]["count"];
 				endif;
-
-
-				
-				// if(array_key_exists($scheds["slotId"], $schedules_taken)){
-				// }
 			endforeach;
 			
-			// dump($scheduletime);
 			echo("<div class='row'>");
 			echo("<div class='col-md-6'>");
 			$count = 0;
 			foreach($scheduletime as $s):
-				// dump($s);
 				if($count == 5){
 					echo("</div>");
 					echo("<div class='col-md-6'>");
@@ -56,14 +38,11 @@ require("includes/google_class.php");
 				$time = $s["slotId"];
 				$timeSlot = $s["timeSlot"];
 				
-			
 				$the_time=strtotime($the_date);
 				$month=date("F",$the_time);
 				$year=date("Y",$the_time);
 				$day=date("d",$the_time);
 				$day = strval($day);
-			
-			
 			
 				$return_cue = true;
 				
@@ -223,7 +202,14 @@ require("includes/google_class.php");
 
 			$limitString = " limit " . $limit;
 			$offsetString = " offset " . $offset;
-			$baseQuery = "select * from appointment order by dateSet desc, timeSet desc";
+			$baseQuery = "SELECT * FROM appointment
+              ORDER BY 
+              CASE 
+                WHEN appointmentStatus = 'PENDING' THEN 0 
+                ELSE 1 
+              END, 
+              dateSet DESC, 
+              timeSet DESC";
 
 			$TimeSlot = [];
 			$timeslot = query("select * from timeslot");
@@ -380,31 +366,48 @@ require("includes/google_class.php");
 				endif;
 				// dump($query);
 				$i = 0;
+
+
+				$TimeSlot = [];
+				$timeslot = query("select * from timeslot");
+				foreach($timeslot as $row):
+					$TimeSlot[$row["slotId"]] = $row;
+				endforeach;
+
+
 				foreach($data as $row):
 					// dump($row);
 					$data[$i]["action"] = '
-					<form class="generic_form_trigger"  data-url="appointment" >
+
+
+				<div class="btn-group btn-block" width="100%">
+				<a href="#" data-id="'.$row["appointmentId"].'" data-target="#modalAppointmentDetails" data-toggle="modal" class="btn btn-flat btn-sm btn-info" ><i class="fa fa-eye mb-0"></i></a>
+
+				<form class="generic_form_trigger mb-0" data-url="appointment" >
 					<input type="hidden" name="action" value="markDoneAppointment">
 					<input type="hidden" name="appointmentId" value="'.$row["appointmentId"].'">		
-						<button class="btn btn-sm btn-success btn-block">Mark as Done</button>
+						<button class="btn btn-sm btn-success btn-flat"><i class="fa fa-check"></i></button>
 					</form>
-					<a href="#" data-id="'.$row["appointmentId"].'" data-target="#rescheduleModal" data-toggle="modal" class="btn btn-sm btn-warning btn-block" style="margin: 5px 0;">Reschedule</a>
-					<form class="generic_form_trigger" data-url="appointment">
+				<a href="#" data-id="'.$row["appointmentId"].'" data-target="#rescheduleModal" data-toggle="modal" class="btn btn-flat btn-sm btn-warning" ><i class="fa fa-edit mb-0"></i></a>
+
+                     <form class="generic_form_trigger" data-url="appointment">
 					<input type="hidden" name="action" value="markDoneAppointment">
 					<input type="hidden" name="appointmentId" value="'.$row["appointmentId"].'">		
-						<button class="btn btn-sm btn-danger btn-block">Cancel</button>
-					</form>
+						<button class="btn btn-sm btn-danger btn-flat"><i class="fa fa-times"></i></button>
+					</form> 
+											
+
+									
+                      </div>
+			
 					';
 	
 					$data[$i]["client"] = $Client[$row["clientId"]]["fullname"];
 					$data[$i]["email"] = $Client[$row["clientId"]]["username"];
-					$data[$i]["doctor"] = "<ul style='list-style-type: none;'>
-												<li>".$row["dateSet"]."</li>
-												<li>".$row["timeSlot"]."</li>
-												<li>&nbsp;</li>
-												<li><a href='".$row["meetId"]."' target='_blank' class='btn btn-sm btn-block btn-info'>Go: ".$row["meetId"]."</a></li>
-											</ul>
+					$data[$i]["doctor"] = "<a href='".$row["meetId"]."' target='_blank' class='btn btn-sm btn-block btn-info'>Proceed to Google Meet</a>
 					";
+
+					$data[$i]["timeSet"] = $TimeSlot[$row["timeSet"]]["timeSlot"];
 	
 					
 					// $data[$i]["appointmentDate"] = $row["dateSet"] . " - " . $TimeSlot[$row["timeSet"]]["timeSlot"];
