@@ -223,7 +223,7 @@ require("includes/google_class.php");
 
 			$limitString = " limit " . $limit;
 			$offsetString = " offset " . $offset;
-			$baseQuery = "select * from appointment order by timestampSet desc";
+			$baseQuery = "select * from appointment order by dateSet desc, timeSet desc";
 
 			$TimeSlot = [];
 			$timeslot = query("select * from timeslot");
@@ -266,16 +266,19 @@ require("includes/google_class.php");
 					$data[$i]["action"] = '
 				<form class="generic_form_trigger" style="display:inline;" data-url="appointment">
 				<input type="hidden" name="action" value="cancelAppointment">
-				<div class="btn-group" width="100%">
-                        <a href="#" data-toggle="modal" data-id="'.$row["appointmentId"].'" data-target="#modalAppointment" class="btn btn-sm btn-success">Accept</a>
+				<div class="btn-group btn-block" width="100%">
+                        <a href="#" data-toggle="modal" data-id="'.$row["appointmentId"].'" data-target="#modalAppointmentDetails" class="btn btn-sm btn-info"><i class="fa fa-eye"></i></a>
+
+                        <a href="#" data-toggle="modal" data-id="'.$row["appointmentId"].'" data-target="#modalAppointment" class="btn btn-sm btn-success"><i class="fa fa-check"></i></a>
                       
 											
-											<button class="btn btn-sm btn-danger">Cancel</button>
+											<button class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button>
 									
                       </div>
 					  </form>
-	
 				';
+
+				
 					$data[$i]["doctor"] = "";
 				elseif($row["appointmentStatus"] == "CANCELLED"):
 
@@ -284,32 +287,42 @@ require("includes/google_class.php");
 					<input type="hidden" name="action" value="cancelAppointment">
 					<div class="btn-group" width="100%">
 							<a href="#" data-toggle="modal" data-id="'.$row["appointmentId"].'" data-target="#modalAppointment" class="btn btn-sm btn-success">Accept</a>
-						  
-												
 												<button disabled class="btn btn-sm btn-danger">NO ACTION</button>
-										
 						  </div>
 						  </form>
-		
 					';
 					
 					$data[$i]["doctor"] = "";
 				else:
 
 					$data[$i]["action"] = '
-					<form class="generic_form_trigger" style="display:inline;" data-url="appointment">
-					<input type="hidden" name="action" value="cancelAppointment">
-					<div class="btn-group" width="100%">
-						  
-												
-												<button disabled class="btn btn-sm btn-danger">NO ACTION</button>
-										
-						  </div>
-						  </form>
-		
+					<a href="#" data-toggle="modal" data-id="'.$row["appointmentId"].'" data-target="#modalAppointmentDetails" class="btn btn-block btn-sm btn-info"><i class="fa fa-eye"></i> Details</a>
 					';
 					$data[$i]["doctor"] = $Doctors[$row["doctorId"]]["doctorsLastname"] . ", " . $Doctors[$row["doctorId"]]["doctorsFirstname"];
 				endif;
+				$data[$i]["timeSet"] = $TimeSlot[$row["timeSet"]]["timeSlot"];
+
+
+				switch ($row["appointmentStatus"]) {
+					case "ONGOING":
+						// Code for handling ONGOING status
+						$data[$i]["appointmentStatus"] = "<span class='text-blue'>".$row["appointmentStatus"]."</span>";
+						break;
+				
+					case "DONE":
+						$data[$i]["appointmentStatus"] = "<span class='text-green'>".$row["appointmentStatus"]."</span>";
+						break;
+				
+					case "PENDING":
+						$data[$i]["appointmentStatus"] = "<span class='text-yellow'>".$row["appointmentStatus"]."</span>";
+						break;
+				
+					default:
+						// Code for handling unknown status
+						$data[$i]["appointmentStatus"] = "<span class='text-red'>".$row["appointmentStatus"]."</span>";
+						// echo "Unknown appointment status.";
+						break;
+				}
 
 				
 				// $data[$i]["appointmentDate"] = $row["dateSet"] . " - " . $TimeSlot[$row["timeSet"]]["timeSlot"];
@@ -405,6 +418,128 @@ require("includes/google_class.php");
 					"aaData" => $data
 				);
 				echo json_encode($json_data);
+
+		elseif($_POST["action"] == "modalAppointmentDetails"):
+			
+
+			$appointment = query("
+				select a.*, t.timeSlot, c.barangay, c.address, c.contactNumber,
+				u.username, u.fullname
+				from appointment a
+				left join timeslot t
+				on t.slotId = a.timeSet
+				left join client c
+				on c.clientId = a.clientId
+				left join users u
+				on u.userid = c.clientId
+				where a.appointmentId = ?
+			", $_POST["appointmentId"]);
+
+			$appointment = $appointment[0];
+			// dump($appointment);
+
+
+			$hint = "";
+
+			$hint .= '
+			<div class="card">
+				<div class="card-body">
+				<table class="table" id="sectionTable">
+				<tr>
+                      <th>Client Name:</th>
+                      <td>'.$appointment["fullname"].'</td>
+					    <th>Email Address:</th>
+                      <td>'.$appointment["username"].'</td>
+                    </tr>
+					<tr>
+                      <th>Barangay:</th>
+                      <td>'.$appointment["barangay"].'</td>
+					  <th>Home Address:</th>
+                      <td>'.$appointment["address"].'</td>
+                    </tr>
+                  </table>
+
+					</div>
+				</div>';
+
+
+				$date = $appointment["dateSet"];
+				$dateTime = new DateTime($date);
+				$formattedDate = $dateTime->format('l M d, Y') .  " , " . $appointment["timeSlot"];
+
+
+				$date = $appointment["timestampSet"];
+				$dateTime = (new DateTime())->setTimestamp($date);
+				$formattedDateSet = $dateTime->format('l M d, Y');
+				// echo $formattedDate;
+
+
+			// $scheduleDate = DateTime('2024-01-01')->format('l M d, Y');
+
+
+			switch ($appointment["appointmentStatus"]) {
+				case "ONGOING":
+					// Code for handling ONGOING status
+					$appointment["appointmentStatus"] = "<span class='text-blue'>".$appointment["appointmentStatus"]."</span>";
+					break;
+			
+				case "DONE":
+					$appointment["appointmentStatus"] = "<span class='text-green'>".$appointment["appointmentStatus"]."</span>";
+					break;
+			
+				case "PENDING":
+					$appointment["appointmentStatus"] = "<span class='text-yellow'>".$appointment["appointmentStatus"]."</span>";
+					break;
+			
+				default:
+					// Code for handling unknown status
+					$appointment["appointmentStatus"] = "<span class='text-red'>".$appointment["appointmentStatus"]."</span>";
+					// echo "Unknown appointment status.";
+					break;
+			}
+
+
+				$hint .= '
+			<div class="card">
+				<div class="card-body">
+				<dl>
+                  <dt>Schedule of Appointment:</dt>
+                  <dd>'.$formattedDate.'</dd>
+                </dl>
+				<table class="table" id="sectionTable">
+				<tr>
+                      <th>Status:</th>
+                      <td>'.$appointment["appointmentStatus"].'</td>
+					    <th>Date Created:</th>
+                      <td>'.$formattedDateSet.'</td>
+                    </tr>
+                  </table>
+
+				<dl>
+                  <dt>Notes for the Appointment:</dt>
+                  <dd>'.nl2br($appointment["notes"]).'</dd>
+                </dl>
+
+					</div>
+				</div>';
+
+			if($appointment["meetId"] != ""):
+				$hint .= '
+			<div class="card">
+				<div class="card-body">
+				<dl>
+                  <dt>Google Meet Link:</dt>
+                  <dd><a style="margin-top:10px;" href="'.$appointment["meetId"].'" target="_blank" class="btn btn-sm btn-info btn-flat">'.$appointment["meetId"].'</a></dd>
+                </dl>
+					</div>
+				</div>';
+			endif;
+
+				echo($hint);
+
+		
+
+
 		elseif($_POST["action"] == "rescheduleModal"):
 			
 
@@ -588,7 +723,7 @@ require("includes/google_class.php");
 			$end->setTimeZone('Asia/Manila');
 			$event->setEnd($end);
 
-			dump($event);
+			// dump($event);
 
 			// $conferenceData = new Google_Service_Calendar_ConferenceData();
 			// $conferenceRequest = new Google_Service_Calendar_CreateConferenceRequest();

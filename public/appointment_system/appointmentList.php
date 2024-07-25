@@ -8,6 +8,18 @@
   <link rel="stylesheet" href="AdminLTE/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="AdminLTE_new/dist/css/adminlte.min.css">
+
+  <style>
+  #sectionTable td{
+    border: 0px;
+    padding: 0px;
+  }
+  #sectionTable th{
+    border: 0px;
+    padding: 0px;
+  }
+</style>
+
 <div class="content-wrapper">
 
 
@@ -22,6 +34,20 @@
             <div class="fetched-data"></div>
           </div>
         </form>
+      </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modalAppointmentDetails">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-primary">
+          <h4 class="modal-title">Appointment Details</h4>
+        </div>
+          <div class="modal-body">
+            <div class="fetched-data"></div>
+          </div>
       </div>
     </div>
 </div>
@@ -60,7 +86,8 @@
                   <thead>
                     <th width="13%">Action</th>
                     <th>Client</th>
-                    <th>Note</th>
+                    <th>Date</th>
+                    <th>Schedule</th>
                     <th>Status</th>
                     <th>Doctor</th>
                     <!-- <th>Meet Link</th> -->
@@ -134,6 +161,24 @@ $('#modalAppointment').on('show.bs.modal', function (e) {
   });
 
 
+  $('#modalAppointmentDetails').on('show.bs.modal', function (e) {
+    var rowid = $(e.relatedTarget).data('id');
+    Swal.fire({title: 'Please wait...', imageUrl: 'AdminLTE/dist/img/loader.gif', showConfirmButton: false});
+    $.ajax({
+        type : 'post',
+        url : 'appointment', //Here you will fetch records 
+        data: {
+            appointmentId: rowid, action: "modalAppointmentDetails"
+        },
+        success : function(data){
+            $('#modalAppointmentDetails .fetched-data').html(data);
+            Swal.close();
+            // $(".select2").select2();//Show fetched data from database
+        }
+    });
+  });
+
+
 
 });
 
@@ -163,7 +208,8 @@ var datatable =
                 'columns': [
                     { data: 'action', "orderable": false },
                     { data: 'client', "orderable": false },
-                    { data: 'notes', "orderable": false },
+                    { data: 'dateSet', "orderable": false },
+                    { data: 'timeSet', "orderable": false },
                     { data: 'appointmentStatus', "orderable": false },
                     { data: 'doctor', "orderable": false },
 
