@@ -154,6 +154,35 @@
         </div>
 
 
+
+        <div class="modal fade" id="modalUpdatePetBoarding">
+          <div class="modal-dialog">
+            <div class="modal-content ">
+              <div class="modal-header bg-warning">
+					    <h3 class="modal-title text-center">Update Pet Boarding Schedule</h3>
+              </div>
+              <form class="generic_form_trigger" data-url="petBoarding" style="display: inline;">
+              <div class="modal-body" style="-webkit-user-select: none;  /* Chrome all / Safari all */
+              -moz-user-select: none;     /* Firefox all */
+              -ms-user-select: none;  ">
+                  <!-- <form class="generic_form" url="employees" autocomplete="off"> -->
+                    <div class="fetched-data"></div>
+                    <br>
+                    <br>
+                      <div class="modal-footer">
+                        <button class="btn btn-danger pull-right" data-dismiss="modal" aria-label="Close">Close</button>
+                        
+                          <button type="submit" class="btn btn-primary">Save</button>
+                        </form>
+                        <!-- <button type="submit" class="btn btn-primary btn-flat pull-right">Submit</button> -->
+                      </div>
+                  <!-- </form> -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+
         <div class="modal fade" id="modalPetBoardingDetails">
           <div class="modal-dialog">
             <div class="modal-content ">

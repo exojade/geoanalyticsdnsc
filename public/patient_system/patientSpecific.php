@@ -87,15 +87,6 @@ $pets = query("select *, CONCAT(
 
               <div class="col-md-12">
                 <div class="form-group">
-                  <label for="exampleInputEmail1">Pet Condition </label>
-                  <input required type="text" name="petCondition" class="form-control" id="exampleInputEmail1" placeholder="Ex. Healthy, Sick">
-                </div>
-              </div>
-
-
-
-              <div class="col-md-12">
-                <div class="form-group">
                   <label>Pet Description</label>
                   <textarea name="petDescription" class="form-control" rows="3" placeholder="Enter ..."></textarea>
                 </div>
@@ -105,7 +96,7 @@ $pets = query("select *, CONCAT(
                       <label for="exampleInputFile">Image of Pet</label>
                       <br>
                       <input name="petImage"  type="file" accept=".pdf, image/*" id="exampleInputFile">
-                      <p class="help-block">Upload death certificate here!</p>
+                      <p class="help-block">Upload Image of Pet Here!</p>
                   </div>
                 </div>
             </div>

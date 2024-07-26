@@ -57,9 +57,9 @@
 			// dump($_POST);
 			$clientId = $_POST["clientId"];
 			$petId = create_trackid("PET");
-			if (query("insert INTO pet (petId, petName, petType, petBreed, petDescription, clientId, petGender, petDob, petCondition) 
-				VALUES(?,?,?,?,?,?,?,?,?)", 
-				$petId, $_POST["petName"] ,$_POST["typePet"], $_POST["petBreed"], $_POST["petDescription"], $clientId, $_POST["petGender"], $_POST["petDob"], $_POST["petCondition"]) === false)
+			if (query("insert INTO pet (petId, petName, petType, petBreed, petDescription, clientId, petGender, petDob) 
+				VALUES(?,?,?,?,?,?,?,?)", 
+				$petId, $_POST["petName"] ,$_POST["typePet"], $_POST["petBreed"], $_POST["petDescription"], $clientId, $_POST["petGender"], $_POST["petDob"]) === false)
 				{
 					echo("not_success");
 				}

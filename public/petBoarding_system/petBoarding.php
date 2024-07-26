@@ -79,6 +79,10 @@
 				endif;
 			endif;
 
+			// dump($_SESSION);
+			if($_SESSION["dnsc_geoanalytics"]["role"] == "CLIENT"):
+				$where .=" and clientId = '".$_SESSION["dnsc_geoanalytics"]["userid"]."'";
+			endif;
 
 			
 
@@ -109,6 +113,9 @@ ORDER BY
 			endforeach;
 
 
+			// dump($_SESSION);
+
+			if($_SESSION["dnsc_geoanalytics"]["role"] == "admin"):
 			$i = 0;
 			foreach($data as $row):
 				// dump($row);
@@ -131,6 +138,7 @@ ORDER BY
 					
 					<form class="generic_form_trigger" style="display:inline;" data-url="petBoarding">
 						<input type="hidden" name="action" value="donePetBoarding">
+						<input type="hidden" name="petBoardingId" value="'.$row["petBoardingId"].'">
 								<div class="btn-group btn-block" width="100%">
 								<a href="#" data-toggle="modal" data-id="'.$row["petBoardingId"].'" data-target="#modalPetBoardingDetails" class="btn btn-sm btn-info"><i class="fa fa-eye"></i></a>
 								<button class="btn btn-sm btn-success"><i class="fa fa-check"></i></button>
@@ -182,6 +190,98 @@ ORDER BY
                 "aaData" => $data
             );
             echo json_encode($json_data);
+		else:
+
+
+			$i = 0;
+			foreach($data as $row):
+				// dump($row);
+
+				// dump($Clients[$Pets[$row["petId"]]["clientId"]]);
+
+				if($row["display_status"] == "PENDING"):
+					$data[$i]["action"] = '
+					<form class="generic_form_trigger" style="display:inline;" data-url="petBoarding">
+						<input type="hidden" name="action" value="cancelPetBoarding">
+								<div class="btn-group btn-block" width="100%">
+								<button class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button>
+						</div>
+					  </form>
+					';
+				elseif($row["display_status"] == "OVERDUE" || $row["display_status"] == "ONGOING"):
+					$data[$i]["action"] = '
+						<div class="btn-group btn-block" width="100%">
+								<a href="#" data-toggle="modal" data-id="'.$row["petBoardingId"].'" data-target="#modalPetBoardingDetails" class="btn btn-sm btn-info"><i class="fa fa-eye"></i></a>
+						</div>
+					
+					';
+				elseif($row["display_status"] == "DONE"):
+					$data[$i]["action"] = '
+					
+				
+								<a href="#" data-toggle="modal" data-id="'.$row["petBoardingId"].'" data-target="#modalPetBoardingDetails" class="btn btn-sm btn-info btn-block"><i class="fa fa-eye"></i></a>
+						
+					';
+				endif;
+				// $data[$i]["action"] = '<a href="#" data-toggle="modal" data-target="#medicalRecordModal" data-id="'.$row["checkupId"].'" class="btn btn-block btn-sm btn-success">Open Record</a>';
+				$data[$i]["client"] = $Clients[$row["clientId"]]["lastname"] . ", " . $Clients[$row["clientId"]]["firstname"];
+				$data[$i]["from_date"] = (new DateTime($row["from_date"]))->format('l, F j, Y h:i A');
+				$data[$i]["to_date"] = (new DateTime($row["to_date"]))->format('l, F j, Y h:i A');
+
+
+
+				switch ($row["display_status"]) {
+					case "ONGOING":
+						// Code for handling ONGOING status
+						$data[$i]["display_status"] = "<span class='text-blue'>".$row["display_status"]."</span>";
+						break;
+				
+					case "DONE":
+						$data[$i]["display_status"] = "<span class='text-green'>".$row["display_status"]."</span>";
+						break;
+				
+					case "PENDING":
+						$data[$i]["display_status"] = "<span class='text-yellow'>".$row["display_status"]."</span>";
+						break;
+				
+					default:
+						// Code for handling unknown status
+						$data[$i]["display_status"] = "<span class='text-red'>".$row["display_status"]."</span>";
+						// echo "Unknown appointment status.";
+						break;
+				}
+		
+                $i++;
+            endforeach;
+            $json_data = array(
+                "draw" => $draw + 1,
+                "iTotalRecords" => count($all_data),
+                "iTotalDisplayRecords" => count($all_data),
+                "aaData" => $data
+            );
+            echo json_encode($json_data);
+
+		endif;
+
+			
+
+
+
+		elseif($_POST["action"] == "donePetBoarding"):
+			// dump($_POST);
+
+
+			query("update pet_boarding set status = 'DONE', dateDone = ? where petBoardingId = ?", date("Y-m-d H:i:00"), $_POST["petBoardingId"]);
+
+			$res_arr = [
+				"result" => "success",
+				"title" => "Success",
+				"message" => "Success on updating data",
+				"link" => "refresh",
+				// "html" => '<a href="#">View or Print '.$transaction_id.'</a>'
+				];
+				echo json_encode($res_arr); exit();
+
 
 		elseif($_POST["action"] == "modalPetBoardingApprove" || $_POST["action"] == "modalPetBoardingDetails"):
 			// dump($_POST);

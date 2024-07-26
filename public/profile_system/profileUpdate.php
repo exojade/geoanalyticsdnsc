@@ -5,7 +5,7 @@
 	
 		if($_POST["action"] == "profileUpdate"):
 			
-
+			// dump($_POST);
 			query("update client set 
 					firstname = '".$_POST["firstname"]."',
 					middlename = '".$_POST["middlename"]."',

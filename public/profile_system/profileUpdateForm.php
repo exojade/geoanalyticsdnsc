@@ -11,6 +11,13 @@
 <div class="content-wrapper">
     <section class="content">
       <div class="container-fluid">
+
+
+
+      <div class="alert alert-warning alert-dismissible">
+                  <h5><i class="icon fas fa-exclamation-triangle"></i> Alert!</h5>
+                  Before you can proceed and use the system, it is essential to complete the form provided. Please ensure all required fields are filled out accurately.
+                </div>
       <div class="card card-primary">
               <div class="card-header">
                 <h3 class="card-title">Update Profile</h3>
@@ -32,19 +39,19 @@
                   <div class="row">
                     <div class="col-md-3">
                       <div class="form-group">
-                        <label for="exampleInputEmail1">First Name</label>
+                        <label for="exampleInputEmail1">First Name <span class="text-red">*</span></label>
                         <input required value="<?php echo($client["firstname"]); ?>" type="text" name="firstname" class="form-control" id="exampleInputEmail1" placeholder="First Name">
                       </div>
                     </div>
                     <div class="col-md-3">
                       <div class="form-group">
-                        <label for="exampleInputEmail1">Middle Name</label>
+                        <label for="exampleInputEmail1">Middle Name </label>
                         <input  type="text" value="<?php echo($client["middlename"]); ?>" name="middlename" class="form-control" id="exampleInputEmail1" placeholder="Middle Name">
                       </div>
                     </div>
                     <div class="col-md-3">
                       <div class="form-group">
-                        <label for="exampleInputEmail1">Last Name</label>
+                        <label for="exampleInputEmail1">Last Name <span class="text-red">*</span></label>
                         <input required type="text" value="<?php echo($client["lastname"]); ?>" name="lastname" class="form-control" id="exampleInputEmail1" placeholder="Last Name">
                       </div>
                     </div>
@@ -59,7 +66,7 @@
                   <div class="row">
                           <div class="col-md-3">
                             <div class="form-group">
-                              <label for="exampleInputEmail1">Region <span class="color_red">*</span></label>
+                              <label for="exampleInputEmail1">Region <span class="text-red">*</span></label>
                               <select required class="form-control select2" id="region_select">
                                 <?php if($client["region"] != ""): ?>
                                   <option selected value="<?php echo($client["region"]); ?>"><?php echo($client["region"]); ?></option>
@@ -69,7 +76,7 @@
                           </div>
                           <div class="col-md-3">
                             <div class="form-group">
-                              <label for="exampleInputEmail1">Province <span class="color_red">*</span></label>
+                              <label for="exampleInputEmail1">Province <span class="text-red">*</span></label>
                               <select required class="form-control select2" id="province_select">
                                 <?php if($scholar["address_barangay"] != ""): ?>
                                   <option selected value="<?php echo($scholar["address_province"]); ?>"><?php echo($scholar["address_province"]); ?></option>
@@ -79,7 +86,7 @@
                           </div>
                           <div class="col-md-3">
                             <div class="form-group">
-                              <label for="exampleInputEmail1">City | Municipality <span class="color_red">*</span></label>
+                              <label for="exampleInputEmail1">City | Municipality <span class="text-red">*</span></label>
                               <select required class="form-control select2" id="city_mun_select">
                                 <?php if($scholar["address_city"] != ""): ?>
                                   <option selected value="<?php echo($scholar["address_city"]); ?>"><?php echo($scholar["address_city"]); ?></option>
@@ -89,7 +96,7 @@
                           </div>
                           <div class="col-md-3">
                             <div class="form-group">
-                              <label for="exampleInputEmail1">Barangay <span class="color_red">*</span></label>
+                              <label for="exampleInputEmail1">Barangay <span class="text-red">*</span></label>
                               <select required class="form-control select2" id="barangay_select">
                                 <?php if($scholar["address_barangay"] != ""): ?>
                                   <option selected value="<?php echo($scholar["address_barangay"]); ?>"><?php echo($scholar["address_barangay"]); ?></option>
@@ -102,7 +109,7 @@
                       <div class="row">
                           <div class="col-md-12">
                             <div class="form-group">
-                              <label>Street / House Number / Purok</label>
+                              <label>Street / House Number / Purok <span class="text-red">*</span></label>
                               <input value="<?php echo($client["address"]); ?>" name="address" required type="text" class="form-control"  placeholder="Street / House Number / Purok">
                             </div>
                           </div>
@@ -111,13 +118,13 @@
                       <div class="row">
                           <div class="col-md-4">
                             <div class="form-group">
-                              <label>Birthdate</label>
+                              <label>Birthdate <span class="text-red">*</span></label>
                               <input  max="<?php echo date('Y-m-d'); ?>" value="<?php echo($client["birthDate"]); ?>" name="birthDate" required type="date" class="form-control"  placeholder="Birthdate">
                             </div>
                           </div>
                           <div class="col-md-4">
                             <div class="form-group">
-                              <label>Sex</label>
+                              <label>Sex <span class="text-red">*</span></label>
                               <select required name="gender" class="form-control select2" >
                                 <?php if($client["gender"] == ""): ?>
                                   <option disabled selected value="">Please select Sex</option>
@@ -206,11 +213,7 @@
     var selectedCity = '';
   
     var all_region = Philippines.sort(Philippines.regions,"A");
-    <?php if($client["region"] != ""): ?>
-      html = "<option value='<?php echo($client["region"]); ?>' selected><?php echo($client["region"]); ?></option>";
-    <?php else: ?>
       html = "<option value='' disabled selected></option>";
-    <?php endif; ?>
     for(var key in all_region) {
       // console.log(all_province[key].name);
         html += "<option value=" + all_region[key].reg_code  + ">" +all_region[key].name + "</option>"
@@ -218,13 +221,11 @@
     document.getElementById("region_select").innerHTML = html;
 
 
-
-
-
-  $('#region_select').change(function(){
-    $('#true_region').val($( "#region_select option:selected" ).text());
-    province = Philippines.getProvincesByRegion($(this).val(), 'A');
-    selectedRegion = $(this).val();
+    function getRegion(){
+      $('#true_region').val($( "#region_select option:selected" ).text());
+    province = Philippines.getProvincesByRegion($('#region_select').val(), 'A');
+    selectedRegion = $('#region_select').val();
+    // console.log(selectedRegion);
  
     html = "<option value='' disabled selected></option>";
     for(var key in province) {
@@ -232,33 +233,52 @@
         html += "<option value=" + province[key].prov_code  + ">" +province[key].name + "</option>"
     }
     document.getElementById("province_select").innerHTML = html;
+    }
+
+
+
+
+
+  $('#region_select').change(function(){
+    getRegion();
 });
 
-
-
-
-$('#province_select').change(function(){
-    $('#true_province').val($( "#province_select option:selected" ).text());
-    city_mun = Philippines.getCityMunByProvince($(this).val(), 'A');
+function getProvince(){
+  $('#true_province').val($( "#province_select option:selected" ).text());
+    city_mun = Philippines.getCityMunByProvince($('#province_select').val(), 'A');
+    
     html = "<option value='' disabled selected></option>";
     for(var key in city_mun) {
       // console.log(city_mun[key].name);
         html += "<option value=" + city_mun[key].mun_code  + ">" +city_mun[key].name + "</option>"
     }
     document.getElementById("city_mun_select").innerHTML = html;
+    }
+
+
+
+
+$('#province_select').change(function(){
+  getProvince();
 });
 
 
-$('#city_mun_select').change(function(){
-    $('#true_city_mun').val($( "#city_mun_select option:selected" ).text());
-    barangay = Philippines.getBarangayByMun($(this).val(), 'A');
+function getcityMun(){
+  $('#true_city_mun').val($( "#city_mun_select option:selected" ).text());
+  console.log($('#city_mun_select').val());
+    barangay = Philippines.getBarangayByMun($('#city_mun_select').val(), 'A');
     html = "<option value='' disabled selected></option>";
     for(var key in barangay) {
       // console.log(city_mun[key].name);
         html += "<option value=" + barangay[key].mun_code  + ">" +barangay[key].name + "</option>"
     }
     document.getElementById("barangay_select").innerHTML = html;
-  
+    }
+
+
+$('#city_mun_select').change(function(){
+
+  getcityMun();
 
     // console.log(Philippines.getZipCode(selectedRegion, selectedProvince));
 });
@@ -272,4 +292,49 @@ $('#barangay_select').change(function(){
             $('.sampleDatatable').DataTable({
             });
 
+
+            $(document).ready(function() {
+    $('[data-mask]').inputmask();
+    $('#region_select').select2({
+        placeholder: 'Please select Region'
+    });
+    $('#province_select').select2({
+        placeholder: 'Please select Province'
+    });
+    $('#city_mun_select').select2({
+        placeholder: 'Please select City / Municipality'
+    });
+    $('#barangay_select').select2({
+        placeholder: 'Please select Barangay'
+    });
+
+    var selectedRegion = 'Region XI';  // Predefined region
+    var selectedProvince = 'Davao del Norte';  // Predefined province
+    var selectedCity = 'Panabo City';  // Predefined city
+
+    // Predefine region
+   
+    $('#region_select').append('<option value="11" selected>Region XI (DAVAO REGION)</option>');
+    getRegion();
+    // Predefine province
+    $('#province_select').append('<option value="1123" selected>DAVAO DEL NORTE</option>');
+    getProvince();
+    // // Predefine city
+    $('#city_mun_select').append('<option value="112315" selected>CITY OF PANABO</option>');
+    getcityMun();
+    // Populate barangays for Panabo City
+    // var barangays = Philippines.getBarangayByMun('Panabo City', 'A');
+    // var html = "<option value='' disabled selected></option>";
+    // for(var key in barangays) {
+    //     html += "<option value=" + barangays[key].mun_code  + ">" + barangays[key].name + "</option>"
+    // }
+    // document.getElementById("barangay_select").innerHTML = html;
+
+    // Disable the region, province, and city selects
+    $('#region_select').prop('disabled', true);
+    $('#province_select').prop('disabled', true);
+    $('#city_mun_select').prop('disabled', true);
+});
+
 </script> 
+
