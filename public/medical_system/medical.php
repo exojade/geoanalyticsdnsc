@@ -96,6 +96,11 @@
 			endif;
 
 
+			if($_SESSION["dnsc_geoanalytics"]["role"] == "DOCTOR"):
+				$where = " and doctorId = '".$_SESSION["dnsc_geoanalytics"]["userid"]."'";
+			endif;
+
+
 			
 
 			$baseQuery = "select c.*, p.clientId from checkup c 

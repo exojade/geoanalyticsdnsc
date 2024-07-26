@@ -72,7 +72,7 @@
               <div class="card-body table-responsive">
                 <table class="table table-bordered" id="ajax_datatable">
                   <thead>
-                    <th>Action</th>
+                    <th width="15%">Action</th>
                     <th>Client</th>
                     <th>Doctor</th>
                     <th>Date</th>

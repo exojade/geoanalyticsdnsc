@@ -30,14 +30,14 @@
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Gmail Address</label>
+                        <label for="exampleInputEmail1">Gmail Address <span class="text-red">*</span></label>
                         <input required value="" type="email" name="email" class="form-control" id="exampleInputEmail1" placeholder="Should be a valid Gmail account">
                     </div>
                   </div>
 
                   <div class="col-md-6">
                     <div class="form-group">
-                        <label for="exampleInputEmail1">License Number</label>
+                        <label for="exampleInputEmail1">License Number <span class="text-red">*</span></label>
                         <input required value="" type="number" name="licenseNumber" class="form-control" id="exampleInputEmail1" placeholder="Doctor's License Number">
                     </div>
                   </div>
@@ -48,7 +48,7 @@
                   <div class="row">
                     <div class="col-md-3">
                       <div class="form-group">
-                        <label for="exampleInputEmail1">First Name</label>
+                        <label for="exampleInputEmail1">First Name <span class="text-red">*</span></label>
                         <input required value="" type="text" name="firstname" class="form-control" id="exampleInputEmail1" placeholder="First Name">
                       </div>
                     </div>
@@ -60,7 +60,7 @@
                     </div>
                     <div class="col-md-3">
                       <div class="form-group">
-                        <label for="exampleInputEmail1">Last Name</label>
+                        <label for="exampleInputEmail1">Last Name <span class="text-red">*</span></label>
                         <input required type="text" value="" name="lastname" class="form-control" id="exampleInputEmail1" placeholder="Last Name">
                       </div>
                     </div>
@@ -75,7 +75,7 @@
                   <div class="row">
                           <div class="col-md-3">
                             <div class="form-group">
-                              <label for="exampleInputEmail1">Region <span class="color_red">*</span></label>
+                              <label for="exampleInputEmail1">Region <span class="text-red">*</span></label>
                               <select required class="form-control select2" id="region_select">
                                   <option  value=""></option>
                               </select>
@@ -83,7 +83,7 @@
                           </div>
                           <div class="col-md-3">
                             <div class="form-group">
-                              <label for="exampleInputEmail1">Province <span class="color_red">*</span></label>
+                              <label for="exampleInputEmail1">Province <span class="text-red">*</span></label>
                               <select required class="form-control select2" id="province_select">
                                   <option  value=""></option>
                               </select>
@@ -91,7 +91,7 @@
                           </div>
                           <div class="col-md-3">
                             <div class="form-group">
-                              <label for="exampleInputEmail1">City | Municipality <span class="color_red">*</span></label>
+                              <label for="exampleInputEmail1">City | Municipality <span class="text-red">*</span></label>
                               <select required class="form-control select2" id="city_mun_select">
                                   <option  value=""></option>
                               </select>
@@ -99,7 +99,7 @@
                           </div>
                           <div class="col-md-3">
                             <div class="form-group">
-                              <label for="exampleInputEmail1">Barangay <span class="color_red">*</span></label>
+                              <label for="exampleInputEmail1">Barangay <span class="text-red">*</span></label>
                               <select required class="form-control select2" id="barangay_select">
                                   <option  value=""></option>
                               </select>
@@ -110,7 +110,7 @@
                       <div class="row">
                           <div class="col-md-12">
                             <div class="form-group">
-                              <label>Street / House Number / Purok</label>
+                              <label>Street / House Number / Purok <span class="text-red">*</span></label>
                               <input value="" name="address" required type="text" class="form-control"  placeholder="Street / House Number / Purok">
                             </div>
                           </div>
@@ -119,13 +119,13 @@
                       <div class="row">
                           <div class="col-md-4">
                             <div class="form-group">
-                              <label>Birthdate</label>
+                              <label>Birthdate <span class="text-red">*</span></label>
                               <input  max="<?php echo date('Y-m-d'); ?>" value="" name="birthDate" required type="date" class="form-control"  placeholder="Birthdate">
                             </div>
                           </div>
                           <div class="col-md-4">
                             <div class="form-group">
-                              <label>Sex</label>
+                              <label>Sex <span class="text-red">*</span></label>
                               <select required name="gender" class="form-control select2" >
                                 <option disabled selected value="">Please select Sex</option>
                                 <option value="Male">Male</option>
@@ -136,7 +136,7 @@
 
                           <div class="col-md-4">
                           <div class="form-group">
-                              <label>Contact Number:</label>
+                              <label>Contact Number <span class="text-red">*</span></label>
                               <div class="input-group">
                                 <div class="input-group-prepend">
                                   <span class="input-group-text"><i class="fas fa-phone"></i></span>

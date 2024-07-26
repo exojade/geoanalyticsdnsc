@@ -169,7 +169,6 @@ $pets = query("select *, CONCAT(
                     <th>Breed</th>
                     <th>Gender</th>
                     <th>Pet Age</th>
-                    <th>Condition</th>
                     <th>Description</th>
                   </tr>
                   </thead>
@@ -189,7 +188,6 @@ $pets = query("select *, CONCAT(
                       <td><?php echo($row["petBreed"]); ?></td>
                       <td><?php echo($row["petGender"]); ?></td>
                       <td><?php echo($row["petAge"]); ?></td>
-                      <td><?php echo($row["petCondition"]); ?></td>
                       <td><?php echo($row["petDescription"]); ?></td>
                     </tr>
                   <?php endforeach; ?>

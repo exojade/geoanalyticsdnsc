@@ -87,7 +87,7 @@
         <i class="nav-icon fas fa-home"></i>
         <p>
           Pet Boarding
-          <?php $pending = query("select count(*) as count from appointment where appointmentStatus = 'PENDING'"); ?>
+          <?php $pending = query("select count(*) as count from pet_boarding where status not in ('DONE', 'CANCELLED')"); ?>
         <?php if($pending[0]["count"] != 0): ?>
           <span class="badge badge-danger right"><?php echo($pending[0]["count"]); ?></span>
         <?php endif; ?>
@@ -203,8 +203,8 @@
       <a href="petBoarding" class="nav-link">
         <i class="nav-icon fas fa-home"></i>
         <p>
-          Pet Boarding
-          <?php $pending = query("select count(*) as count from appointment where appointmentStatus = 'PENDING'"); ?>
+          Pet Boarding 
+          <?php $pending = query("select count(*) as count from pet_boarding where status not in ('DONE', 'CANCELLED') and clientId = '".$_SESSION["dnsc_geoanalytics"]["userid"]."'"); ?>
         <?php if($pending[0]["count"] != 0): ?>
           <span class="badge badge-danger right"><?php echo($pending[0]["count"]); ?></span>
         <?php endif; ?>
@@ -265,6 +265,17 @@
       </p>
     </a>
 </li>
+
+
+<li class="nav-item">
+      <a href="medical" class="nav-link">
+        <i class="nav-icon fas fa-notes-medical"></i>
+        <p>
+          Medical History
+          <span class="right badge badge-danger"></span>
+        </p>
+      </a>
+  </li>
 
 <li class="nav-item">
       <a href="data_analysis" class="nav-link">

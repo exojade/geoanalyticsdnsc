@@ -50,7 +50,7 @@
 				<form class="generic_form_trigger" style="display:inline;" data-url="schedule">
 				<input type="hidden" name="action" value="cancelSchedule">
 				<input type="hidden" name="schedule_id" value="'.$row["schedule_id"].'">
-				<div class="btn-group" width="100%">
+				<div class="btn-group btn-block" width="100%">
 											<button class="btn btn-sm btn-danger">Cancel</button>
                       </div>
 					  </form>
@@ -117,7 +117,7 @@
 					<form class="generic_form_trigger" style="display:inline;" data-url="schedule">
 					<input type="hidden" name="action" value="markDoneSchedule">
 					<input type="hidden" name="schedule_id" value="'.$row["schedule_id"].'">
-					<div class="btn-group" width="100%">
+					<div class="btn-group btn-block" width="100%">
 					
 
 												<button class="btn btn-sm btn-warning">Mark as Done</button>
