@@ -88,14 +88,37 @@ endfor;
 			// dump($results);
 
 			$diseaseArray = [];
-
+			$i=0;
 			foreach ($results as $row) {
+
+				if ($i == 0) {
+					$color = "#00c0ef"; // Specific color for $i = 0
+					$highlight = "#00c0ef"; // Specific highlight for $i = 0
+				} elseif ($i == 1) {
+					$color = "#3c8dbc"; // Specific color for $i = 1
+					$highlight = "#3c8dbc"; // Specific highlight for $i = 1
+				} elseif ($i == 2) {
+					$color = "#D9D9D9"; // Specific color for $i = 2
+					$highlight = "#D9D9D9"; // Specific highlight for $i = 2
+				} elseif ($i == 3) {
+					$color = "#d2d6de"; // Specific color for $i = 3
+					$highlight = "#d2d6de"; // Specific highlight for $i = 3
+				} elseif ($i == 4) {
+					$color = "#FF00FF"; // Specific color for $i = 4
+					$highlight = "#FF66FF"; // Specific highlight for $i = 4
+				} else {
+					$color = getRandomColor();
+					$highlight = getRandomColor();
+				}
+
+
 				$diseaseArray[] = array(
 					'value' => $row['total'],
-					'color' => getRandomColor(),
-					'highlight' => getRandomColor(),
+					'color' => $color,
+					'highlight' => $highlight,
 					'label' => $row['diseaseName']
 				);
+				$i++;
 			}
 			// dump($diseaseArray); 
 

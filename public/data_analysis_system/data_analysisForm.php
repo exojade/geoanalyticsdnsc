@@ -112,6 +112,10 @@
               </div>
               <div class="card-body">
                 <canvas id="pieChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                <ul class="chart-legend clearfix text-left" style="margin-left: 20px;">
+                    <li><i class="fa fa-circle text-red"></i> Male</li>
+                    <li><i class="fa fa-circle text-green"></i> Female</li>
+                  </ul>
               </div>
               <!-- /.card-body -->
             </div>
@@ -192,6 +196,14 @@ e.preventDefault();
               var pieChartCanvas = $('#pieChart').get(0).getContext('2d');
               // console.log(o.gender);
               pieChart = new Chart(pieChartCanvas).Doughnut(PieData, pieOptions);
+
+              $('.chart-legend').empty();
+
+            // Generate new legend items dynamically
+            PieData.forEach(function(item) {
+                var legendItem = '<li><i class="fa fa-circle" style="color:' + item.color + '"></i> ' + item.label + '</li>';
+                $('.chart-legend').append(legendItem);
+            });
               
 
 
