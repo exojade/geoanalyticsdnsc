@@ -7,6 +7,25 @@
         else
         return($number);
     }
+    function getRandomColor() {
+        return sprintf('#%06X', mt_rand(0, 0xFFFFFF));
+    }
+
+    function generateMonthArray($from, $to) {
+        $from = max(1, min(12, (int)$from)); // Ensure $from is between 1 and 12.
+        $to = max(1, min(12, (int)$to));     // Ensure $to is between 1 and 12.
+        $months = [
+            'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+        ];
+    
+        $result = [];
+        for ($i = $from - 1; $i < $to; $i++) {
+            $result[] = $months[$i];
+        }
+    
+        return $result;
+    }
 
     function convertBrgytoNumber($barangay){
         // Define an associative array mapping barangay names to numbers
