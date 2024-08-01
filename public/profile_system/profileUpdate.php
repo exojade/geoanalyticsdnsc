@@ -6,6 +6,8 @@
 		if($_POST["action"] == "profileUpdate"):
 			
 			// dump($_POST);
+
+			$barangayId = convertBrgytoNumber($_POST["barangay"]);
 			query("update client set 
 					firstname = '".$_POST["firstname"]."',
 					middlename = '".$_POST["middlename"]."',
@@ -19,7 +21,8 @@
 					contactNumber = '".$_POST["contactNumber"]."',
 					birthDate = '".$_POST["birthDate"]."',
 					gender = '".$_POST["gender"]."',
-					clientStatus = 'DONE UPDATE'
+					clientStatus = 'DONE UPDATE',
+					barangayId = '".$barangayId."'
 					where clientId = ?
 					", $_POST["userid"]);
 
