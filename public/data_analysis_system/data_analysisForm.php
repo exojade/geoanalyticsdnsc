@@ -157,10 +157,6 @@ $(document).ready(function() {
 
 
 <script>
-
-
-
-
 $('.sales_chart_form').submit(function(e) {
 var form = $(this)[0];
 var formData = new FormData(form);
@@ -194,25 +190,16 @@ e.preventDefault();
               pieChart.destroy();
               PieData = o.disease;
               var pieChartCanvas = $('#pieChart').get(0).getContext('2d');
-              // console.log(o.gender);
               pieChart = new Chart(pieChartCanvas).Doughnut(PieData, pieOptions);
-
               $('.chart-legend').empty();
-
-            // Generate new legend items dynamically
             PieData.forEach(function(item) {
                 var legendItem = '<li><i class="fa fa-circle" style="color:' + item.color + '"></i> ' + item.label + '</li>';
                 $('.chart-legend').append(legendItem);
             });
-              
-
-
               Swal.close();
             }
         });
 });
-
-
 
 var areaChartData2 = {
       labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
