@@ -42,6 +42,18 @@
     opacity: 0.7;
 }
 
+.map-label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;  /* Dark color for better contrast */
+    background-color: rgba(255, 255, 255, 0.7);  /* Semi-transparent background */
+    padding: 2px 5px;  /* Padding around the text */
+    border-radius: 3px; /* Rounded corners */
+    text-align: center;
+    box-shadow: 0px 0px 2px rgba(0,0,0,0.5); /* Slight shadow for readability */
+}
+
+
 
     </style>
 <div class="content-wrapper">
@@ -317,11 +329,11 @@ var jsonData = [];
 
 
 // console.log(jsonData);
-    var map = L.map('map').setView([7.358584, 125.649624], 12);
+  var map = L.map('map').setView([7.358584, 125.649624], 12);
 var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 });
-// osm.addTo(map);
+osm.addTo(map);
 
 /*===================================================
                       MARKER               
@@ -386,6 +398,8 @@ var polygondata = L.geoJSON(polygonJSON,{
         color: 'green'
     }
 }).addTo(map);
+
+
 
 /*===================================================
                       LAYER CONTROL               
@@ -474,12 +488,52 @@ function zoomToFeature(e) {
     map.fitBounds(e.target.getBounds());
 }
 
+// function onEachFeature(feature, layer) {
+//     layer.on({
+//         mouseover: highlightFeature,
+//         mouseout: resetHighlight,
+//         click: zoomToFeature
+//     });
+// }
+
+// function onEachFeature(feature, layer) {
+//     // Add permanent tooltip for barangay names
+//     layer.bindTooltip(feature.properties.name, {
+//         permanent: true,     // The label will always be visible
+//         direction: 'center', // Tooltip appears in the center of the polygon
+//         className: 'map-label'  // Class for custom styling
+//     }).openTooltip(); // Display the label immediately
+
+//     // Optional mouseover, mouseout, and click events
+//     layer.on({
+//         mouseover: highlightFeature,
+//         mouseout: resetHighlight,
+//         click: zoomToFeature
+//     });
+// }
+
 function onEachFeature(feature, layer) {
-    layer.on({
+    // Add mouseover event to show tooltip on hover
+    layer.on('mouseover', function(e) {
+        layer.bindTooltip(feature.properties.name, {
+            direction: 'center',  // Tooltip appears in the center of the polygon
+            className: 'map-label'  // Class for custom styling
+        }).openTooltip(e.latlng);  // Show the tooltip at the location of the mouse cursor
+    });
+
+    // Add mouseout event to hide the tooltip when not hovering
+    layer.on('mouseout', function(e) {
+        layer.closeTooltip();  // Close the tooltip when the mouse leaves the layer
+    });
+
+        layer.on({
         mouseover: highlightFeature,
         mouseout: resetHighlight,
         click: zoomToFeature
     });
+
+    // Optional click event to zoom into the feature
+    layer.on('click', zoomToFeature);
 }
 
 geojson = L.geoJson(panabodataa, {
