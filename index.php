@@ -76,10 +76,14 @@
 
 			else if ($request == 'myAppointments')
 				require 'public/appointment_system/myAppointments.php';
-				else if ($request == 'appointment')
+			else if ($request == 'appointment')
 				require 'public/appointment_system/appointment.php';
-				else if ($request == 'medical')
+			else if ($request == 'medical')
 				require 'public/medical_system/medical.php';
+
+
+			else if ($request == 'settings')
+				require 'public/settings_system/settings.php';
 
 			
 

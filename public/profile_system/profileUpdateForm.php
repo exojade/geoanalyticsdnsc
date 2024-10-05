@@ -11,9 +11,6 @@
 <div class="content-wrapper">
     <section class="content">
       <div class="container-fluid">
-
-
-
       <div class="alert alert-warning alert-dismissible">
                   <h5><i class="icon fas fa-exclamation-triangle"></i> Alert!</h5>
                   Before you can proceed and use the system, it is essential to complete the form provided. Please ensure all required fields are filled out accurately.
@@ -24,7 +21,7 @@
               </div>
               <!-- /.card-header -->
               <!-- form start -->
-              <form class="generic_form_trigger" data-url="profileUpdate">
+              <form class="generic_form_trigger" data-url="profileUpdate" id="profileUpdate">
                 <input type="hidden" name="action" value="profileUpdate">
                 <input type="hidden" name="userid" value="<?php echo($_SESSION["dnsc_geoanalytics"]["userid"]); ?>">
 
@@ -188,6 +185,9 @@
 <script src="AdminLTE_new/plugins/inputmask/jquery.inputmask.min.js"></script>
 <script type="text/javascript" src="node_modules/philippine-location-json-for-geer/build/phil.min.js"></script>
 
+<script src="AdminLTE_new/plugins/jquery-validation/jquery.validate.min.js"></script>
+<script src="AdminLTE_new/plugins/jquery-validation/additional-methods.min.js"></script>
+
 
 <script>
   $('[data-mask]').inputmask()
@@ -334,6 +334,37 @@ $('#barangay_select').change(function(){
     $('#region_select').prop('disabled', true);
     $('#province_select').prop('disabled', true);
     $('#city_mun_select').prop('disabled', true);
+});
+
+
+
+$(function () {
+  // $.validator.setDefaults({
+  //   submitHandler: function () {
+  //     alert( "Form successful submitted!" );
+  //   }
+  // });
+  $(function () {
+  $('#profileUpdate').validate({
+    errorElement: 'span',
+    errorPlacement: function (error, element) {
+      error.addClass('invalid-feedback');
+      element.closest('.form-group').append(error);
+    },
+    highlight: function (element, errorClass, validClass) {
+      $(element).addClass('is-invalid').removeClass('is-valid');
+    },
+    unhighlight: function (element, errorClass, validClass) {
+      $(element).removeClass('is-invalid').addClass('is-valid');
+    },
+    success: function (label, element) {
+      $(element).addClass('is-valid'); // Adds green border when valid
+      // Add a green check icon or any valid styling you want to apply
+      $(element).closest('.form-group').find('span.valid-feedback').remove();
+      // $(element).closest('.form-group').append('<span class="valid-feedback">✓</span>'); // Adds a check mark
+    }
+  });
+});
 });
 
 </script> 

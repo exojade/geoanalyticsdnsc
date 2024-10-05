@@ -5,12 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>PET SYSTEM</title>
 
+  <?php
+  $siteOptions = query("select * from siteoptions");
+  $siteOptions = $siteOptions[0];
+  ?>
+
   <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback"> -->
   <link rel="stylesheet" href="AdminLTE_new/plugins/fontawesome-free/css/all.min.css">
   <link rel="stylesheet" href="AdminLTE_new/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
   <link rel="stylesheet" href="AdminLTE_new/dist/css/adminlte.min.css">
   <link rel="stylesheet" href="AdminLTE_new/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
-  <link rel="icon" href="public/static_system/uploads/logocityvet.png">
+  <link rel="icon" href="<?php echo($siteOptions["mainLogo"]); ?>">
 </head>
 <style>
   .content-wrapper{

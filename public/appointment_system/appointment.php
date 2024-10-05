@@ -69,7 +69,7 @@ require("includes/google_class.php");
 				$to_date = strtotime($the_date);
 				$week = date("l", $to_date);
 				// dump($week);
-				if($week == "Saturday" || $week == "Sunday"):
+				if( $week == "Sunday"):
 					$return_cue = false;
 				endif;
 

@@ -4,8 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Panabo City Vet</title>
-  <link rel="icon" href="public/static_system/uploads\logocityvet.png">
-
+  <?php $siteOptions = query("select * from siteoptions"); 
+      $siteOptions = $siteOptions[0];
+  ?>
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
@@ -14,7 +15,10 @@
   <link rel="stylesheet" href="AdminLTE_new/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="AdminLTE_new/dist/css/adminlte.min.css">
+  <link rel="icon" href="<?php echo($siteOptions["mainLogo"]); ?>">
 </head>
+
+
 
 <style>
   .google-btn {
@@ -59,7 +63,7 @@ background-size: 100% auto;
     <div class="card-header text-center" style="border-bottom: 0px;">
     <center>
                 <!-- <img src="public/static_system/uploads/LGUlogo.png" height="100" style="margin: 5px;"> -->
-                <img src="public/static_system/uploads/logocityvet.png" height="100" style="margin: 5px;">
+                <img src="<?php echo($siteOptions["mainLogo"]); ?>" height="100" style="margin: 5px;">
             </center>
 
         

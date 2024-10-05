@@ -39,7 +39,7 @@ $pets = query("select *, CONCAT(
               <div class="modal-header bg-primary">
                 <h4 class="modal-title">Add New Pet</h4>
               </div>
-              <form class="generic_form_trigger" data-url="pets">
+              <form class="generic_form_trigger" data-url="pets" id="AddNewPetForm">
               <div class="modal-body">
                 <input type="hidden" name="action" value="addNewPet">
                 <input type="hidden" name="clientId" value="<?php echo($_GET["id"]); ?>">
@@ -367,6 +367,9 @@ $pets = query("select *, CONCAT(
 <script src="AdminLTE_new/plugins/datatables-buttons/js/buttons.print.min.js"></script>
 <script src="AdminLTE_new/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 
+<script src="AdminLTE_new/plugins/jquery-validation/jquery.validate.min.js"></script>
+<script src="AdminLTE_new/plugins/jquery-validation/additional-methods.min.js"></script>
+
 
 <script>
   
@@ -430,5 +433,36 @@ var datatable =
                     // $('#currentTotal').html('$ ' + received.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
                 }
             });
+
+
+  $(function () {
+  // $.validator.setDefaults({
+  //   submitHandler: function () {
+  //     alert( "Form successful submitted!" );
+  //   }
+  // });
+  $(function () {
+  $('#AddNewPetForm').validate({
+    errorElement: 'span',
+    errorPlacement: function (error, element) {
+      error.addClass('invalid-feedback');
+      element.closest('.form-group').append(error);
+    },
+    highlight: function (element, errorClass, validClass) {
+      $(element).addClass('is-invalid').removeClass('is-valid');
+    },
+    unhighlight: function (element, errorClass, validClass) {
+      $(element).removeClass('is-invalid').addClass('is-valid');
+    },
+    success: function (label, element) {
+      $(element).addClass('is-valid'); // Adds green border when valid
+      // Add a green check icon or any valid styling you want to apply
+      $(element).closest('.form-group').find('span.valid-feedback').remove();
+      // $(element).closest('.form-group').append('<span class="valid-feedback">✓</span>'); // Adds a check mark
+    }
+  });
+});
+});
+
 
 </script>

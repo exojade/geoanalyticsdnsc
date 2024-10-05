@@ -6,7 +6,7 @@
 
 .sidebar-dark-primary{
 
-  background-color: #287BFF !important;
+  background-color: <?php echo($siteOptions["mainColor"]); ?> !important;
   /* background-color: #F77D1A !important; */
   color: #fff;
 }
@@ -21,7 +21,7 @@
     <div class="user-panel mt-3 pb-3 mb-3 text-center">
         <div class="image" style="display:block;">
             <!-- <img style="width: 5rem;" src="resources/panabologo.png" class="img-circle elevation-2" alt="User Image"> -->
-            <img style="width: 5rem;" src="resources/logocityvet.png" class="img-circle elevation-2" alt="User Image">
+            <img style="width: 5rem;" src="<?php echo($siteOptions["mainLogo"]); ?>" class="img-circle elevation-2" alt="User Image">
         </div>
       </div>
     <!-- Sidebar -->
@@ -163,6 +163,16 @@
         <i class="nav-icon fas fa-users"></i>
         <p>
           Users
+          <span class="right badge badge-danger"></span>
+        </p>
+      </a>
+  </li>
+
+  <li class="nav-item">
+      <a href="settings" class="nav-link">
+        <i class="nav-icon fas fa-cog"></i>
+        <p>
+          Settings
           <span class="right badge badge-danger"></span>
         </p>
       </a>
