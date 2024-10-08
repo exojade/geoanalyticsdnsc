@@ -107,8 +107,8 @@ require("includes/google_class.php");
 			$appointmentId = create_trackid("APP");
 			// dump($appointmentId);
 
-			if (query("insert INTO appointment (appointmentId, dateSet, timeSet, timestampSet, dateScheduled, appointmentStatus, clientId, notes) 
-				VALUES(?,?,?,?,?,?,?,?)", 
+			if (query("insert INTO appointment (appointmentId, dateSet, timeSet, timestampSet, dateScheduled, appointmentStatus, clientId, notes, type) 
+				VALUES(?,?,?,?,?,?,?,?,'ONLINE')", 
 				$appointmentId, $_POST["appointment_date"] ,$_POST["time_taken"], time(), date("Y-m-d"), "PENDING" ,$clientId, $_POST["noteAppointment"]) === false)
 				{
 					echo("not_success");

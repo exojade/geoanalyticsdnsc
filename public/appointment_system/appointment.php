@@ -800,6 +800,18 @@ require("includes/google_class.php");
                     <input disabled type="text" value="'.$appointment["fullname"].' - '.$appointment["username"].'" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
                   </div>
 
+				  <div class="form-group">
+					<label>Doctor</label>
+					<select name="doctorId" required class="form-control">
+					<option value="" selected disabled>Please select doctor</option>
+					';
+					
+					foreach($doctors as $row):
+							$hint.='<option value="'.$row["doctorsId"].'">'.$row["doctorsLastname"] . ', ' . $row["doctorsFirstname"].'</option>';
+					endforeach;
+					$hint.='</select>
+				</div>
+
 
 
               <label for="exampleInputEmail1">Date of Appointment <span class="color-red">*</span></label><br>
@@ -813,10 +825,11 @@ require("includes/google_class.php");
                 </div>
 
 				<br>
-
+				
+				<div id="timeSlotDiv">
 				<div class="form-group">
                         <label>Time Slot</label>
-                        <select name="timeSlot" class="form-control">';
+                        <select required name="timeSlot" class="form-control">';
 						foreach($timeslot as $row):
 							if($row["slotId"] == $appointment["timeSet"]):
 								$hint.='<option selected value="'.$row["slotId"].'">'.$row["timeSlot"].'</option>';
@@ -826,18 +839,9 @@ require("includes/google_class.php");
 						endforeach;
                         $hint.='</select>
                       </div>
+				</div>
 
-					  <div class="form-group">
-                        <label>Doctor</label>
-                        <select name="doctorId" required class="form-control">
-						<option value="" selected disabled>Please select doctor</option>
-						';
-						
-						foreach($doctors as $row):
-								$hint.='<option value="'.$row["doctorsId"].'">'.$row["doctorsLastname"] . ', ' . $row["doctorsFirstname"].'</option>';
-						endforeach;
-                        $hint.='</select>
-                      </div>
+					  
              
               
           
@@ -853,6 +857,135 @@ require("includes/google_class.php");
 			<button type="submit" class="btn btn-primary">Submit</button>
 			';
 			echo($hint);
+
+		elseif($_POST["action"] == "checkDoctorSchedule"):
+
+			$appointment = query("select * from appointment where appointmentId = ?", $_POST["appointmentId"]);
+			$appointment = $appointment[0];
+			// dump($_POST);
+
+			
+			$schedulesDoctors = query("SELECT 
+					t.slotId, 
+					t.timeSlot, 
+					t.startTime, 
+					t.endTime,
+					IF(a.appointmentId IS NOT NULL, 'Not Available', 'Available') AS availability
+				FROM timeslot t
+				LEFT JOIN appointment a ON t.slotId = a.timeSet 
+					AND a.dateSet = ?  -- Replace with the selected date
+					AND a.doctorId = ?        -- Replace with the selected doctor ID
+				WHERE t.remarks = 'active'
+				ORDER BY t.startTime", $_POST["dateSet"], $_POST["doctorId"]);
+			// dump($schedulesDoctors);
+
+
+			$hint = '
+			<div class="form-group">
+				<label>Time Slot</label>
+				<select required name="timeSlot" class="form-control">';
+				foreach($schedulesDoctors as $row):
+					$selected = ($appointment["timeSet"] == $row["slotId"]) ? 'selected' : '';
+					if ($row["availability"] == "Available") {
+						// If available, make the option selectable
+						$hint .= '<option '.$selected.' value="'.$row["slotId"].'" class="text-success">'.$row["timeSlot"].' - Available</option>';
+					} else {
+						// If not available, disable the option and make value empty
+						$hint .= '<option '.$selected.' value="" disabled class="text-danger">'.$row["timeSlot"].' - Not Available</option>';
+					}
+				endforeach;
+			$hint .= '</select>
+			</div>';
+			echo($hint);
+
+		elseif($_POST["action"] == "checkDoctorScheduleWalkin"):
+
+			$schedulesDoctors = query("SELECT 
+					t.slotId, 
+					t.timeSlot, 
+					t.startTime, 
+					t.endTime,
+					IF(a.appointmentId IS NOT NULL, 'Not Available', 'Available') AS availability
+				FROM timeslot t
+				LEFT JOIN appointment a ON t.slotId = a.timeSet 
+					AND a.dateSet = ?  -- Replace with the selected date
+					AND a.doctorId = ?        -- Replace with the selected doctor ID
+				WHERE t.remarks = 'active'
+				ORDER BY t.startTime", date("Y-m-09"), $_POST["doctorId"]);
+			// dump($schedulesDoctors);
+
+
+			$currentDateTime = new DateTime(); // Get the current date and time
+			$currentDateTime->modify('+1 hour'); // Add one hour
+
+
+			$specificTime = "09:12 AM";
+			$currentDateTime = DateTime::createFromFormat('h:i A', $specificTime);
+			$currentDateTime->modify('+1 hour');
+
+			// Format for comparison
+			$currentFormattedTime = $currentDateTime->format('H:i');
+
+			// Build the hint for available time slots
+			$hint = '
+			<div class="form-group">
+				<label>Time Slot</label>
+				<select required name="timeSlot" class="form-control">';
+
+			foreach($schedulesDoctors as $row) {
+				// Get the start time of the slot for comparison
+				$startTime = $row['startTime']; // Assuming 'startTime' is in 'H:i' format
+
+				// Check if the start time is less than the current time plus one hour
+				if ($row["availability"] == "Available" && $startTime >= $currentFormattedTime) {
+					// If available and meets the time condition
+					$hint .= '<option value="' . $row["slotId"] . '" class="text-success">' . $row["timeSlot"] . ' - Available</option>';
+				} else {
+					// If not available or does not meet the time condition
+					$hint .= '<option value="" disabled class="text-danger">' . $row["timeSlot"] . ' - Not Available</option>';
+				}
+			}
+
+			$hint .= '</select>
+			</div>';
+			echo($hint);
+			// echo($hint);
+
+
+
+		// dump($_POST);
+
+			
+		elseif($_POST["action"] == "walkinAppointment"):
+			// dump($_POST);
+
+
+			$appointmentId = create_trackid("APP");
+			// dump($appointmentId);
+
+			if (query("insert INTO appointment (appointmentId, dateSet, timeSet, timestampSet, dateScheduled, appointmentStatus, clientId, notes, type,doctorId) 
+				VALUES(?,?,?,?,?,?,?,?,'WALK IN',?)", 
+				$appointmentId, date("Y-m-d"),$_POST["timeSlot"], time(), date("Y-m-d"), "ONGOING" ,$_POST["clientId"], "", $_POST["doctorId"]) === false)
+				{
+					echo("not_success");
+				}
+
+
+
+
+			
+
+			$res_arr = [
+				"result" => "success",
+				"title" => "Success",
+				"message" => "Success on Booking an appointment!",
+				"link" => "refresh",
+				// "html" => '<a href="#">View or Print '.$transaction_id.'</a>'
+				];
+				echo json_encode($res_arr); exit();
+
+
+
 		elseif($_POST["action"] == "acceptAppointment"):
 			// dump($_SESSION);
 

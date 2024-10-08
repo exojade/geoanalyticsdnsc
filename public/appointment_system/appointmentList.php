@@ -6,6 +6,7 @@
   <link rel="stylesheet" href="AdminLTE_new/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
   <link rel="stylesheet" href="AdminLTE/bower_components/bootstrap-daterangepicker/daterangepicker.css">
   <link rel="stylesheet" href="AdminLTE/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+  <link rel="stylesheet" href="AdminLTE_new/plugins/select2/css/select2.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="AdminLTE_new/dist/css/adminlte.min.css">
 
@@ -29,9 +30,63 @@
         <div class="modal-header bg-primary">
           <h4 class="modal-title">Schedule Appointment</h4>
         </div>
-        <form class="generic_form_trigger" data-url="appointment">
+        <form class="generic_form_trigger" id="AppointmentModalForm" data-url="appointment">
           <div class="modal-body">
             <div class="fetched-data"></div>
+          </div>
+        </form>
+      </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="walkInModal">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-primary">
+          <h4 class="modal-title">Register Walk In</h4>
+        </div>
+        <form class="generic_form_trigger" id="walkInForm" data-url="appointment">
+          <div class="modal-body">
+          <?php $client = query("select * from client order by lastname, firstname"); ?>
+              <?php $doctor = query("select * from doctors"); ?>
+              <form class="generic_form_trigger" data-url="appointment">
+                <input type="hidden" name="action" value="walkinAppointment">
+              <div class="form-group">
+                  <label>Client</label>
+                  <select id="selectClientWalkin" name="clientId" required class="form-control select2" style="width: 100%;">
+                    <option selected disabled value="">Please select client</option>
+                    <?php foreach($client as $row): ?>
+                      <option value="<?php echo($row["clientId"]); ?>"><?php echo($row["lastname"] . ", " . $row["firstname"]); ?></option>
+                    <?php endforeach; ?>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label>Doctor</label>
+                  <select id="selectDoctorWalkIn" name="doctorId" required class="form-control select2" style="width: 100%;">
+                  <option selected disabled value="">Please select doctor</option>
+                  <?php foreach($doctor as $row): ?>
+                      <option value="<?php echo($row["doctorsId"]); ?>">Dr. <?php echo($row["doctorsLastname"] . ", " . $row["doctorsFirstname"]); ?></option>
+                    <?php endforeach; ?>
+                  </select>
+                </div>
+                  
+                <div id="walkInScheduleDiv">
+                  <div class="form-group">
+                    <label>Time Schedule</label>
+                    <select name="doctorId" required class="form-control" >
+                    <option selected disabled value="">Please select Time Schedule</option>
+          
+                    </select>
+                  </div>
+                </div>
+
+                <button class="btn btn-primary">Submit</button>
+
+
+
+                
           </div>
         </form>
       </div>
@@ -100,7 +155,10 @@
                 <!-- <div class="form-group" style="float:right;">
                   <a href="" data-toggle="modal" data-target="#modalNewPet" class="btn btn-info">Book an Appointment</a>
                 </div> -->
+                <a href="#" data-toggle="modal" data-target="#walkInModal" class="btn btn-primary float-right">ADD WALK IN</a>
                 </h4>
+
+                
               </div>
               <div class="card-body table-responsive">
 
@@ -116,6 +174,7 @@
                     <th>Schedule</th>
                     <th>Status</th>
                     <th>Meeting</th>
+                    <th>Type</th>
                     <!-- <th>Meet Link</th> -->
                   </thead>
                 <?php else: ?>
@@ -126,6 +185,7 @@
                     <th>Schedule</th>
                     <th>Status</th>
                     <th>Doctor</th>
+                    <th>Type</th>
                     <!-- <th>Meet Link</th> -->
                   </thead>
                 <?php endif; ?>
@@ -154,10 +214,69 @@
 <script src="AdminLTE_new/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
 <script src="AdminLTE_new/plugins/datatables-buttons/js/buttons.print.min.js"></script>
 <script src="AdminLTE_new/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+<script src="AdminLTE_new/plugins/select2/js/select2.full.min.js"></script>
+
+<script src="AdminLTE_new/plugins/jquery-validation/jquery.validate.min.js"></script>
+<script src="AdminLTE_new/plugins/jquery-validation/additional-methods.min.js"></script>
 <script>
 
-
+$('.select2').select2()
 $(document).ready(function(){
+
+  $(function () {
+  $('#AppointmentModalForm').validate({
+    errorElement: 'span',
+    errorPlacement: function (error, element) {
+      error.addClass('invalid-feedback');
+      element.closest('.form-group').append(error);
+    },
+    highlight: function (element, errorClass, validClass) {
+      $(element).addClass('is-invalid').removeClass('is-valid');
+    },
+    unhighlight: function (element, errorClass, validClass) {
+      $(element).removeClass('is-invalid').addClass('is-valid');
+    },
+    success: function (label, element) {
+      $(element).addClass('is-valid'); // Adds green border when valid
+      // Add a green check icon or any valid styling you want to apply
+      $(element).closest('.form-group').find('span.valid-feedback').remove();
+      // $(element).closest('.form-group').append('<span class="valid-feedback">✓</span>'); // Adds a check mark
+    }
+  });
+
+  $('#walkInForm').validate({
+    errorElement: 'span',
+    errorPlacement: function (error, element) {
+        error.addClass('invalid-feedback');
+        element.closest('.form-group').append(error);
+    },
+    highlight: function (element, errorClass, validClass) {
+        // For regular inputs
+        $(element).addClass('is-invalid').removeClass('is-valid');
+        
+        // For Select2, apply the invalid class to its container
+        if ($(element).hasClass('select2-hidden-accessible')) {
+            $(element).next('.select2').addClass('is-invalid').removeClass('is-valid');
+        }
+    },
+    unhighlight: function (element, errorClass, validClass) {
+        // For regular inputs
+        $(element).removeClass('is-invalid').addClass('is-valid');
+        
+        // For Select2, remove the invalid class from its container
+        if ($(element).hasClass('select2-hidden-accessible')) {
+            $(element).next('.select2').removeClass('is-invalid').addClass('is-valid');
+        }
+    },
+    success: function (label, element) {
+        $(element).addClass('is-valid'); // Adds green border when valid
+        // For Select2, add valid styling
+        if ($(element).hasClass('select2-hidden-accessible')) {
+            $(element).next('.select2').addClass('is-valid');
+        }
+    }
+});
+});
 
 
 
@@ -177,6 +296,54 @@ $('#modalAppointment').on('show.bs.modal', function (e) {
         }
     });
   });
+
+
+  $(document).on('change', 'select[name="doctorId"], input[name="appointment_date"]', function() {
+    var doctorId = $('select[name="doctorId"]').val();
+    var dateSet = $('input[name="appointment_date"]').val(); // Assuming you have an input for the date
+    var appointmentId = $('input[name="appointmentId"]').val();
+    // alert(dateSet);
+    // Check if both doctorId and dateSet are selected
+    if (doctorId && dateSet) {
+        $.ajax({
+            type: 'post',
+            url: 'appointment', // Here you will fetch records 
+            data: {
+                doctorId: doctorId, 
+                dateSet: dateSet, // Include the selected date
+                appointmentId: appointmentId, 
+                action: "checkDoctorSchedule"
+            },
+            success: function(data) {
+                $('#modalAppointment #timeSlotDiv').html(data);
+                Swal.close();
+                // $(".select2").select2(); // Show fetched data from database
+            }
+        });
+    }
+});
+
+// $(document).ready(function() {
+$(document).on('change', '#selectDoctorWalkIn', function() {
+    var doctorId = $('#selectDoctorWalkIn').val();
+    // alert(doctorId)
+    if (doctorId) {
+        $.ajax({
+            type: 'post',
+            url: 'appointment', // Here you will fetch records 
+            data: {
+                doctorId: doctorId, 
+                action: "checkDoctorScheduleWalkin"
+            },
+            success: function(data) {
+                $('#walkInModal #walkInScheduleDiv').html(data);
+                Swal.close();
+                // $(".select2").select2(); // Show fetched data from database
+            }
+        });
+    }
+});
+// });
 
 
 
@@ -249,6 +416,7 @@ var datatable =
                     { data: 'timeSet', "orderable": false },
                     { data: 'appointmentStatus', "orderable": false },
                     { data: 'doctor', "orderable": false },
+                    { data: 'type', "orderable": false },
 
                 ],
                 "footerCallback": function (row, data, start, end, display) {
