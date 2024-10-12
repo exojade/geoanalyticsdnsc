@@ -17,55 +17,45 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-      <div class="row">
-          <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box">
-              <div class="info-box-content">
-               
-                <span class="info-box-number">
-                  10
-                  <small>%</small>
-                </span>
-                <span class="info-box-text">APPOINTMENTS</span>
+      <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Carousel</h3>
               </div>
-              <span class="info-box-icon bg-info elevation-1"><i class="fas fa-briefcase"></i></span>
-
-            </div>
-          </div>
-          <!-- /.col -->
-          <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box mb-3">
-              <div class="info-box-content">
-                <span class="info-box-number">41,410</span>
-                <span class="info-box-text">INQUIRIES</span>
-
+              <!-- /.card-header -->
+              <div class="card-body">
+                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                  <ol class="carousel-indicators">
+                    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                  </ol>
+                  <div class="carousel-inner">
+                    <div class="carousel-item active">
+                      <img class="d-block w-100" src="https://placehold.it/900x500/39CCCC/ffffff&text=I+Love+Bootstrap" alt="First slide">
+                    </div>
+                    <div class="carousel-item">
+                      <img class="d-block w-100" src="https://placehold.it/900x500/3c8dbc/ffffff&text=I+Love+Bootstrap" alt="Second slide">
+                    </div>
+                    <div class="carousel-item">
+                      <img class="d-block w-100" src="https://placehold.it/900x500/f39c12/ffffff&text=I+Love+Bootstrap" alt="Third slide">
+                    </div>
+                  </div>
+                  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                    <span class="carousel-control-custom-icon" aria-hidden="true">
+                      <i class="fas fa-chevron-left"></i>
+                    </span>
+                    <span class="sr-only">Previous</span>
+                  </a>
+                  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                    <span class="carousel-control-custom-icon" aria-hidden="true">
+                      <i class="fas fa-chevron-right"></i>
+                    </span>
+                    <span class="sr-only">Next</span>
+                  </a>
+                </div>
               </div>
-              <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-question"></i></span>
-
+              <!-- /.card-body -->
             </div>
-          </div>
-
-          <!-- fix for small devices only -->
-          <div class="clearfix hidden-md-up"></div>
-          <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box mb-3">
-              <div class="info-box-content">
-                <span class="info-box-number">760</span>
-                <span class="info-box-text">PENDING PATIENTS</span>
-              </div>
-              <span class="info-box-icon bg-success elevation-1"><i class="fas fa-paw"></i></span>
-            </div>
-          </div>
-          <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box mb-3">
-              <div class="info-box-content">
-                <span class="info-box-number">2,000</span>
-                <span class="info-box-text">COMPLETED ACTIVITIES</span>
-              </div>
-              <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-check"></i></span>
-            </div>
-          </div>
-        </div>
 
 
       </div>

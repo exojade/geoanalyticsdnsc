@@ -55,7 +55,7 @@
       </a>
   </li>
 
-  <li class="nav-item">
+  <!-- <li class="nav-item">
     <a href="schedule" class="nav-link">
       <i class="nav-icon fas fa-calendar"></i>
       <p>
@@ -66,7 +66,7 @@
         <?php endif; ?>
       </p>
     </a>
-</li>
+</li> -->
 
   <li class="nav-item">
       <a href="appointment" class="nav-link">
@@ -163,6 +163,16 @@
         <i class="nav-icon fas fa-users"></i>
         <p>
           Users
+          <span class="right badge badge-danger"></span>
+        </p>
+      </a>
+  </li>
+
+  <li class="nav-item">
+      <a href="users" class="nav-link">
+        <i class="nav-icon fas fa-bullhorn"></i>
+        <p>
+          Announcements
           <span class="right badge badge-danger"></span>
         </p>
       </a>

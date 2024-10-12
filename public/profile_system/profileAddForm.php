@@ -17,7 +17,7 @@
               </div>
               <!-- /.card-header -->
               <!-- form start -->
-              <form class="generic_form_trigger" data-url="profile">
+              <form class="generic_form_trigger" id="profileAdd" data-url="profile">
                 <input type="hidden" name="action" value="profileAdd">
 
 
@@ -167,6 +167,9 @@
 <script src="AdminLTE_new/plugins/inputmask/jquery.inputmask.min.js"></script>
 <script type="text/javascript" src="node_modules/philippine-location-json-for-geer/build/phil.min.js"></script>
 
+<script src="AdminLTE_new/plugins/jquery-validation/jquery.validate.min.js"></script>
+<script src="AdminLTE_new/plugins/jquery-validation/additional-methods.min.js"></script>
+
 
 <script>
   $('[data-mask]').inputmask()
@@ -313,6 +316,29 @@ $('#barangay_select').change(function(){
     $('#region_select').prop('disabled', true);
     $('#province_select').prop('disabled', true);
     $('#city_mun_select').prop('disabled', true);
+});
+
+
+$(function () {
+  $('#profileAdd').validate({
+    errorElement: 'span',
+    errorPlacement: function (error, element) {
+      error.addClass('invalid-feedback');
+      element.closest('.form-group').append(error);
+    },
+    highlight: function (element, errorClass, validClass) {
+      $(element).addClass('is-invalid').removeClass('is-valid');
+    },
+    unhighlight: function (element, errorClass, validClass) {
+      $(element).removeClass('is-invalid').addClass('is-valid');
+    },
+    success: function (label, element) {
+      $(element).addClass('is-valid'); // Adds green border when valid
+      // Add a green check icon or any valid styling you want to apply
+      $(element).closest('.form-group').find('span.valid-feedback').remove();
+      // $(element).closest('.form-group').append('<span class="valid-feedback">✓</span>'); // Adds a check mark
+    }
+  });
 });
 
 </script> 

@@ -74,55 +74,7 @@
       <div class="container-fluid">
 
 
-      <div class="row">
-          <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box">
-              <div class="info-box-content">
-               
-                <span class="info-box-number">
-                  10
-                  <small>%</small>
-                </span>
-                <span class="info-box-text">APPOINTMENTS</span>
-              </div>
-              <span class="info-box-icon bg-info elevation-1"><i class="fas fa-briefcase"></i></span>
-
-            </div>
-          </div>
-          <!-- /.col -->
-          <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box mb-3">
-              <div class="info-box-content">
-                <span class="info-box-number">41,410</span>
-                <span class="info-box-text">INQUIRIES</span>
-
-              </div>
-              <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-question"></i></span>
-
-            </div>
-          </div>
-
-          <!-- fix for small devices only -->
-          <div class="clearfix hidden-md-up"></div>
-          <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box mb-3">
-              <div class="info-box-content">
-                <span class="info-box-number">760</span>
-                <span class="info-box-text">PENDING PATIENTS</span>
-              </div>
-              <span class="info-box-icon bg-success elevation-1"><i class="fas fa-paw"></i></span>
-            </div>
-          </div>
-          <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box mb-3">
-              <div class="info-box-content">
-                <span class="info-box-number">2,000</span>
-                <span class="info-box-text">COMPLETED ACTIVITIES</span>
-              </div>
-              <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-check"></i></span>
-            </div>
-          </div>
-        </div>
+    
 
 
         <div class="row">
