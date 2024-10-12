@@ -13,8 +13,8 @@
 
 .highcharts-figure,
 .highcharts-data-table table {
-    min-width: 320px;
-    max-width: 660px;
+    min-width: 500px;
+    max-width: 900px;
     margin: 1em auto;
 }
 
@@ -228,11 +228,11 @@
 
 
         <div class="row">
-            <div class="col-5">
-            <figure class="highcharts-figure">
+            <div class="col-4">
+            <div class="highcharts-figure">
     <div id="container"></div>
    
-</figure>
+</div>
             </div>
         </div>
       </div>
@@ -768,7 +768,7 @@ success: function (results) {
         both: {
             total: 0,
             diseases: [],
-            color: "#d2d6de"
+            color: "#000"
         }
     };
 
@@ -851,14 +851,15 @@ success: function (results) {
             size: '80%',
             innerSize: '60%',
             dataLabels: {
-              format: '<b>{point.name}:</b> <span style="opacity: 0.5">{y}</span>', // Display disease name
+              
+              format: '<b>{point.name}:</b> <span style="opacity: 1">{y}</span>', // Display disease name
               filter: {
                   property: 'y',
                   operator: '>',
                   value: 2
               },
               style: {
-                  fontWeight: 'normal'
+                  fontWeight: 'bold'
               }
           },
             id: 'versions'
@@ -873,7 +874,7 @@ success: function (results) {
                     }, {
                         id: 'versions',
                         dataLabels: {
-                            distance: 10,
+                            distance: 20,
                             // format: '{point.custom.version}',
                             filter: {
                                 property: 'percentage',
