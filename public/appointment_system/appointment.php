@@ -879,27 +879,56 @@ require("includes/google_class.php");
 				ORDER BY t.startTime", $_POST["dateSet"], $_POST["doctorId"]);
 			// dump($schedulesDoctors);
 
+			$currentDateTime = new DateTime(); // Get the current date and time
+			$currentDateTime->modify('+1 hour'); // Add one hour
 
-			$hint = '
+
+			// $specificTime = "09:12 AM";
+			// $currentDateTime = DateTime::createFromFormat('h:i A', $specificTime);
+			// $currentDateTime->modify('+1 hour');
+
+			// Format for comparison
+			$currentFormattedTime = $currentDateTime->format('H:i');
+			
+
+			if(date("Y-m-d") > $_POST["dateSet"]):
+				$hint = '
 			<div class="form-group">
 				<label>Time Slot</label>
 				<select required name="timeSlot" class="form-control">';
 				foreach($schedulesDoctors as $row):
-					$selected = ($appointment["timeSet"] == $row["slotId"]) ? 'selected' : '';
-					if ($row["availability"] == "Available") {
-						// If available, make the option selectable
-						$hint .= '<option '.$selected.' value="'.$row["slotId"].'" class="text-success">'.$row["timeSlot"].' - Available</option>';
-					} else {
-						// If not available, disable the option and make value empty
-						$hint .= '<option '.$selected.' value="" disabled class="text-danger">'.$row["timeSlot"].' - Not Available</option>';
-					}
+					$hint .= '<option  value="" disabled class="text-danger">'.$row["timeSlot"].' - Not Available</option>';
 				endforeach;
 			$hint .= '</select>
 			</div>';
 			echo($hint);
 
-		elseif($_POST["action"] == "checkDoctorScheduleWalkin"):
+			else:
+				$hint = '
+				<div class="form-group">
+					<label>Time Slot</label>
+					<select required name="timeSlot" class="form-control">';
+					foreach($schedulesDoctors as $row):
+						$startTime = $row['startTime'];
+						$selected = ($appointment["timeSet"] == $row["slotId"]) ? 'selected' : '';
+						if ($row["availability"] == "Available" && $startTime >= $currentFormattedTime) {
+							// If available and meets the time condition
+							$hint .= '<option '.$selected.' value="' . $row["slotId"] . '" class="text-success">' . $row["timeSlot"] . ' - Available</option>';
+						} else {
+							// If not available or does not meet the time condition
+							$hint .= '<option '.$selected.' value="" disabled class="text-danger">' . $row["timeSlot"] . ' - Not Available</option>';
+						}
+					endforeach;
+				$hint .= '</select>
+				</div>';
+				echo($hint);
+			endif;
 
+
+			
+
+		elseif($_POST["action"] == "checkDoctorScheduleWalkin"):
+			
 			$schedulesDoctors = query("SELECT 
 					t.slotId, 
 					t.timeSlot, 
@@ -919,13 +948,13 @@ require("includes/google_class.php");
 			$currentDateTime->modify('+1 hour'); // Add one hour
 
 
-			$specificTime = "09:12 AM";
-			$currentDateTime = DateTime::createFromFormat('h:i A', $specificTime);
-			$currentDateTime->modify('+1 hour');
+			// $specificTime = "09:12 AM";
+			// $currentDateTime = DateTime::createFromFormat('h:i A', $specificTime);
+			// $currentDateTime->modify('+1 hour');
 
 			// Format for comparison
 			$currentFormattedTime = $currentDateTime->format('H:i');
-
+			// dump($currentFormattedTime);
 			// Build the hint for available time slots
 			$hint = '
 			<div class="form-group">
