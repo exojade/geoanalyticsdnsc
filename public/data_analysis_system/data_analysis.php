@@ -73,14 +73,15 @@ endfor;
 
 			$string_query = "SELECT 
 				d.diseaseName,
-				COUNT(cd.checkupId) AS total
+				COUNT(cd.checkupId) AS total,
+				d.species_affected
 			FROM 
 				checkup_disease cd 
 			LEFT JOIN 
 				disease d ON d.diseaseId = cd.diseaseId
 			where 1=1 $where 
 			GROUP BY 
-				d.diseaseName
+				d.diseaseName, d.species_affected
 			ORDER BY 
 				d.diseaseName";
 			// Execute the query and fetch the results
@@ -114,6 +115,7 @@ endfor;
 
 				$diseaseArray[] = array(
 					'value' => $row['total'],
+					'species_affected' => $row['species_affected'],
 					'color' => $color,
 					'highlight' => $highlight,
 					'label' => $row['diseaseName']

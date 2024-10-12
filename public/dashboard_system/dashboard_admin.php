@@ -7,7 +7,54 @@
 <link rel="stylesheet" href="AdminLTE_new/plugins/daterangepicker/daterangepicker.css">
 <link rel="stylesheet" href="AdminLTE/bower_components/select2/dist/css/select2.min.css">
 
+
+
 <style>
+
+.highcharts-figure,
+.highcharts-data-table table {
+    min-width: 320px;
+    max-width: 660px;
+    margin: 1em auto;
+}
+
+.highcharts-data-table table {
+    font-family: Verdana, sans-serif;
+    border-collapse: collapse;
+    border: 1px solid #ebebeb;
+    margin: 10px auto;
+    text-align: center;
+    width: 100%;
+    max-width: 500px;
+}
+
+.highcharts-data-table caption {
+    padding: 1em 0;
+    font-size: 1.2em;
+    color: #555;
+}
+
+.highcharts-data-table th {
+    font-weight: 600;
+    padding: 0.5em;
+}
+
+.highcharts-data-table td,
+.highcharts-data-table th,
+.highcharts-data-table caption {
+    padding: 0.5em;
+}
+
+.highcharts-data-table thead tr,
+.highcharts-data-table tr:nth-child(even) {
+    background: #f8f8f8;
+}
+
+.highcharts-data-table tr:hover {
+    background: #f1f7ff;
+}
+
+
         #map{
             height: 100vh;
             width: 100%;
@@ -137,6 +184,57 @@
            
           </div>
         </div>
+
+        <form class="sales_chart_form float-right" data-url="data_analysis">
+              <input type="hidden" name="action" value="chart">
+              <button style="margin-left: 5px;" class="btn btn-primary float-right" type="submit">Filter</button>
+              <div style="margin-left: 5px;" class="form-group float-right">
+                  <input name="year" type="number" value="<?php echo(date("Y")); ?>" class="form-control" id="exampleInputEmail1" placeholder="---">
+                </div>
+                <div style="margin-left: 5px;" class="form-group float-right">
+                  <select name="to" class="form-control">
+                    <option value="01">January</option>
+                    <option value="02">February</option>
+                    <option value="03">March</option>
+                    <option value="04">April</option>
+                    <option value="05">May</option>
+                    <option value="06">June</option>
+                    <option value="07">July</option>
+                    <option value="08">August</option>
+                    <option value="09">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option selected value="12">December</option>
+                    <!-- <option selected value="<?php echo(date("m")); ?>"><?php echo(date("F")); ?></option> -->
+                  </select>
+                </div>
+              <div style="margin-left: 5px;" class="form-group float-right">
+                  <select name="from" class="form-control">
+                    <option selected value="01">January</option>
+                    <option value="02">February</option>
+                    <option value="03">March</option>
+                    <option value="04">April</option>
+                    <option value="05">May</option>
+                    <option value="06">June</option>
+                    <option value="07">July</option>
+                    <option value="08">August</option>
+                    <option value="09">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                  </select>
+                </div>
+            </form>
+
+
+        <div class="row">
+            <div class="col-5">
+            <figure class="highcharts-figure">
+    <div id="container"></div>
+   
+</figure>
+            </div>
+        </div>
       </div>
     </section>
   </div>
@@ -157,6 +255,11 @@
 <script src="AdminLTE_new/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
 <script src="AdminLTE_new/plugins/datatables-buttons/js/buttons.print.min.js"></script>
 <script src="AdminLTE_new/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
 
 
 
@@ -610,6 +713,465 @@ $('#mySelect').select2({
     // Handle the change event
     $('#diseaseSelect').on('change', function() {
         updateMapColors(); // Call the function to update the map colors
+    });
+});
+</script>
+
+<script>
+$(document).ready(function() {
+      // Trigger the form submit during document ready
+      // $('.deceased_chart_form').submit();
+      $('.sales_chart_form').submit();
+    });
+  </script>
+
+
+
+<script>
+
+$('.sales_chart_form').submit(function (e) {
+    e.preventDefault(); // Prevent the form from submitting
+
+    var form = $(this)[0];
+    var formData = new FormData(form);
+    var url = $(this).data('url');
+
+    Swal.fire({
+        title: 'Please wait...',
+        imageUrl: 'AdminLTE_new/dist/img/loader.gif',
+        showConfirmButton: false
+    });
+
+    $.ajax({
+
+      type: 'POST',
+url: url,
+data: formData,
+processData: false,
+contentType: false,
+success: function (results) {
+    Swal.close();
+    var o = JSON.parse(results);
+    var diseaseData = o.disease;
+
+    const speciesMap = {
+        dog: {
+            total: 0,
+            diseases: [],
+            color: "#00c0ef"
+        },
+        cat: {
+            total: 0,
+            diseases: [],
+            color: "#3c8dbc"
+        },
+        both: {
+            total: 0,
+            diseases: [],
+            color: "#d2d6de"
+        }
+    };
+
+    // Grouping the diseases by species
+    diseaseData.forEach(function (item) {
+        const species = item.species_affected.toLowerCase(); // Ensure consistent case
+        const disease = item.label;
+        const value = item.value;
+
+        // Update total for species
+        speciesMap[species].total += value;
+        speciesMap[species].diseases.push({ name: disease, value: value });
+    });
+
+    // Prepare chart data for pie chart
+    const browserData = Object.keys(speciesMap).map(function (species) {
+        return {
+            name: species.charAt(0).toUpperCase() + species.slice(1), // Capitalize the first letter
+            y: speciesMap[species].total,
+            color: speciesMap[species].color,
+            drilldown: species.charAt(0).toUpperCase() + species.slice(1) // Drilldown name
+        };
+    });
+
+    const versionsData = [];
+    Object.keys(speciesMap).forEach(function (species) {
+        speciesMap[species].diseases.forEach(function (disease) {
+          
+            versionsData.push({
+                name: disease.name,
+                y: disease.value,
+                color: Highcharts.color(speciesMap[species].color).brighten(0.2).get(),
+                custom: {
+                    version: species.charAt(0).toUpperCase() + species.slice(1) // Species name for tooltip
+                }
+            });
+        });
+    });
+
+    // console.log(versionsData);
+
+    // Destroy any existing chart instance
+    if (window.pieChart) {
+        window.pieChart.destroy();
+    }
+
+    // Create the chart
+    window.pieChart = Highcharts.chart('container', {
+        chart: {
+            type: 'pie'
+        },
+        title: {
+            text: 'Diseases by Species Affected',
+            align: 'left'
+        },
+        subtitle: {
+            text: 'Hover on the slices',
+            align: 'left'
+        },
+        plotOptions: {
+            pie: {
+                shadow: false,
+                center: ['50%', '50%']
+            }
+        },
+        tooltip: {
+            valueSuffix: ''
+        },
+        series: [{
+            name: 'Species Affected',
+            data: browserData,
+            size: '45%',
+            dataLabels: {
+                color: '#ffffff',
+                distance: '-50%'
+            }
+        }, {
+            name: 'Diseases',
+            data: versionsData,
+            size: '80%',
+            innerSize: '60%',
+            dataLabels: {
+              format: '<b>{point.name}:</b> <span style="opacity: 0.5">{y}</span>', // Display disease name
+              filter: {
+                  property: 'y',
+                  operator: '>',
+                  value: 2
+              },
+              style: {
+                  fontWeight: 'normal'
+              }
+          },
+            id: 'versions'
+        }],
+        responsive: {
+            rules: [{
+                condition: {
+                    maxWidth: 400
+                },
+                chartOptions: {
+                    series: [{
+                    }, {
+                        id: 'versions',
+                        dataLabels: {
+                            distance: 10,
+                            // format: '{point.custom.version}',
+                            filter: {
+                                property: 'percentage',
+                                operator: '>',
+                                value: 2
+                            }
+                        }
+                    }]
+                }
+            }]
+        }
+    });
+}
+});
+
+
+
+
+});
+
+
+
+// const colors = Highcharts.getOptions().colors,
+//     categories = [
+//         'Chrome',
+//         'Safari',
+//         'Edge',
+//         'Firefox',
+//         'Other'
+//     ],
+//     data = [
+//         {
+//             y: 61.04,
+//             color: colors[2],
+//             drilldown: {
+//                 name: 'Chrome',
+//                 categories: [
+//                     'Chrome v97.0',
+//                     'Chrome v96.0',
+//                     'Chrome v95.0',
+//                     'Chrome v94.0',
+//                     'Chrome v93.0',
+//                     'Chrome v92.0',
+//                     'Chrome v91.0',
+//                     'Chrome v90.0',
+//                     'Chrome v89.0',
+//                     'Chrome v88.0',
+//                     'Chrome v87.0',
+//                     'Chrome v86.0',
+//                     'Chrome v85.0',
+//                     'Chrome v84.0',
+//                     'Chrome v83.0',
+//                     'Chrome v81.0',
+//                     'Chrome v89.0',
+//                     'Chrome v79.0',
+//                     'Chrome v78.0',
+//                     'Chrome v76.0',
+//                     'Chrome v75.0',
+//                     'Chrome v72.0',
+//                     'Chrome v70.0',
+//                     'Chrome v69.0',
+//                     'Chrome v56.0',
+//                     'Chrome v49.0'
+//                 ],
+//                 data: [
+//                     36.89,
+//                     18.16,
+//                     0.54,
+//                     0.7,
+//                     0.8,
+//                     0.41,
+//                     0.31,
+//                     0.13,
+//                     0.14,
+//                     0.1,
+//                     0.35,
+//                     0.17,
+//                     0.18,
+//                     0.17,
+//                     0.21,
+//                     0.1,
+//                     0.16,
+//                     0.43,
+//                     0.11,
+//                     0.16,
+//                     0.15,
+//                     0.14,
+//                     0.11,
+//                     0.13,
+//                     0.12
+//                 ]
+//             }
+//         },
+//         {
+//             y: 9.47,
+//             color: colors[3],
+//             drilldown: {
+//                 name: 'Safari',
+//                 categories: [
+//                     'Safari v15.3',
+//                     'Safari v15.2',
+//                     'Safari v15.1',
+//                     'Safari v15.0',
+//                     'Safari v14.1',
+//                     'Safari v14.0',
+//                     'Safari v13.1',
+//                     'Safari v13.0',
+//                     'Safari v12.1'
+//                 ],
+//                 data: [
+//                     0.1,
+//                     2.01,
+//                     2.29,
+//                     0.49,
+//                     2.48,
+//                     0.64,
+//                     1.17,
+//                     0.13,
+//                     0.16
+//                 ]
+//             }
+//         },
+//         {
+//             y: 9.32,
+//             color: colors[5],
+//             drilldown: {
+//                 name: 'Edge',
+//                 categories: [
+//                     'Edge v97',
+//                     'Edge v96',
+//                     'Edge v95'
+//                 ],
+//                 data: [
+//                     6.62,
+//                     2.55,
+//                     0.15
+//                 ]
+//             }
+//         },
+//         {
+//             y: 8.15,
+//             color: colors[1],
+//             drilldown: {
+//                 name: 'Firefox',
+//                 categories: [
+//                     'Firefox v96.0',
+//                     'Firefox v95.0',
+//                     'Firefox v94.0',
+//                     'Firefox v91.0',
+//                     'Firefox v78.0',
+//                     'Firefox v52.0'
+//                 ],
+//                 data: [
+//                     4.17,
+//                     3.33,
+//                     0.11,
+//                     0.23,
+//                     0.16,
+//                     0.15
+//                 ]
+//             }
+//         },
+//         {
+//             y: 11.02,
+//             color: colors[6],
+//             drilldown: {
+//                 name: 'Other',
+//                 categories: [
+//                     'Other'
+//                 ],
+//                 data: [
+//                     11.02
+//                 ]
+//             }
+//         }
+//     ],
+//     browserData = [],
+//     versionsData = [],
+//     dataLen = data.length;
+
+// let i,
+//     j,
+//     drillDataLen,
+//     brightness;
+
+
+// // Build the data arrays
+// for (i = 0; i < dataLen; i += 1) {
+
+//     // add browser data
+//     browserData.push({
+//         name: categories[i],
+//         y: data[i].y,
+//         color: data[i].color
+//     });
+
+//     // add version data
+//     drillDataLen = data[i].drilldown.data.length;
+//     for (j = 0; j < drillDataLen; j += 1) {
+//         const name = data[i].drilldown.categories[j];
+//         brightness = 0.2 - (j / drillDataLen) / 5;
+//         versionsData.push({
+//             name,
+//             y: data[i].drilldown.data[j],
+//             color: Highcharts.color(data[i].color).brighten(brightness).get(),
+//             custom: {
+//                 version: name.split(' ')[1] || name.split(' ')[0]
+//             }
+//         });
+//     }
+// }
+
+// // Create the chart
+// Highcharts.chart('container', {
+//     chart: {
+//         type: 'pie'
+//     },
+//     title: {
+//         text: 'Browser market share, January, 2022',
+//         align: 'left'
+//     },
+//     subtitle: {
+//         text: 'Source: <a href="http://statcounter.com" target="_blank">statcounter.com</a>',
+//         align: 'left'
+//     },
+//     plotOptions: {
+//         pie: {
+//             shadow: false,
+//             center: ['50%', '50%']
+//         }
+//     },
+//     tooltip: {
+//         valueSuffix: '%'
+//     },
+//     series: [{
+//         name: 'Browsers',
+//         data: browserData,
+//         size: '45%',
+//         dataLabels: {
+//             color: '#ffffff',
+//             distance: '-50%'
+//         }
+//     }, {
+//         name: 'Versions',
+//         data: versionsData,
+//         size: '80%',
+//         innerSize: '60%',
+//         dataLabels: {
+//             format: '<b>{point.name}:</b> <span style="opacity: 0.5">' +
+//                 '{y}%</span>',
+//             filter: {
+//                 property: 'y',
+//                 operator: '>',
+//                 value: 1
+//             },
+//             style: {
+//                 fontWeight: 'normal'
+//             }
+//         },
+//         id: 'versions'
+//     }],
+//     responsive: {
+//         rules: [{
+//             condition: {
+//                 maxWidth: 400
+//             },
+//             chartOptions: {
+//                 series: [{
+//                 }, {
+//                     id: 'versions',
+//                     dataLabels: {
+//                         distance: 10,
+//                         format: '{point.custom.version}',
+//                         filter: {
+//                             property: 'percentage',
+//                             operator: '>',
+//                             value: 2
+//                         }
+//                     }
+//                 }]
+//             }
+//         }]
+//     }
+// });
+
+$(document).ready(function () {
+    // Your chart initialization code inside here
+    window.pieChart = Highcharts.chart('container', {
+        chart: {
+            type: 'pie'
+        },
+        title: {
+            text: 'Disease Distribution'
+        },
+        series: [{
+            name: 'Diseases',
+            data: [] // Initial empty data, will be updated dynamically
+        }]
     });
 });
 </script>
