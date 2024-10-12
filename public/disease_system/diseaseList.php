@@ -21,6 +21,10 @@
                   <thead>
                     <th width="10%">Action</th>
                     <th>Disease</th>
+                    <th>Transmission Type</th>
+                    <th>Description</th>
+                    <th>Symptoms</th>
+                    <th>Treatment</th>
                   </thead>
                 </table>
               </div>
@@ -70,6 +74,10 @@ var datatable =
                 'columns': [
                     { data: 'action', "orderable": false },
                     { data: 'name', "orderable": false  },
+                    { data: 'transmission_type', "orderable": false  },
+                    { data: 'description', "orderable": false  },
+                    { data: 'symptoms', "orderable": false  },
+                    { data: 'treatment', "orderable": false  },
        
                 ],
                 "footerCallback": function (row, data, start, end, display) {

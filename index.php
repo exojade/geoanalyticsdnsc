@@ -31,7 +31,6 @@
 						require 'logout.php';
 					endif;
 				else:
-					
 				if($request == 'index' || $request == '/' || $request== "")
 				require 'public/dashboard_system/main.php';
 			else if ($request == 'users')

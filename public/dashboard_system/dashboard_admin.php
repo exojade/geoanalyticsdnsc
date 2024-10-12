@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
 <link rel="stylesheet" href="AdminLTE_new/plugins/daterangepicker/daterangepicker.css">
+<link rel="stylesheet" href="AdminLTE/bower_components/select2/dist/css/select2.min.css">
 
 <style>
         #map{
@@ -80,101 +81,48 @@
         <div class="row">
           <div class="col-12">
 
+          
+
 
           <div class="card bg-gradient-gray" id="fullscreenDiv">
-              <div class="card-header border-0">
-                <!-- <h3 class="card-title">
-                  <i class="fas fa-map-marker-alt mr-1"></i>
-                  MAP
-                  
-                </h3> -->
+             
+              <div class="card-body" style="height: 100vh; overflow: hidden;">
 
-                <div class="row">
-                  <div class="col-4">
-                  <div class="form-group">
+              <div class="row">
+                  <div class="col-3">
+                    <div class="form-group">
 
-<div class="input-group">
-  <div class="input-group-prepend">
-    <span class="input-group-text">
-      <i class="far fa-calendar-alt"></i>
-    </span>
-  </div>
-  <input autocomplete="off" type="text" placeholder="Enter Date Here..." class="form-control" id="reservation" onchange="alert('awit')">
-</div>
-<!-- /.input group -->
-</div>
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">
+                              <i class="far fa-calendar-alt"></i>
+                            </span>
+                          </div>
+                          <input autocomplete="off" type="text" placeholder="Enter Date Here..." class="form-control" id="reservation" onchange="alert('awit')">
+                        </div>
+                        </div>
 
-                  <div class="form-group clearfix">
-                      <div class="icheck-primary d-inline">
-                        <input type="checkbox" id="parvoCheckbox"  onchange="updateMapColors()" >
-                        <label for="parvoCheckbox">
-                        PARVO
-                        </label>
-                      </div>
-                      <div class="icheck-primary d-inline">
-                        <input type="checkbox" id="fluCheckBox"  onchange="updateMapColors()">
-                        <label for="fluCheckBox">
-                        FLU
-                        </label>
-                      </div>
-                      <div class="icheck-primary d-inline">
-                        <input type="checkbox" id="dengueCheckBox"  onchange="updateMapColors()">
-                        <label for="dengueCheckBox">
-                        DENGUE
-                        </label>
-                      </div>
                     </div>
-                    
-                  </div>
-                  <div class="col-4">
-                 
-                  </div>
-                  <div class="col-4">
-                  <button class="btn btn-info" style="float:right;" id="toggleFullscreen">Toggle Fullscreen</button>
-                  </div>
+                  <div class="col-8">
+                    <select id="diseaseSelect" multiple="multiple" onchange="updateMapColors()" style="width: 100%;">
+                        <?php
+                        $diseases = query("select * from disease");
+                        foreach ($diseases as $row):
+                        ?>
+                            <option value="<?php echo $row['diseaseId']; ?>" data-disease="<?php echo htmlspecialchars($row['diseaseName']); ?>">
+                                <?php echo htmlspecialchars($row['diseaseName']); ?>
+                            </option>
+                        <?php
+                        endforeach;
+                        ?>
+                    </select>
+                    </div>
+
+                    <div class="col-1">
+                    <button class="btn btn-info btn-block"  id="toggleFullscreen"><i class="fa fa-expand"></i></button>  
+                    </div>
                 </div>
-
-                
-                
-                <!-- <br>
-                <br>
-                <br>
-                <div class="row">
-                <div class="col-sm-6">
-                    <div class="form-group clearfix">
-                      <div class="icheck-primary d-inline">
-                        <input type="checkbox" id="checkboxPrimary1" value="parvo" onchange="updateMapColors(event, 'parvo')" >
-                        <label for="checkboxPrimary1">
-                        PARVO
-                        </label>
-                      </div>
-                      <div class="icheck-primary d-inline">
-                        <input type="checkbox" id="checkboxPrimary2" value="flu" onchange="updateMapColors(event, 'flu')">
-                        <label for="checkboxPrimary2">
-                        FLU
-                        </label>
-                      </div>
-                      <div class="icheck-primary d-inline">
-                        <input type="checkbox" id="checkboxPrimary3" value="dengue" onchange="updateMapColors(event, 'dengue')">
-                        <label for="checkboxPrimary3">
-                        DENGUE
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                </div> -->
-<!-- 
-
-                <input type="checkbox" id="parvoCheckbox" value="parvo" onchange="updateMapColors()"> PARVO
-                <input type="checkbox" id="fluCheckbox" value="flu" onchange="updateMapColors()"> FLU
-                <input type="checkbox" id="dengueCheckbox" value="dengue" onchange="updateMapColors()"> DENGUE -->
-
-                <!-- card tools -->
-        
-                <!-- /.card-tools -->
-              </div>
-              <div class="card-body" style="height: 400px; overflow: hidden;">
-              <div id="map" style="height: 400px;"></div>
+              <div id="map" style="height: 100vh;"></div>
   <!-- <button id="focus-single">Focus on Australia</button>
   <button id="focus-multiple">Focus on Australia and Japan</button>
   <button id="focus-coords">Focus on Cyprus</button>
@@ -193,7 +141,7 @@
     </section>
   </div>
 
-
+  <script src="AdminLTE/bower_components/select2/dist/js/select2.full.min.js"></script>
 
   <script src="AdminLTE_new/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="AdminLTE_new/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
@@ -503,10 +451,43 @@ info.onAdd = function (map) {
 
 // method that we will use to update the control based on feature properties passed
 info.update = function (props) {
-    this._div.innerHTML = '<h4>Disease Density</h4>' +  (props ?
-        '<b>' + props.name + '</b><br><br><b>PARVO: </b><span style="float: right;"> ' + props.parvo + '</span> <br><b>DENGUE:</b><span style="float: right;"> '+props.dengue+'</span><br><b>FLU:</b><span style="float: right;"> '+props.flu+'</span><br><b>TOTAL:<span style="float: right;">'+props.density+'</span></b></sup>'
-        : 'Hover over a barangay');
+    if (!props) {
+        this._div.innerHTML = '<h4>Disease Density</h4>Hover over a barangay';
+        return;
+    }
+
+    // Collect the selected diseases
+    let selectedDiseases = [];
+    let selectedDiseasesId = [];
+
+    $('#diseaseSelect option:selected').each(function () {
+        let disease = $(this).data('disease'); // Get the disease name
+        let disease_id = $(this).val(); // Get the disease ID
+       
+        selectedDiseases.push(disease);  
+        selectedDiseasesId.push(disease_id);  
+    });
+
+    // Build the dynamic content based on selected diseases
+    let content = `<h4>Disease Density</h4><b>${props.name}</b><br><br>`;
+    let total = 0;
+
+    selectedDiseasesId.forEach((diseaseId, index) => {
+        if (props[diseaseId] !== undefined) {
+            content += `<b>${selectedDiseases[index].toUpperCase()}:</b> <span style="float: right;">${props[diseaseId]}</span><br>`;
+            total += props[diseaseId];  // Accumulate total density
+        }
+    });
+
+    // Add the total density if there are selected diseases
+    if (selectedDiseases.length > 0) {
+        content += `<b>TOTAL:</b> <span style="float: right;">${total}</span>`;
+    }
+
+    // Update the info div with the new content
+    this._div.innerHTML = content;
 };
+
 
 info.addTo(map);
 
@@ -543,59 +524,42 @@ $('#reservation').daterangepicker({
         $(this).val('');
     });
 legend.addTo(map);
-        function updateMapColors() {
+function updateMapColors() {
+    let dateRange = $('#reservation').val();
+    let selectedDiseases = $('#diseaseSelect').val(); // Get selected values from Select2
 
-          // parvo = $('#reservation').val();
-          // alert(parvo);
-          var dateRange = $('#reservation').val();
-          var parvo = $('#parvoCheckbox').is(':checked');
-          var flu = $('#fluCheckBox').is(':checked');
-          var dengue = $('#dengueCheckBox').is(':checked');
-          // console.log(parvo);
-          $.ajax({
-            type: 'post',
-            url: 'ajaxMapDisease',
-            data: {
-                action: "ajaxMapDisease",
-                parvo: parvo,
-                flu: flu,
-                dengue: dengue,
-                dateRange: dateRange,
-            },
-            success: function(data) {
-                // Parse the received JSON data from PHP
-                var densityData = JSON.parse(data);
-                console.log(panabodataa);
-                // Update the density property of each feature in panabodataa
-                panabodataa.features.forEach(function(feature) {
-                    // Get the ID of the feature
-                    // console.log(feature.properties.id);
-                    var id = feature.properties.id;
-                    
-                    // Check if the density data for this ID exists
-                    if (densityData.hasOwnProperty(id)) {
-                        // Update the density property of the feature
-                        console.log(densityData[id].parvo);
-                        // feature.properties.density = densityData[id];
-                        feature.properties.dengue = densityData[id].dengue;
-                        feature.properties.parvo = densityData[id].parvo;
-                        feature.properties.flu = densityData[id].flu;
-                        feature.properties.density = densityData[id].dengue + densityData[id].parvo + densityData[id].flu;
-                    }
-                });
+    console.log('Selected Diseases:', selectedDiseases);
 
-                // Update map layer with the updated density data
-                polygondata.clearLayers(); // Clear existing layer
-                polygondata = L.geoJSON(panabodataa, {
-                    style: style,
-                    onEachFeature: onEachFeature
-                }).addTo(map);
+    $.ajax({
+        type: 'POST',
+        url: 'ajaxMapDisease',
+        data: {
+            action: "ajaxMapDisease",
+            selectedDiseases: selectedDiseases,
+            dateRange: dateRange
+        },
+        success: function(data) {
+            let densityData = JSON.parse(data);
+            console.log(densityData);
 
-                // Update legend
-                legend.addTo(map); // Update legend with new color scale
-            }
-        });
-    }
+            panabodataa.features.forEach(function(feature) {
+                let id = feature.properties.id;
+                if (densityData.hasOwnProperty(id)) {
+                    feature.properties.density = Object.values(densityData[id]).reduce((a, b) => a + b, 0);
+                    Object.assign(feature.properties, densityData[id]);
+                }
+            });
+
+            polygondata.clearLayers();
+            polygondata = L.geoJSON(panabodataa, {
+                style: style,
+                onEachFeature: onEachFeature
+            }).addTo(map);
+
+            legend.addTo(map);
+        }
+    });
+}
 
 
 </script>
@@ -615,6 +579,37 @@ $(document).ready(function(){
             }
             $("#map").css("height", "400px"); // Set height to 400px when exiting fullscreen
         }
+    });
+});
+
+
+$('#mySelect').select2({
+        // This option will prevent the selected options from showing in the dropdown
+        templateResult: function(data) {
+            // Check if the option is selected
+            if (data.selected) {
+                return null; // Do not show the selected option
+            }
+            return data.text; // Show the option text
+        },
+        templateSelection: function(data) {
+            return data.text; // Show the selected option text in the input
+        },
+        placeholder: "Select options",
+        allowClear: true
+    });
+
+    // Event listener to refresh the dropdown options
+    $(document).ready(function() {
+    // Initialize Select2
+    $('#diseaseSelect').select2({
+        placeholder: "Select diseases",
+        allowClear: true
+    });
+
+    // Handle the change event
+    $('#diseaseSelect').on('change', function() {
+        updateMapColors(); // Call the function to update the map colors
     });
 });
 </script>
