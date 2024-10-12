@@ -26,7 +26,8 @@ $(document).on('submit', '.generic_form_trigger', function(e) {
     Swal.fire({
         title: prompttitle,
         text: promptmessage,
-        type: 'info',
+        // type: 'info',
+        icon: "question",
         showCancelButton: true,
         confirmButtonText: 'Yes',
         cancelButtonText: 'Cancel'
@@ -47,7 +48,7 @@ $(document).on('submit', '.generic_form_trigger', function(e) {
                         Swal.fire({
                             title: "Submit success",
                             text: o.message,
-                            type: "success"
+                            icon: "success"
                         }).then(function () {
                           if(typeof(o.newlink) != "undefined" && o.newlink !== null) {
                           if(o.newlink == "newlink"){
@@ -75,7 +76,7 @@ $(document).on('submit', '.generic_form_trigger', function(e) {
                         Swal.fire({
                             title: "Error!",
                             text: o.message,
-                            type: "error"
+                            icon: "error"
                         });
                         console.log(results);
                     }
@@ -123,7 +124,7 @@ $(document).on('submit', '.generic_form_trigger_no_prompt', function(e) {
                         Swal.fire({
                             title: "Submit success",
                             text: o.message,
-                            type: "success"
+                            icon: "success"
                         }).then(function () {
                           if(typeof(o.newlink) != "undefined" && o.newlink !== null) {
                           if(o.newlink == "newlink"){
@@ -151,7 +152,7 @@ $(document).on('submit', '.generic_form_trigger_no_prompt', function(e) {
                         Swal.fire({
                             title: "Error!",
                             text: o.message,
-                            type: "error"
+                            icon: "error"
                         });
                         console.log(results);
                     }
@@ -233,7 +234,7 @@ $(document).on('submit', '.generic_form_trigger_no_prompt', function(e) {
                 Swal.fire({
                     title: "Error!",
                     text: o.message,
-                    type: "error"
+                    icon: "error"
                 });
                 console.log(results);
             }
@@ -345,7 +346,7 @@ $('.generic_form_pdf_dropping').submit(function(e) {
   }).then((result) => {
     /* Read more about isConfirmed, isDenied below */
     if (result.isConfirmed) {
-      Swal.fire({title: 'Please wait...', imageUrl: 'AdminLTE/dist/img/loader.gif', showConfirmButton: false});
+      Swal.fire({title: 'Please wait...', imageUrl: 'AdminLTE_new/dist/img/loader.gif', showConfirmButton: false});
       $.ajax({
                 type: 'post',
                 url: url,

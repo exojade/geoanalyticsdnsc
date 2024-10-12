@@ -316,7 +316,7 @@ $('#petOwnerSelect').select2({
 
     $('#modalPetBoardingApprove').on('show.bs.modal', function (e) {
         var rowid = $(e.relatedTarget).data('id');
-        Swal.fire({title: 'Please wait...', imageUrl: 'AdminLTE/dist/img/loader.gif', showConfirmButton: false});
+        Swal.fire({title: 'Please wait...', imageUrl: 'AdminLTE_new/dist/img/loader.gif', showConfirmButton: false});
         $.ajax({
             type : 'post',
             url : 'petBoarding', //Here you will fetch records 
@@ -334,7 +334,7 @@ $('#petOwnerSelect').select2({
 
      $('#modalPetBoardingDetails').on('show.bs.modal', function (e) {
         var rowid = $(e.relatedTarget).data('id');
-        Swal.fire({title: 'Please wait...', imageUrl: 'AdminLTE/dist/img/loader.gif', showConfirmButton: false});
+        Swal.fire({title: 'Please wait...', imageUrl: 'AdminLTE_new/dist/img/loader.gif', showConfirmButton: false});
         $.ajax({
             type : 'post',
             url : 'petBoarding', //Here you will fetch records 
