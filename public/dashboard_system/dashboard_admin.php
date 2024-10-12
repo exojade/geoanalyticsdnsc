@@ -86,7 +86,7 @@
 
           <div class="card bg-gradient-gray" id="fullscreenDiv">
              
-              <div class="card-body" style="height: 100vh; overflow: hidden;">
+              <div class="card-body" style="height: 60vh; overflow: hidden;">
 
               <div class="row">
                   <div class="col-3">
@@ -122,7 +122,7 @@
                     <button class="btn btn-info btn-block"  id="toggleFullscreen"><i class="fa fa-expand"></i></button>  
                     </div>
                 </div>
-              <div id="map" style="height: 100vh;"></div>
+              <div id="map" style="height: 50vh;"></div>
   <!-- <button id="focus-single">Focus on Australia</button>
   <button id="focus-multiple">Focus on Australia and Japan</button>
   <button id="focus-coords">Focus on Cyprus</button>
