@@ -138,7 +138,7 @@
       </a>
   </li> -->
 
-  <li class="nav-item">
+  <!-- <li class="nav-item">
       <a href="data_analysis" class="nav-link">
         <i class="nav-icon fas fa-chart-bar"></i>
         <p>
@@ -146,7 +146,7 @@
           <span class="right badge badge-danger"></span>
         </p>
       </a>
-  </li>
+  </li> -->
 
   <li class="nav-item">
       <a href="doctors" class="nav-link">
@@ -178,15 +178,7 @@
       </a>
   </li>
 
-  <li class="nav-item">
-      <a href="settings" class="nav-link">
-        <i class="nav-icon fas fa-cog"></i>
-        <p>
-          Settings
-          <span class="right badge badge-danger"></span>
-        </p>
-      </a>
-  </li>
+
   <?php elseif($_SESSION["dnsc_geoanalytics"]["role"] == "CLIENT"): ?>
 
   <li class="nav-item">
@@ -297,21 +289,21 @@
       </a>
   </li>
 
-<li class="nav-item">
+<!-- <li class="nav-item">
       <a href="data_analysis" class="nav-link">
         <i class="nav-icon fas fa-chart-bar"></i>
         <p>
-          Data Analysis
+          Data Visualization
           <span class="right badge badge-danger"></span>
         </p>
       </a>
-  </li>
+  </li> -->
 
   <?php endif; ?>
 
   
 
-  <li class="nav-item">
+  <!-- <li class="nav-item">
       <a href="logout" class="nav-link">
         <i class="nav-icon fas fa-sign-out-alt"></i>
         <p>
@@ -319,7 +311,7 @@
           <span class="right badge badge-danger"></span>
         </p>
       </a>
-  </li>
+  </li> -->
  
         </ul>
       </nav>

@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="AdminLTE_new/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
   <link rel="stylesheet" href="AdminLTE_new/dist/css/adminlte.min.css">
   <link rel="stylesheet" href="AdminLTE_new/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4/animate.min.css" />
+  <link rel="stylesheet" href="resources/animate.css" />
   <link rel="icon" href="<?php echo($siteOptions["mainLogo"]); ?>">
 </head>
 
@@ -86,12 +86,22 @@
       <!-- Messages Dropdown Menu -->
      
       <!-- Notifications Dropdown Menu -->
-      <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#">
-          <i class="far fa-bell"></i>
-          <span class="badge badge-danger navbar-badge">15</span>
+
+      <?php if($_SESSION["dnsc_geoanalytics"]["role"] == "admin"): ?>
+      <li class="nav-item">
+        <a class="nav-link"  href="settings">
+          <i class="text-primary fas fa-cog" title="Settings"></i>
         </a>
-        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+      </li>
+      <?php endif; ?>
+
+
+
+      <li class="nav-item">
+        <a class="nav-link"  href="logout">
+          <i class="text-danger fas fa-sign-out-alt" title="Logout System"></i>
+        </a>
+        <!-- <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           <span class="dropdown-item dropdown-header">15 Notifications</span>
           <div class="dropdown-divider"></div>
           <a href="#" class="dropdown-item">
@@ -110,7 +120,7 @@
           </a>
           <div class="dropdown-divider"></div>
           <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
-        </div>
+        </div> -->
       </li>
       <!-- <li class="nav-item">
         <a class="nav-link" data-widget="fullscreen" href="#" role="button">

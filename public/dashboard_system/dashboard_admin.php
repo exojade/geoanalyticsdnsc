@@ -760,6 +760,20 @@ $('.sales_chart_form').submit(function (e) {
 
     Swal.fire({
         title: 'Please wait...',
+        showClass: {
+    popup: `
+      animate__animated
+      animate__bounceIn
+      animate__faster
+    `
+  },
+  hideClass: {
+    popup: `
+      animate__animated
+      animate__bounceOut
+      animate__faster
+    `
+  },
         imageUrl: 'AdminLTE_new/dist/img/loader.gif',
         showConfirmButton: false
     });

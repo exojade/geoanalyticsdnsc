@@ -40,7 +40,7 @@
 				// dump($row);
 				$data[$i]["action"] = '
 				<div class="btn-group btn-block">
-					<a href="patient?action=specific&id='.$row["clientId"].'" class="btn btn-sm btn-success">View</a>
+					<a href="patient?action=specific&id='.$row["clientId"].'" class="btn btn-sm btn-info">View</a>
 					<a href="#" data-id="'.$row["clientId"].'" data-target="#updatePatientModal" data-toggle="modal" class="btn btn-sm btn-warning">Update</a>
 				</div>
 				';
