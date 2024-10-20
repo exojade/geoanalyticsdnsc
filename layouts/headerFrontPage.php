@@ -107,7 +107,7 @@ $lastWord = basename($path);
                     </li>
                 </ul>
                 <!-- Admin and staff dropdown -->
-                <a class="nav-link text-white " href="login" id="navbarDarkDropdownMenuLink" >
+                <a class="nav-link text-white mr-30" href="login" id="navbarDarkDropdownMenuLink" >
                         Personnel Login
                     </a>
             </div>

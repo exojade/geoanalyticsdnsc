@@ -25,6 +25,20 @@ $(document).on('submit', '.generic_form_trigger', function(e) {
 
     Swal.fire({
         title: prompttitle,
+        showClass: {
+    popup: `
+      animate__animated
+      animate__bounceIn
+      animate__faster
+    `
+  },
+  hideClass: {
+    popup: `
+      animate__animated
+      animate__bounceOut
+      animate__faster
+    `
+  },
         text: promptmessage,
         // type: 'info',
         icon: "question",
@@ -48,6 +62,20 @@ $(document).on('submit', '.generic_form_trigger', function(e) {
                         Swal.fire({
                             title: "Submit success",
                             text: o.message,
+                            showClass: {
+    popup: `
+      animate__animated
+      animate__bounceIn
+      animate__faster
+    `
+  },
+  hideClass: {
+    popup: `
+      animate__animated
+      animate__bounceOut
+      animate__faster
+    `
+  },
                             icon: "success"
                         }).then(function () {
                           if(typeof(o.newlink) != "undefined" && o.newlink !== null) {
@@ -76,6 +104,20 @@ $(document).on('submit', '.generic_form_trigger', function(e) {
                         Swal.fire({
                             title: "Error!",
                             text: o.message,
+                            showClass: {
+    popup: `
+      animate__animated
+      animate__bounceIn
+      animate__faster
+    `
+  },
+  hideClass: {
+    popup: `
+      animate__animated
+      animate__bounceOut
+      animate__faster
+    `
+  },
                             icon: "error"
                         });
                         console.log(results);

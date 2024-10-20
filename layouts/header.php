@@ -15,8 +15,34 @@
   <link rel="stylesheet" href="AdminLTE_new/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
   <link rel="stylesheet" href="AdminLTE_new/dist/css/adminlte.min.css">
   <link rel="stylesheet" href="AdminLTE_new/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4/animate.min.css" />
   <link rel="icon" href="<?php echo($siteOptions["mainLogo"]); ?>">
 </head>
+
+<style>
+@keyframes inside-out {
+    0% {
+        transform: scale(0); /* Start from scale 0 */
+        opacity: 0; /* Fully transparent */
+    }
+    100% {
+        transform: scale(1); /* End at original size */
+        opacity: 1; /* Fully opaque */
+    }
+}
+
+.modal.fade .modal-dialog {
+    transition: transform 0.2s ease-out, opacity 0.2s ease-out; /* Smooth transition for scale */
+}
+
+.modal.show .modal-dialog {
+    animation: inside-out 0.2s forwards; /* Apply the animation on show */
+}
+
+.modal.hide .modal-dialog {
+    animation: inside-out 0.2s reverse forwards; /* Reverse animation for hide */
+}
+    </style>
 <style>
   .content-wrapper{
     background-color: #fff !important;

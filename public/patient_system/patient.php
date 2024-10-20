@@ -41,7 +41,7 @@
 				$data[$i]["action"] = '
 				<div class="btn-group btn-block">
 					<a href="patient?action=specific&id='.$row["clientId"].'" class="btn btn-sm btn-success">View</a>
-					<a href="#" data-target="#updatePatientModal" data-toggle="modal" class="btn btn-sm btn-warning">Update</a>
+					<a href="#" data-id="'.$row["clientId"].'" data-target="#updatePatientModal" data-toggle="modal" class="btn btn-sm btn-warning">Update</a>
 				</div>
 				';
 				$data[$i]["name"] = $row["lastname"] . ", " . $row["firstname"];
@@ -64,10 +64,210 @@
             );
             echo json_encode($json_data);
 
+		elseif($_POST["action"] == "updatePatientModal"):
+
+			// dump($_POST);
+
+			$client = query("select c.*, u.username from client c
+								left join users u 
+								on u.userid = c.clientId
+								where c.clientId = ?", $_POST["clientId"]);
+
+			$client = $client[0];
+
+
+			$hint = '
+			<input type="hidden" name="client_id" value="'.$client["clientId"].'">
+			<div class="row">
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">First Name <span class="text-red">*</span></label>
+                        <input required value="'.$client["firstname"].'" type="text" name="firstname" class="form-control" id="exampleInputEmail1" placeholder="First Name">
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Middle Name </label>
+                        <input  type="text" value="'.$client["middlename"].'" name="middlename" class="form-control" id="exampleInputEmail1" placeholder="Middle Name">
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Last Name <span class="text-red">*</span></label>
+                        <input required type="text" value="'.$client["lastname"].'" name="lastname" class="form-control" id="exampleInputEmail1" placeholder="Last Name">
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Name Extension</label>
+                        <input  type="text" value="'.$client["nameExtension"].'" name="nameExtension" class="form-control" id="exampleInputEmail1" placeholder="Ex. Sr. Jr. II III">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label for="exampleInputEmail1">Region <span class="text-red">*</span></label>
+                              <select style="width:100%;" required class="form-control select2" id="region_select" disabled>
+                            		<option selected value="'.$client["region"].'">'.$client["region"].'</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label for="exampleInputEmail1">Province <span class="text-red">*</span></label>
+                              <select style="width:100%;" width="100%" required class="form-control select2" id="province_select" disabled>
+                                  <option selected value="'.$client["region"].'">'.$client["region"].'</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label for="exampleInputEmail1">City | Municipality <span class="text-red">*</span></label>
+                              <select style="width:100%;" width="100%" required class="form-control select2" id="city_mun_select" disabled>
+                                  <option selected value="'.$client["cityMun"].'">'.$client["cityMun"].'</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label for="exampleInputEmail1">Barangay <span class="text-red">*</span></label>
+                              <select style="width:100%;" name="barangay" width="100%" required class="form-control select2" id="barangay_select">';
+
+								  $barangayNames = array(
+									"A. O. Floirendo",
+									"Datu Abdul Dadia",
+									"Buenavista",
+									"Cacao",
+									"Cagangohan",
+									"Consolacion",
+									"Dapco",
+									"Gredu (Poblacion)",
+									"J.P. Laurel",
+									"Kasilak",
+									"Katipunan",
+									"Katualan",
+									"Kauswagan",
+									"Kiotoy",
+									"Little Panay",
+									"Lower Panaga (Roxas)",
+									"Mabunao",
+									"Maduao",
+									"Malativas",
+									"Manay",
+									"Nanyo",
+									"New Malaga (Dalisay)",
+									"New Malitbog",
+									"New Pandan (Pob.)",
+									"New Visayas",
+									"Quezon",
+									"Salvacion",
+									"San Francisco (Poblacion)",
+									"San Nicolas",
+									"San Pedro",
+									"San Roque",
+									"San Vicente",
+									"Santa Cruz",
+									"Santo Niño (Poblacion)",
+									"Sindaton",
+									"Southern Davao",
+									"Tagpore",
+									"Tibungol",
+									"Upper Licanan",
+									"Waterfall"
+								);
+
+								foreach($barangayNames as $row):
+									if($row == $client["barangay"]):
+										$hint .=' <option selected value="'.$row.'">'.$row.'</option>';
+									else:
+										$hint .=' <option value="'.$row.'">'.$row.'</option>';
+									endif;
+								endforeach;
+								
+
+
+								$hint .='
+                              </select>
+                            </div>
+                          </div>
+                      </div>
+                  
+                      <div class="row">
+                          <div class="col-md-12">
+                            <div class="form-group">
+                              <label>Street / House Number / Purok <span class="text-red">*</span></label>
+                              <input value="'.$client["address"].'" name="address" required type="text" class="form-control"  placeholder="Street / House Number / Purok">
+                            </div>
+                          </div>
+                      </div>
+
+                      <div class="row">
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label>Birthdate <span class="text-red">*</span></label>
+                              <input  max="'.date('Y-m-d').'" value="'.$client["birthDate"].'" name="birthDate" required type="date" class="form-control"  placeholder="Birthdate">
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label>Sex <span class="text-red">*</span></label>
+                              <select required name="gender" class="form-control select2" >
+                               <option selected value="'.$client["gender"].'">'.$client["gender"].'</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                              </select>
+                            </div>
+                          </div>
+
+                          <div class="col-md-4">
+                          <div class="form-group">
+                              <label>Contact Number:</label>
+                              <div class="input-group">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                </div>
+                                <input name="contactNumber" value="'.$client["contactNumber"].'" required type="text" class="form-control" data-inputmask=\'"mask": "(+63) 9999999999"\' data-mask>
+                              </div>
+                              <!-- /.input group -->
+                            </div>
+                          </div>
+                      </div>
 			
+			
+			';
 
 
+			echo($hint);
 
+		elseif($_POST["action"] == "updatePatient"):
+			// dump($_POST);
+
+			$barangayId = convertBrgytoNumber($_POST["barangay"]);
+			query("update client set 
+					firstname = '".$_POST["firstname"]."',
+					middlename = '".$_POST["middlename"]."',
+					lastname = '".$_POST["lastname"]."',
+					nameExtension = '".$_POST["nameExtension"]."',
+					barangay = '".$_POST["barangay"]."',
+					address = '".$_POST["address"]."',
+					contactNumber = '".$_POST["contactNumber"]."',
+					birthDate = '".$_POST["birthDate"]."',
+					gender = '".$_POST["gender"]."',
+					clientStatus = 'DONE UPDATE',
+					barangayId = '".$barangayId."'
+					where clientId = ?
+					", $_POST["client_id"]);
+
+					$res_arr = [
+						"result" => "success",
+						"title" => "Success",
+						"message" => "Success on updating data",
+						"link" => "refresh",
+						// "html" => '<a href="#">View or Print '.$transaction_id.'</a>'
+						];
+						echo json_encode($res_arr); exit();
 
 
 
