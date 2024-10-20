@@ -13,17 +13,27 @@
         </div>
       </div>
     </section> -->
+    <style>
+  .iframe-container {
+      position: relative;
+      width: 100%; /* Full width */
+      padding-top: 150%; /* Maintain aspect ratio */
+  }
 
+  .iframe-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%; /* Make the iframe responsive */
+      height: 100%;
+  }
+</style>
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-      <div class="card" >
-              <div class="card-header">
-                <h3 class="card-title">Carousel</h3>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body col-8">
-                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" >
+        <div class="row">
+          <div class="col-8">
+          <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" >
                   <ol class="carousel-indicators">
                     <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
                     <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
@@ -32,6 +42,10 @@
                   <div class="carousel-inner">
                     <div class="carousel-item active">
                       <img class="d-block w-100" src="https://placehold.it/900x500/39CCCC/ffffff&text=I+Love+Bootstrap" alt="First slide">
+                      <div class="carousel-caption d-none d-md-block">
+                          <h5>Second Slide</h5>
+                          <p>Description for the second slide.</p>
+                      </div>
                     </div>
                     <div class="carousel-item">
                       <img class="d-block w-100" src="https://placehold.it/900x500/3c8dbc/ffffff&text=I+Love+Bootstrap" alt="Second slide">
@@ -53,9 +67,21 @@
                     <span class="sr-only">Next</span>
                   </a>
                 </div>
-              </div>
-              <!-- /.card-body -->
-            </div>
+          </div>
+          <div class="col-4">
+          <div class="iframe-container">
+            <iframe 
+                src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FPanaboCityVet&tabs=timeline&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true" 
+                style="border:none; overflow:hidden;" 
+                scrolling="no" 
+                frameborder="0" 
+                allowfullscreen="true" 
+                allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share">
+            </iframe>
+        </div>
+    </div>
+    </div>
+
 
 
       </div>

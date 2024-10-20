@@ -70,7 +70,7 @@
               <h6>
               Parvo
               </h6>
-              <p class="text-justify">
+              <p class="text-justify" style="padding-left:150px; padding-right: 150px;">
               a highly contagious viral disease of dogs that commonly causes acute gastrointestinal illness in puppies. 
               </p>
             </div>
@@ -82,14 +82,14 @@
         </div>
         <div class="col-4">
           <div class="box container" style="background-color: #3A81D3; margin-top:0px;">
-            <div class="img-box" style="margin-top:20px;">
+            <div class="img-box " style="margin-top:20px;">
               <img src="public/static_system/assets/images/flu.png" alt="">
             </div>
             <div class="detail-box">
               <h6>
               Flu
               </h6>
-              <p class="text-justify">
+              <p class="text-justify" style="padding-left:150px; padding-right: 150px;">
               a contagious respiratory illness caused by influenza viruses that infect the nose, throat, and sometimes the lungs.
               </p>
             </div>
@@ -108,7 +108,7 @@
               <h6>
               Dengue
               </h6>
-              <p class="text-justify">
+              <p class="text-justify" style="padding-left:150px; padding-right: 150px;">
               a highly contagious viral disease of dogs that commonly causes acute gastrointestinal illness in puppies. 
               </p>
             </div>

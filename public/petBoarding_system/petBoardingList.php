@@ -47,7 +47,7 @@
               <div class="modal-body" style="-webkit-user-select: none;  /* Chrome all / Safari all */
               -moz-user-select: none;     /* Firefox all */
               -ms-user-select: none;  ">
-                  <form class="generic_form_trigger" url="petBoarding" autocomplete="off">
+                  <form class="generic_form_trigger" url="petBoarding" autocomplete="off" id="newPetboardingForm">
                     <input type="hidden" name="action" value="newPetBoarding">
                     <input type="hidden" name="role" value="user">
 
@@ -290,6 +290,9 @@
 <script src="AdminLTE_new/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
 <!-- <script src="AdminLTE_new/plugins/select2/js/select2.full.min.js"></script> -->
 
+<script src="AdminLTE_new/plugins/jquery-validation/jquery.validate.min.js"></script>
+<script src="AdminLTE_new/plugins/jquery-validation/additional-methods.min.js"></script>
+
 
 <script>
 
@@ -447,6 +450,29 @@ var datatable =
 
 
 
+
+
+$(function () {
+  $('#newPetboardingForm').validate({
+    errorElement: 'span',
+    errorPlacement: function (error, element) {
+      error.addClass('invalid-feedback');
+      element.closest('.form-group').append(error);
+    },
+    highlight: function (element, errorClass, validClass) {
+      $(element).addClass('is-invalid').removeClass('is-valid');
+    },
+    unhighlight: function (element, errorClass, validClass) {
+      $(element).removeClass('is-invalid').addClass('is-valid');
+    },
+    success: function (label, element) {
+      $(element).addClass('is-valid'); // Adds green border when valid
+      // Add a green check icon or any valid styling you want to apply
+      $(element).closest('.form-group').find('span.valid-feedback').remove();
+      // $(element).closest('.form-group').append('<span class="valid-feedback">✓</span>'); // Adds a check mark
+    }
+  });
+});
 
 
 </script>

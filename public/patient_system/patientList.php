@@ -40,16 +40,18 @@
               <div class="card-header">
                 <h5 class="m-0">PET PATIENTS RECORD
                   <a href="profile?action=profileAdd" style="float:right;" class="btn btn-warning">Add New Client</a>
+                  <button class="float-right btn btn-info mr-2" onclick="buttonRedraw();">REDRAW</button>
                 </h5>
               </div>
               <div class="card-body table-responsive">
-                <table class="table table-bordered" id="ajax_datatable">
+                <table class="table table-bordered" id="ajax_datatable" style="width: 100%; table-layout: fixed;">
                   <thead>
                     <th>Action</th>
-                    <th>Pet Owner</th>
-                    <th>Address</th>
-                    <th>Gender</th>
-                    <th># of Pets</th>
+                    <th >Pet Owner</th>
+                    <th >Address</th>
+                    <th >Gender</th>
+                    <th >Birth Date</th>
+                    <th ># of Pets</th>
                   </thead>
                 </table>
               </div>
@@ -102,12 +104,66 @@ var datatable =
                      }
                 },
                 'columns': [
-                    { data: 'action', "orderable": false },
-                    { data: 'name', "orderable": false  },
-                    { data: 'address', "orderable": false  },
-                    { data: 'gender', "orderable": false  },
-                    { data: 'pets', "orderable": false  },
+                  { data: 'action', "orderable": false, visible: true },  // Initially visible
+                  { data: 'name', "orderable": false, visible: true },    // Initially visible
+                  { data: 'address', "orderable": false, visible: true }, // Initially visible
+                  { data: 'gender', "orderable": false, visible: true }, // Initially hidden
+                  { data: 'birthDate', "orderable": false, visible: false }, // Initially hidden
+                  { data: 'pets', "orderable": false, visible: true }     // Initially visible
                 ],
+                
+                columnDefs: [
+        { width: "10%", targets: 0 }, // Action column
+        { width: "30%", targets: 1 }, // Pet Owner
+        { width: "30%", targets: 2 }, // Address
+        { width: "10%", targets: 3 }, // Gender
+        { width: "10%", targets: 4 },  // # of Pets
+        { width: "10%", targets: 5 }  // # of Pets
+    ],
+    "initComplete": function () {
+        var api = this.api();
+        // Set up column visibility button actions
+        $('.column-visibility-button').on('click', function () {
+            var column = api.column($(this).data('column'));
+            column.visible(!column.visible());
+            api.columns.adjust().responsive.recalc(); // Recalculate widths
+        });
+    },
+                dom: 'Bfrtip', // Enable buttons
+    buttons: [
+        {
+            extend: 'excelHtml5',
+            text: 'Export to Excel',
+            exportOptions: {
+                columns: ':visible' // Export only visible columns
+            }
+        },
+        {
+            extend: 'pdfHtml5',
+            text: 'Export to PDF',
+            orientation: 'landscape',
+            pageSize: 'A4',
+            exportOptions: {
+                columns: ':visible',
+                modifier: {
+                    page: 'current' // Export only the current page data
+                }
+            }
+        },
+        {
+            extend: 'print',
+            text: 'Print',
+            exportOptions: {
+                columns: ':visible',
+                modifier: {
+                    page: 'current' // Print only the current page data
+                }
+            }
+        },
+        'colvis' // Column visibility button
+    ],
+    
+    responsive: true,
                 "footerCallback": function (row, data, start, end, display) {
                     // var api = this.api(), data;
                     
@@ -133,6 +189,15 @@ var datatable =
                 }
             });
 
+          datatable.on('column-visibility.dt', function(e, settings, column, state) {
+            // Redraw the DataTable when column visibility changes
+            buttonRedraw();
+        });
+
+            function buttonRedraw() {
+    var datatable = $('#ajax_datatable').DataTable();
+    datatable.columns.adjust().responsive.recalc(); // Adjust the DataTable
+}
 
         $('#updatePatientModal').on('show.bs.modal', function (e) {
         var rowid = $(e.relatedTarget).data('id');
