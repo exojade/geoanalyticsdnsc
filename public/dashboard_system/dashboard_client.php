@@ -17,13 +17,13 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-      <div class="card">
+      <div class="card" >
               <div class="card-header">
                 <h3 class="card-title">Carousel</h3>
               </div>
               <!-- /.card-header -->
-              <div class="card-body">
-                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+              <div class="card-body col-8">
+                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" >
                   <ol class="carousel-indicators">
                     <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
                     <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>

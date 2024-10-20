@@ -55,6 +55,63 @@
 
 
 		endif;
+
+        if ($_POST['action'] == 'exportDiseaseRecords'):
+            // dump($_POST);
+            $search = isset($_POST["search"]) ? $_POST["search"] : '';
+            // dump($search);
+            header('Content-Type: text/csv');
+            header('Content-Disposition: attachment; filename="disease_records.csv"');
+        
+            $output = fopen('php://output', 'w');
+            fputcsv($output, ['Name', 'Transmission Type', 'Description', 'Symptoms', 'Treatment']); // Headers
+        
+            // Base query
+            $query = "SELECT * FROM disease WHERE 1=1";
+        
+            // Apply search filter if provided
+            if (!empty($search)) {
+                $query .= " AND diseaseName LIKE '%" . $search . "%'";
+            }
+        
+            $result = query($query);
+        
+            foreach ($result as $row) {
+                fputcsv($output, [ // Action column placeholder
+                    $row['diseaseName'],
+                    $row['transmission_type'],
+                    $row['description'],
+                    $row['symptoms'],
+                    $row['treatment']
+                ]);
+            }
+        
+            fclose($output);
+            exit;
+        endif;
+
+
+        if($_POST["action"] == "addDisease"):
+            // dump($_POST);
+            if (query("insert INTO disease (diseaseName, species_affected, transmission_type, description, symptoms, treatment, is_contagious, created_at) 
+				VALUES(?,?,?,?,?,?,?,?)", 
+				$_POST["diseaseName"], $_POST["speciesAffected"] ,$_POST["transmissionType"], $_POST["description"], $_POST["symptoms"], $_POST["treatment"], 
+                $_POST["is_contagious"], date("Y-m-d H:i:s")) === false)
+				{
+					echo("not_success");
+				}
+
+                $res_arr = [
+                    "result" => "success",
+                    "title" => "Success",
+                    "message" => "Success on updating data",
+                    "link" => "refresh",
+                    // "html" => '<a href="#">View or Print '.$transaction_id.'</a>'
+                    ];
+                    echo json_encode($res_arr); exit();
+            // dump($_POST);
+        endif;
+
     }
 	else {
 

@@ -185,9 +185,14 @@
           </div>
         </div>
 
-        <form class="sales_chart_form float-right" data-url="data_analysis">
+
+
+        <div class="card">
+        <div class="card-header">
+          <h3 >Data Visualization
+          <form class="sales_chart_form float-right" data-url="data_analysis">
               <input type="hidden" name="action" value="chart">
-              <button style="margin-left: 5px;" class="btn btn-primary float-right" type="submit">Filter</button>
+              <button  class="btn btn-primary float-right ml-3" type="submit">Filter</button>
               <div style="margin-left: 5px;" class="form-group float-right">
                   <input name="year" type="number" value="<?php echo(date("Y")); ?>" class="form-control" id="exampleInputEmail1" placeholder="---">
                 </div>
@@ -227,6 +232,14 @@
             </form>
 
 
+                    </h3>
+
+          
+        </div>
+        <div class="card-body">
+        
+
+
         <div class="row">
             <div class="col-4">
             <div class="highcharts-figure">
@@ -235,6 +248,15 @@
 </div>
             </div>
         </div>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+          Data Analysis
+        </div>
+        <!-- /.card-footer-->
+      </div>
+
+     
       </div>
     </section>
   </div>
@@ -856,7 +878,7 @@ success: function (results) {
               filter: {
                   property: 'y',
                   operator: '>',
-                  value: 2
+                  value: 0
               },
               style: {
                   fontWeight: 'bold'
@@ -1160,20 +1182,6 @@ success: function (results) {
 //     }
 // });
 
-$(document).ready(function () {
-    // Your chart initialization code inside here
-    window.pieChart = Highcharts.chart('container', {
-        chart: {
-            type: 'pie'
-        },
-        title: {
-            text: 'Disease Distribution'
-        },
-        series: [{
-            name: 'Diseases',
-            data: [] // Initial empty data, will be updated dynamically
-        }]
-    });
-});
+ 
 </script>
 <?php require("layouts/footer.php") ?>

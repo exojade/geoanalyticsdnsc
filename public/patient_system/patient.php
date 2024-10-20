@@ -38,8 +38,11 @@
 			$i = 0;
 			foreach($data as $row):
 				// dump($row);
-				$data[$i]["action"] = '<a href="patient?action=specific&id='.$row["clientId"].'" class="btn btn-block btn-sm btn-success">View</a>
-										
+				$data[$i]["action"] = '
+				<div class="btn-group btn-block">
+					<a href="patient?action=specific&id='.$row["clientId"].'" class="btn btn-sm btn-success">View</a>
+					<a href="#" data-target="#updatePatientModal" data-toggle="modal" class="btn btn-sm btn-warning">Update</a>
+				</div>
 				';
 				$data[$i]["name"] = $row["lastname"] . ", " . $row["firstname"];
 				$data[$i]["address"] = $row["province"] . ", " . $row["cityMun"] . ", " . strtoupper($row["barangay"]) . ", " . $row["address"];

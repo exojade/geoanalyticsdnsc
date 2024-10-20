@@ -3,10 +3,7 @@
   <!-- responsive style -->
 <link href="public/static_system/assets/css/template/responsive.css" rel="stylesheet" />
 <style>
-.row>*{
-    padding-left: 0px;
-    padding-right: 0px;
-}
+
 </style>
 <section class=" slider_section position-relative">
       <div class="slider_bg_box">
@@ -50,11 +47,21 @@
 .wedo_section>*{
     color :#fff;
 }
+
+.row {
+  margin-right: 0;
+  margin-left: 0;
+}
+
+.col-4 {
+  padding-right: 0;
+  padding-left: 0;
+}
     </style>
 
     <section class="wedo_section">
       <div class="row">
-        <div class="col-md-4 ">
+        <div class="col-4">
           <div class="box container" style="background-color: #7BAD23; margin-top:0px;">
             <div class="img-box" style="margin-top:20px;">
               <img src="public/static_system/assets/images/worm.png" alt="">
@@ -73,7 +80,7 @@
             <br>
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-4">
           <div class="box container" style="background-color: #3A81D3; margin-top:0px;">
             <div class="img-box" style="margin-top:20px;">
               <img src="public/static_system/assets/images/flu.png" alt="">
@@ -92,7 +99,7 @@
             <br>
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-4">
           <div class="box container" style="background-color: #FF811B; margin-top:0px;">
             <div class="img-box" style="margin-top:20px;">
               <img src="public/static_system/assets/images/dengue.png" alt="">
