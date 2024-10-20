@@ -83,11 +83,13 @@
               </div>
               <div class="card-body table-responsive">
                 <br>
-                <table class="table table-bordered" id="ajax_datatable">
+                <table class="table table-bordered" id="ajax_datatable" style="width: 100%; table-layout: fixed;">
                   <thead>
-                    <th width="10%">Action</th>
+                    <th>Action</th>
                     <th>Disease</th>
                     <th>Transmission Type</th>
+                    <th>Species</th>
+                    <th>Is Contagious?</th>
                     <th>Description</th>
                     <th>Symptoms</th>
                     <th>Treatment</th>
@@ -129,6 +131,7 @@ var datatable =
                     searchPlaceholder: "Search Data"
                 },
                 "bLengthChange": true,
+                dom: 'Brfltip',
                 "ordering": false,
                 'processing': true,
                 'serverSide': true,
@@ -142,44 +145,79 @@ var datatable =
                      }
                 },
                 'columns': [
-                    { data: 'action', "orderable": false },
-                    { data: 'name', "orderable": false  },
-                    { data: 'transmission_type', "orderable": false  },
-                    { data: 'description', "orderable": false  },
-                    { data: 'symptoms', "orderable": false  },
-                    { data: 'treatment', "orderable": false  },
+                    { data: 'action', "orderable": false, visible: true },
+                    { data: 'name', "orderable": false, visible: true  },
+                    { data: 'transmission_type', "orderable": false, visible: true  },
+                    { data: 'species_affected', "orderable": false, visible: false  },
+                    { data: 'is_contagious', "orderable": false, visible: false  },
+                    { data: 'description', "orderable": false, visible: true  },
+                    { data: 'symptoms', "orderable": false, visible: true  },
+                    { data: 'treatment', "orderable": false, visible: true  },
        
                 ],
-
-                dom: 'Bfrtip', // Enable buttons
-                buttons: [
-        {
-            text: 'Export CSV',
-            action: function (e, dt, button, config) {
-                let searchValue = $('input[type="search"]').val(); // Capture search value
-                $.ajax({
-                    url: 'disease',
-                    type: 'POST',
-                    data: {
-                        action: 'exportDiseaseRecords', // Export action
-                        search: searchValue // Send search term
-                    },
-                    success: function (response) {
-                        let csvData = new Blob([response], { type: 'text/csv;charset=utf-8;' });
-                        let link = document.createElement('a');
-                        link.href = URL.createObjectURL(csvData);
-                        link.setAttribute('download', 'disease_records.csv');
-                        document.body.appendChild(link);
-                        link.click();
-                        document.body.removeChild(link);
-                    },
-                    error: function (xhr) {
-                        alert('Error fetching data for export!');
-                    }
-                });
-            }
-        }
+                columnDefs: [
+        { width: "4%", targets: 0 }, // Action column
+        { width: "20%", targets: 1 }, // Pet Owner
+        { width: "10%", targets: 2 }, // Address
+        { width: "10%", targets: 3 }, // Gender
+        { width: "10%", targets: 4 }, // Gender
+        { width: "10%", targets: 5 },  // # of Pets
+        { width: "10%", targets: 6 },  // # of Pets
+        { width: "10%", targets: 7 }  // # of Pets
     ],
+    "initComplete": function () {
+        var api = this.api();
+        // Set up column visibility button actions
+        $('.column-visibility-button').on('click', function () {
+            var column = api.column($(this).data('column'));
+            column.visible(!column.visible());
+            api.columns.adjust().responsive.recalc(); // Recalculate widths
+        });
+    },
+
+                buttons: [
+                  {
+        extend: 'excelHtml5',
+        text: 'Export to Excel',
+        title: 'Disease List',
+        exportOptions: {
+            columns: ':visible', // Export only visible columns
+            format: {
+                body: function (data, row, column, node) {
+                    return data; // Modify this if you need custom formatting
+                }
+            }
+        },
+        filename: 'Disease List' // Set your custom filename here
+    },
+        {
+            extend: 'pdfHtml5',
+            text: 'Export to PDF',
+            orientation: 'landscape',
+            pageSize: 'A4',
+            exportOptions: {
+                columns: ':visible',
+                modifier: {
+                    page: 'current' // Export only the current page data
+                }
+            }
+        },
+        // {
+        //     extend: 'print',
+        //     text: 'Print',
+        //     orientation: 'landscape',
+        //     exportOptions: {
+        //         columns: ':visible',
+        //         modifier: {
+        //             page: 'current' // Print only the current page data
+        //         }
+        //     }
+        // },
+        'colvis' // Column visibility button
+    ],
+
+
+
     footerCallback: function (row, data, start, end, display) {
         // Your footer logic here if needed
     }

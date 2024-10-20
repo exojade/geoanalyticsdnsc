@@ -32,7 +32,7 @@
 			$i = 0;
 			foreach($data as $row):
 				// dump($row);
-				$data[$i]["action"] = '<a href="#" class="btn btn-block btn-sm btn-success">View</a>';
+				$data[$i]["action"] = '<a href="#" class="btn btn-block btn-sm btn-warning">Update</a>';
 				$data[$i]["name"] = $row["diseaseName"];
 				// $data[$i]["appointmentDate"] = $row["dateSet"] . " - " . $TimeSlot[$row["timeSet"]]["timeSlot"];
 				// dump();	

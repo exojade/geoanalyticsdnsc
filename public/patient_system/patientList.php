@@ -40,7 +40,7 @@
               <div class="card-header">
                 <h5 class="m-0">PET PATIENTS RECORD
                   <a href="profile?action=profileAdd" style="float:right;" class="btn btn-warning">Add New Client</a>
-                  <button class="float-right btn btn-info mr-2" onclick="buttonRedraw();">REDRAW</button>
+                  <!-- <button class="float-right btn btn-info mr-2" onclick="buttonRedraw();">REDRAW</button> -->
                 </h5>
               </div>
               <div class="card-body table-responsive">
