@@ -111,6 +111,33 @@ $pets = query("select *, CONCAT(
         </div>
 
 
+
+
+
+
+
+        <div class="modal fade" id="modalUpdatePet">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header bg-primary">
+                <h4 class="modal-title">Update Pet Information</h4>
+              </div>
+              <form class="generic_form_trigger" data-url="pets" id="updatePetForm">
+              <div class="modal-body">
+                <input type="hidden" name="action" value="updatePet">
+                <div class="fetched-data"></div>
+ 
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+              </div>
+            </form>
+            </div>
+          </div>
+        </div>
+
+
       <div class="row">
           <div class="col-md-12">
           <div class="card card-info">
@@ -177,9 +204,9 @@ $pets = query("select *, CONCAT(
                   <?php foreach($pets as $row): ?>
                     <tr>
                       <td>
-                      <div class="btn-group" style="width: 100%;">
+                      <div class="btn-group btn-block" style="width: 100%;">
                         <a href="pets?action=specific&id=<?php echo($row["petId"]); ?>" class="btn btn-info">Visit</a>
-                        <button type="button" class="btn btn-warning">Update</button>
+                        <a href="#" data-id="<?php echo($row["petId"]); ?>" data-toggle="modal" data-target="#modalUpdatePet" class="btn btn-warning">Update</a>
                       </div>
                         <!-- <a   class="btn btn-primary btn-block">View</a> -->
                       </td>
@@ -384,7 +411,6 @@ $pets = query("select *, CONCAT(
     });
 var datatable = 
             $('#ajax_datatable').DataTable({
-                // "searching": false,
                 "pageLength": 10,
                 language: {
                     searchPlaceholder: "Search Pet Name"
@@ -410,59 +436,100 @@ var datatable =
                     { data: 'pets', "orderable": false  },
                 ],
                 "footerCallback": function (row, data, start, end, display) {
-                    // var api = this.api(), data;
-                    
-
-                    // Remove the formatting to get integer data for summation
-                    // var intVal = function (i) {
-                    //     return typeof i === 'string' ?
-                    //         i.replace(/[\$,]/g, '') * 1 :
-                    //         typeof i === 'number' ?
-                    //             i : 0;
-                    // };
-
-                    // // Total over all pages
-                    // received = api
-                    //     .column(5)
-                    //     .data()
-                    //     .reduce(function (a, b) {
-                    //         return intVal(a) + intVal(b);
-                    //     }, 0);
-                    //     console.log(received);
-
-                    // $('#currentTotal').html('$ ' + received.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+          
                 }
             });
 
 
-  $(function () {
-  // $.validator.setDefaults({
-  //   submitHandler: function () {
-  //     alert( "Form successful submitted!" );
-  //   }
-  // });
-  $(function () {
-  $('#AddNewPetForm').validate({
-    errorElement: 'span',
-    errorPlacement: function (error, element) {
-      error.addClass('invalid-feedback');
-      element.closest('.form-group').append(error);
-    },
-    highlight: function (element, errorClass, validClass) {
-      $(element).addClass('is-invalid').removeClass('is-valid');
-    },
-    unhighlight: function (element, errorClass, validClass) {
-      $(element).removeClass('is-invalid').addClass('is-valid');
-    },
-    success: function (label, element) {
-      $(element).addClass('is-valid'); // Adds green border when valid
-      // Add a green check icon or any valid styling you want to apply
-      $(element).closest('.form-group').find('span.valid-feedback').remove();
-      // $(element).closest('.form-group').append('<span class="valid-feedback">✓</span>'); // Adds a check mark
-    }
-  });
+
+$(function () {
+    $('#AddNewPetForm').validate({
+      errorElement: 'span',
+      errorPlacement: function (error, element) {
+        error.addClass('invalid-feedback');
+        element.closest('.form-group').append(error);
+      },
+      highlight: function (element, errorClass, validClass) {
+        $(element).addClass('is-invalid').removeClass('is-valid');
+      },
+      unhighlight: function (element, errorClass, validClass) {
+        $(element).removeClass('is-invalid').addClass('is-valid');
+      },
+      success: function (label, element) {
+        $(element).addClass('is-valid'); // Adds green border when valid
+        $(element).closest('.form-group').find('span.valid-feedback').remove();
+      }
+    });
+
+
+
 });
+
+
+$(function () {
+    $('#updatePetForm').validate({
+      errorElement: 'span',
+      errorPlacement: function (error, element) {
+        error.addClass('invalid-feedback');
+        element.closest('.form-group').append(error);
+      },
+      highlight: function (element, errorClass, validClass) {
+        $(element).addClass('is-invalid').removeClass('is-valid');
+      },
+      unhighlight: function (element, errorClass, validClass) {
+        $(element).removeClass('is-invalid').addClass('is-valid');
+      },
+      success: function (label, element) {
+        $(element).addClass('is-valid'); // Adds green border when valid
+        // Add a green check icon or any valid styling you want to apply
+        $(element).closest('.form-group').find('span.valid-feedback').remove();
+        // $(element).closest('.form-group').append('<span class="valid-feedback">✓</span>'); // Adds a check mark
+      }
+    });
+
+
+
 });
+
+
+
+
+
+
+
+
+$('#modalUpdatePet').on('show.bs.modal', function (e) {
+        var rowid = $(e.relatedTarget).data('id');
+        Swal.fire({title: 'Please wait...', 
+          
+    showClass: {
+    popup: `
+      animate__animated
+      animate__bounceIn
+      animate__faster
+    `
+  },
+  hideClass: {
+    popup: `
+      animate__animated
+      animate__bounceOut
+      animate__faster
+    `
+  },
+          imageUrl: 'AdminLTE_new/dist/img/loader.gif', showConfirmButton: false});
+        $.ajax({
+            type : 'post',
+            url : 'patient', //Here you will fetch records 
+            data: {
+                petId: rowid ,action: "modalUpdatePet"
+            },
+            success : function(data){
+                $('#modalUpdatePet .fetched-data').html(data);
+                Swal.close();
+                // $(".select2").select2();//Show fetched data from database
+            }
+        });
+     });
 
 
 </script>

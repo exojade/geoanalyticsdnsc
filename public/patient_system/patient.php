@@ -241,6 +241,99 @@
 
 			echo($hint);
 
+
+			elseif($_POST["action"] == "modalUpdatePet"):
+
+				// dump($_POST);
+	
+				$pet = query("select * from pet where petId = ?", $_POST["petId"]);
+	
+				$pet = $pet[0];
+	
+	
+				$hint = '
+				<input type="hidden" name="petId" value="'.$_POST["petId"].'">
+				<div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Pet Name <span class="color-red">*</span></label>
+                  <input required type="text" name="petName" value="'.$pet["petName"].'" class="form-control" id="exampleInputEmail1" placeholder="---">
+                </div>
+              </div>
+              <div class="col-md-4">
+              <div class="form-group">
+                  <label for="exampleInputEmail1">Type of Pet <span class="color-red">*</span></label>
+                  <select required class="form-control" name="typePet">
+                  	<option value="'.$pet["petType"].'" selected >'.$pet["petType"].'</option>
+                    <option value="Cat">Cat</option>
+                    <option value="Dog">Dog</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-8">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Breed <span class="color-red">*</span></label>
+                  <input value="'.$pet["petBreed"].'" required type="text" name="petBreed" class="form-control" id="exampleInputEmail1" placeholder="---">
+                </div>
+              </div>
+
+
+              <div class="col-md-4">
+              <div class="form-group">
+                  <label for="exampleInputEmail1">Date of Birth <span class="color-red">*</span></label>
+                  <input value="'.$pet["petDob"].'" required type="date" name="petDob" class="form-control" id="exampleInputEmail1" placeholder="---">
+                </div>
+              </div>
+              <div class="col-md-8">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Gender <span class="color-red">*</span></label>
+                  <select required class="form-control" name="petGender">
+                  <option value="'.$pet["petGender"].'" selected>'.$pet["petGender"].'</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                  </select>
+                </div>
+              </div>
+
+           
+              <div class="col-md-4">
+
+			  <div class="card" >';
+
+
+			  if($pet["image"] != ""):
+				$hint .='<img class="bd-placeholder-img img-responsive card-img-top p-3" width="100%" height="auto" src="'.$pet["image"].'" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false">';
+			  else:
+				$hint .='<img class="bd-placeholder-img img-responsive card-img-top p-3" width="100%" height="auto" src="resources/default.jpg" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false">';
+			  endif;
+
+
+			  $hint.='
+				</div>
+              
+                </div>
+
+				   <div class="col-md-8">
+                <div class="form-group">
+                  <label>Pet Description</label>
+                  <textarea name="petDescription" class="form-control" rows="3" placeholder="Enter ...">'.$pet["petDescription"].'</textarea>
+                </div>
+
+				    <div class="form-group">
+                      <label for="exampleInputFile">Image of Pet</label>
+                      <br>
+                      <input name="petImage"  type="file" accept=".pdf, image/*" id="exampleInputFile">
+                      <p class="help-block">Upload Image of Pet Here!</p>
+                  </div>
+              </div>
+            </div>
+				
+				';
+	
+	
+				echo($hint);
+
+
 		elseif($_POST["action"] == "updatePatient"):
 			// dump($_POST);
 

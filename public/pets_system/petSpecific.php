@@ -279,7 +279,6 @@ endforeach; ?>
       
                 <ul class="nav nav-pills">
                   <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Medical History</a></li>
-                  <li class="nav-item"><a class="nav-link" href="#vaccination" data-toggle="tab">Vaccination</a></li>
                   <!-- <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">Timeline</a></li> -->
                   <!-- <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Settings</a></li> -->
                 </ul>

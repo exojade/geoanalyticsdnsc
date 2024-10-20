@@ -51,6 +51,48 @@
             );
             echo json_encode($json_data);
 
+		elseif($_POST["action"] == "updatePet"):
+				// dump($_FILES);
+
+
+				query("update pet set 
+						petName = '".$_POST["petName"]."',
+						petType = '".$_POST["typePet"]."',
+						petBreed = '".$_POST["petBreed"]."',
+						petDescription = '".$_POST["petDescription"]."',
+						petGender = '".$_POST["petGender"]."',
+						petDob = '".$_POST["petDob"]."'
+						where petId = ?
+						", $_POST["petId"]);
+
+
+				if($_FILES["petImage"]["size"] != 0):
+					$target_pdf = "uploads/";
+					$path_parts = pathinfo($_FILES["petImage"]["name"]);
+					$extension = $path_parts['extension'];
+					$target = $target_pdf . $_POST["petId"]. "." . $extension;
+					if(!move_uploaded_file($_FILES['petImage']['tmp_name'], $target)){
+						echo("FAMILY Do not have upload files");
+						exit();
+					}
+					query("update pet set image = '".$target."'
+					where petId = '".$_POST["petId"]."'");
+				endif;
+	
+
+					$res_arr = [
+						"result" => "success",
+						"title" => "Success",
+						"message" => "Success on updating data",
+						"link" => "refresh",
+						// "html" => '<a href="#">View or Print '.$transaction_id.'</a>'
+						];
+						echo json_encode($res_arr); exit();
+	
+
+
+				
+
 			
 
 		elseif($_POST["action"] == "addNewPet"):
