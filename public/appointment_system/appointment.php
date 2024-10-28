@@ -902,6 +902,26 @@ require("includes/google_class.php");
 			$hint .= '</select>
 			</div>';
 			echo($hint);
+			
+			elseif(date("Y-m-d") == $_POST["dateSet"]):
+				$hint = '
+				<div class="form-group">
+					<label>Time Slot</label>
+					<select required name="timeSlot" class="form-control">';
+					foreach($schedulesDoctors as $row):
+						$startTime = $row['startTime'];
+						$selected = ($appointment["timeSet"] == $row["slotId"]) ? 'selected' : '';
+						if ($row["availability"] == "Available" && $startTime >= $currentFormattedTime) {
+							// If available and meets the time condition
+							$hint .= '<option '.$selected.' value="' . $row["slotId"] . '" class="text-success">' . $row["timeSlot"] . ' - Available</option>';
+						} else {
+							// If not available or does not meet the time condition
+							$hint .= '<option '.$selected.' value="" disabled class="text-danger">' . $row["timeSlot"] . ' - Not Available</option>';
+						}
+					endforeach;
+				$hint .= '</select>
+				</div>';
+				echo($hint);
 
 			else:
 				$hint = '
@@ -911,7 +931,7 @@ require("includes/google_class.php");
 					foreach($schedulesDoctors as $row):
 						$startTime = $row['startTime'];
 						$selected = ($appointment["timeSet"] == $row["slotId"]) ? 'selected' : '';
-						if ($row["availability"] == "Available" && $startTime >= $currentFormattedTime) {
+						if ($row["availability"] == "Available") {
 							// If available and meets the time condition
 							$hint .= '<option '.$selected.' value="' . $row["slotId"] . '" class="text-success">' . $row["timeSlot"] . ' - Available</option>';
 						} else {
@@ -940,7 +960,7 @@ require("includes/google_class.php");
 					AND a.dateSet = ?  -- Replace with the selected date
 					AND a.doctorId = ?        -- Replace with the selected doctor ID
 				WHERE t.remarks = 'active'
-				ORDER BY t.startTime", date("Y-m-09"), $_POST["doctorId"]);
+				ORDER BY t.startTime", date("Y-m-d"), $_POST["doctorId"]);
 			// dump($schedulesDoctors);
 
 

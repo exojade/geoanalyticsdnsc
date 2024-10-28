@@ -133,7 +133,9 @@
 				elseif($_POST["action"] == "printPrescription"):
 
 					// dump($_POST);
-					
+
+					$settings = query("select * from siteoptions");
+					$settings = $settings[0];
 
 					$medRecord = query("select *  from checkup c
 										 left join pet p
@@ -194,16 +196,13 @@
 
 					<div class="row">
 						<div class="col-xs-3">
-							<div class="text-center"><img src="resources/panabologo.png" width="85" height="85" class="img-responsive"></div>
+							<div class="text-center"><img src="'.$settings["mainLogo"].'" width="85" height="85" class="img-responsive"></div>
 						</div>
 						<div class="col-xs-4">
-							<h4 class="text-center"><b>City of Panabo</b></h4>
-							<h4 class="text-center"><b>City Mayors Office</b></h4>
-							<h4 class="text-center"><b>City Veterinary Setion</b></h4>
+							<h4 class="text-center"><b>'.$settings["mainTitle"].'</b></h4>
+					
 						</div>
-						<div class="col-xs-3">
-							<div class="text-center"><img width="80" height="80" src="resources/logocityvet.png" class="img-responsive"></div>
-						</div>
+				
 					</div>
 
 					
