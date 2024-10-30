@@ -263,7 +263,7 @@
 
 
 
-<li class="nav-item">
+<!-- <li class="nav-item">
     <a href="schedule" class="nav-link">
       <i class="nav-icon fas fa-briefcase"></i>
       <p>
@@ -274,7 +274,7 @@
         <?php endif; ?>
       </p>
     </a>
-</li>
+</li> -->
 
 
 <li class="nav-item">

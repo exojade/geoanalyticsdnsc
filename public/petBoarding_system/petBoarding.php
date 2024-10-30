@@ -363,9 +363,9 @@ ORDER BY
 	else {
 		if(!isset($_GET["action"])):
 
-			// $client = query("select * from client");
+			$client = query("select * from client");
 			render("public/petBoarding_system/petBoardingList.php",[
-				// "client" => $client
+				"client" => $client
 			]);
 		else:
 			if($_GET["action"] == "specific"):

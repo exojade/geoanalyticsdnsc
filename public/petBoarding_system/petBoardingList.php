@@ -73,6 +73,103 @@
                               </div>
                           </div>
                       </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-6">
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Date of Check Out <span class="text-red">*</span></label>
+                        <input type="date" name="dateCheckOut" class="form-control" id="exampleInputEmail1" required>
+                      </div>
+
+                      </div>
+                      <div class="col-6">
+
+                      <div class="bootstrap-timepicker">
+                        <div class="form-group">
+                            <label>Time Check Out <span class="text-red">*</span></label>
+                            <div class="input-group date" id="timepickerOut" data-target-input="#timepickerOutInput">
+                                <input required name="checkout" placeholder="Select Time" type="text" id="timepickerOutInput" class="form-control datetimepicker-input" data-target="#timepickerOut" data-toggle="datetimepicker"/>
+                                <div class="input-group-append">
+                                    <div class="input-group-text"><i class="far fa-clock"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  <!-- /.form group -->
+                </div>
+                      </div>
+
+
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Number of Pets to Board <span class="text-red">*</span></label>
+                    <input required name="numberPets" type="number" min="1" max="10" step="1" class="form-control" id="exampleInputEmail1" placeholder="Enter number of pets, Max of 10">
+                  </div>
+                    
+                    
+
+                  
+                      <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" >Submit</button>
+                        <button class="btn btn-danger" data-dismiss="modal" aria-label="Close">Close</button>
+                        <!-- <button type="submit" class="btn btn-primary btn-flat pull-right">Submit</button> -->
+                      </div>
+                  </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+
+        <div class="modal fade" id="modalNewBoardAdmin">
+          <div class="modal-dialog">
+            <div class="modal-content ">
+              <div class="modal-header bg-primary">
+					    <h3 class="modal-title text-center">Add New Pet Boarding</h3>
+              </div>
+              <div class="modal-body" style="-webkit-user-select: none;  /* Chrome all / Safari all */
+              -moz-user-select: none;     /* Firefox all */
+              -ms-user-select: none;  ">
+                  <form class="generic_form_trigger" url="petBoarding" autocomplete="off" id="newPetboardingForm">
+                    <input type="hidden" name="action" value="newPetBoarding">
+                    <input type="hidden" name="role" value="user">
+
+
+                    <select id="petOwnerSelectRegister" class="form-control selectFilter" style="width: 100%;">
+                          <option></option>
+                          <?php foreach($client as $row): ?>
+                              <option value="<?php echo($row["clientId"]); ?>"><?php echo($row["lastname"] . ", " . $row["firstname"]); ?></option>
+                          <?php endforeach; ?>
+                        </select>
+
+                        <br>
+
+
+                    <div class="row">
+                      <div class="col-6">
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Date of Check In <span class="text-red">*</span></label>
+                        <input type="date" name="dateCheckIn" class="form-control" id="exampleInputEmail1" required>
+                      </div>
+
+                      </div>
+                      <div class="col-6">
+
+                      <div class="bootstrap-timepicker">
+                          <div class="form-group">
+                              <label>Time Check In <span class="text-red">*</span></label>
+                              <div class="input-group date" id="timepickerIn" data-target-input="#timepickerInInput">
+                                  <input required name="checkin" placeholder="Select Time" type="text" id="timepickerInInput" class="form-control datetimepicker-input" data-target="#timepickerIn" data-toggle="datetimepicker"/>
+                                  <div class="input-group-append">
+                                      <div class="input-group-text"><i class="far fa-clock"></i></div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
                   <!-- /.form group -->
                       </div>
                     </div>
@@ -242,8 +339,14 @@
                   </div>
 
                   <div class="col-md-5">
-                  <a href="#" data-toggle="modal" data-target="#modalNewBoardUser" class="btn btn-primary float-right">ADD NEW</a>
 
+    
+                    
+                    <?php if($_SESSION["dnsc_geoanalytics"]["role"] != "admin"): ?>
+                      <a href="#" data-toggle="modal" data-target="#modalNewBoardUser" class="btn btn-primary float-right">ADD NEW</a>
+                    <?php else: ?>
+                      <a href="#" data-toggle="modal" data-target="#modalNewBoardAdmin" class="btn btn-primary float-right">ADD NEW</a>
+                    <?php endif; ?>
                   </div>
 
 
@@ -315,6 +418,11 @@ $('#timepickerIn').datetimepicker({
 $('#petOwnerSelect').select2({
   placeholder: 'Please select Owner'
     })
+
+    $('#petOwnerSelectRegister').select2({
+  placeholder: 'Please select Owner'
+    })
+    
 
 
     $('#modalPetBoardingApprove').on('show.bs.modal', function (e) {
