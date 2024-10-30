@@ -114,7 +114,7 @@
         <div class="modal-header bg-primary">
           <h4 class="modal-title">Reschedule Appointment</h4>
         </div>
-        <form class="generic_form_trigger" data-url="appointment">
+        <form class="generic_form_trigger" data-url="appointment" id="reScheduleDoctorForm">
           <div class="modal-body">
             <div class="fetched-data"></div>
           </div>
@@ -276,7 +276,48 @@ $(document).ready(function(){
         }
     }
 });
+
+
+
+$('#reScheduleDoctorForm').validate({
+    errorElement: 'span',
+    errorPlacement: function (error, element) {
+        error.addClass('invalid-feedback');
+        element.closest('.form-group').append(error);
+    },
+    highlight: function (element, errorClass, validClass) {
+        // For regular inputs
+        $(element).addClass('is-invalid').removeClass('is-valid');
+        
+        // For Select2, apply the invalid class to its container
+        if ($(element).hasClass('select2-hidden-accessible')) {
+            $(element).next('.select2').addClass('is-invalid').removeClass('is-valid');
+        }
+    },
+    unhighlight: function (element, errorClass, validClass) {
+        // For regular inputs
+        $(element).removeClass('is-invalid').addClass('is-valid');
+        
+        // For Select2, remove the invalid class from its container
+        if ($(element).hasClass('select2-hidden-accessible')) {
+            $(element).next('.select2').removeClass('is-invalid').addClass('is-valid');
+        }
+    },
+    success: function (label, element) {
+        $(element).addClass('is-valid'); // Adds green border when valid
+        // For Select2, add valid styling
+        if ($(element).hasClass('select2-hidden-accessible')) {
+            $(element).next('.select2').addClass('is-valid');
+        }
+    }
 });
+
+
+});
+
+
+
+
 
 
 
@@ -339,6 +380,47 @@ $('#modalAppointment').on('show.bs.modal', function (e) {
     }
 });
 
+
+
+
+
+
+
+function doctorRescheduleFunction(){
+  var dateSet = $('input[name="appointment_date"]').val(); // Assuming you have an input for the date
+    var appointmentId = $('input[name="appointmentId"]').val();
+    // alert(dateSet);
+    // Check if both doctorId and dateSet are selected
+    if (dateSet) {
+        $.ajax({
+            type: 'post',
+            url: 'appointment', // Here you will fetch records 
+            data: {
+                dateSet: dateSet, // Include the selected date
+                appointmentId: appointmentId, 
+                action: "checkDoctorRESchedule"
+            },
+            success: function(data) {
+                $('#rescheduleModal #timeSlotDiv').html(data);
+                Swal.close();
+                // $(".select2").select2(); // Show fetched data from database
+            }
+        });
+    }
+}
+
+
+
+$(document).on('change', 'input[id="reSchedDoctorAppointmentDate"]', function() {
+  doctorRescheduleFunction();
+});
+
+
+
+
+
+
+
 // $(document).ready(function() {
 $(document).on('change', '#selectDoctorWalkIn', function() {
     var doctorId = $('#selectDoctorWalkIn').val();
@@ -389,6 +471,7 @@ $(document).on('change', '#selectDoctorWalkIn', function() {
         },
         success : function(data){
             $('#rescheduleModal .fetched-data').html(data);
+            doctorRescheduleFunction();
             Swal.close();
             // $(".select2").select2();//Show fetched data from database
         }

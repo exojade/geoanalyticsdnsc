@@ -12,9 +12,9 @@ MySQL - 8.0.39 : Database - cityvetdb
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-CREATE DATABASE /*!32312 IF NOT EXISTS*/`cityvetdb` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+-- CREATE DATABASE /*!32312 IF NOT EXISTS*/`cityvetdb` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 
-USE `cityvetdb`;
+-- USE `cityvetdb`;
 
 /*Table structure for table `announcements` */
 
@@ -26,7 +26,7 @@ CREATE TABLE `announcements` (
   `description` text,
   `status` varchar(100) DEFAULT NULL,
   `banner_image` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `announcements` */
 
@@ -50,7 +50,7 @@ CREATE TABLE `appointment` (
   `description` text,
   `type` enum('ONLINE','WALK IN') DEFAULT NULL,
   PRIMARY KEY (`appointmentId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `appointment` */
 
@@ -78,7 +78,7 @@ CREATE TABLE `checkup` (
   `treatment` text,
   `doctorId` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`checkupId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `checkup` */
 
@@ -104,7 +104,7 @@ CREATE TABLE `checkup_disease` (
   `dateCheckUp` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`tblid`),
   KEY `tblid` (`tblid`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `checkup_disease` */
 
@@ -135,7 +135,7 @@ CREATE TABLE `checkup_schedule` (
   `status` varchar(100) DEFAULT NULL,
   `scheduledBy` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`clientId`,`dateScheduled`,`doctorId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `checkup_schedule` */
 
@@ -161,7 +161,7 @@ CREATE TABLE `client` (
   `clientStatus` varchar(100) DEFAULT NULL,
   `barangayId` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`clientId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `client` */
 
@@ -188,7 +188,7 @@ CREATE TABLE `disease` (
   `is_contagious` tinyint(1) DEFAULT '0',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`diseaseId`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `disease` */
 
@@ -222,7 +222,7 @@ CREATE TABLE `doctors` (
   `doctorsBirthday` varchar(100) DEFAULT NULL,
   `doctorsLicenseNumber` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`doctorsId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `doctors` */
 
@@ -241,7 +241,7 @@ CREATE TABLE `notifications` (
   `reciever` text COMMENT 'array ni diri',
   `datetime` varchar(100) DEFAULT NULL,
   `timestamp` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `notifications` */
 
@@ -262,7 +262,7 @@ CREATE TABLE `pet` (
   `petDob` varchar(100) DEFAULT NULL,
   `petCondition` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`petId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `pet` */
 
@@ -291,7 +291,7 @@ CREATE TABLE `pet_boarding` (
   `status` varchar(100) DEFAULT NULL,
   `dateDone` varchar(100) DEFAULT NULL,
   KEY `petBoardingId` (`petBoardingId`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `pet_boarding` */
 
@@ -310,7 +310,7 @@ CREATE TABLE `siteoptions` (
   `mainTitle` varchar(100) DEFAULT NULL,
   `mainColor` varchar(100) DEFAULT NULL,
   `textColor` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `siteoptions` */
 
@@ -329,7 +329,7 @@ CREATE TABLE `timeslot` (
   `startTime` varchar(100) DEFAULT NULL,
   `endTime` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`slotId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `timeslot` */
 
@@ -358,7 +358,7 @@ CREATE TABLE `users` (
   `role` varchar(100) DEFAULT NULL,
   `fullname` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`userid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `users` */
 
@@ -379,7 +379,7 @@ CREATE TABLE `vaccine` (
   `vaccineName` varchar(100) DEFAULT NULL,
   `vaccineRemarks` text,
   PRIMARY KEY (`vaccineId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `vaccine` */
 
@@ -392,7 +392,7 @@ CREATE TABLE `vaccineqrecords` (
   `vaccineId` varchar(100) DEFAULT NULL,
   `dosage` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`recordId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `vaccineqrecords` */
 

@@ -540,24 +540,107 @@ require("includes/google_class.php");
 
 				echo($hint);
 
+
+		elseif($_POST["action"] == "checkDoctorRESchedule"):
+			// dump($_SESSION);
+		$appointment = query("select * from appointment where appointmentId = ?", $_POST["appointmentId"]);
+			$appointment = $appointment[0];
+			// dump($_POST);
+
+			
+			$schedulesDoctors = query("SELECT 
+					a.appointmentId,
+					t.slotId, 
+					t.timeSlot, 
+					t.startTime, 
+					t.endTime,
+					IF(a.appointmentId IS NOT NULL, 'Not Available', 'Available') AS availability
+				FROM timeslot t
+				LEFT JOIN appointment a ON t.slotId = a.timeSet 
+					AND a.dateSet = ?  -- Replace with the selected date
+					AND a.doctorId = ?        -- Replace with the selected doctor ID
+				WHERE t.remarks = 'active'
+				ORDER BY t.startTime", $_POST["dateSet"], $_SESSION["dnsc_geoanalytics"]["userid"]);
+			// dump($schedulesDoctors);
+
+			$currentDateTime = new DateTime(); // Get the current date and time
+			$currentDateTime->modify('+1 hour'); // Add one hour
+
+
+			// $specificTime = "09:12 AM";
+			// $currentDateTime = DateTime::createFromFormat('h:i A', $specificTime);
+			// $currentDateTime->modify('+1 hour');
+
+			// Format for comparison
+			$currentFormattedTime = $currentDateTime->format('H:i');
+			
+
+			if(date("Y-m-d") > $_POST["dateSet"]):
+				$hint = '
+			<div class="form-group">
+				<label>Time Slot</label>
+				<select required name="timeSlot" class="form-control">';
+				foreach($schedulesDoctors as $row):
+					$hint .= '<option  value="" disabled class="text-danger">'.$row["timeSlot"].' - Not Available</option>';
+				endforeach;
+			$hint .= '</select>
+			</div>';
+			echo($hint);
+			
+			elseif(date("Y-m-d") == $_POST["dateSet"]):
+				$hint = '
+				<div class="form-group">
+					<label>Time Slot</label>
+					<select required name="timeSlot" class="form-control">';
+					foreach($schedulesDoctors as $row):
+						$startTime = $row['startTime'];
+						$selected = ($appointment["timeSet"] == $row["slotId"]) ? 'selected' : '';
+						if ($row["availability"] == "Available" && $startTime >= $currentFormattedTime) {
+							// If available and meets the time condition
+							$hint .= '<option '.$selected.' value="' . $row["slotId"] . '" class="text-success">' . $row["timeSlot"] . ' - Available</option>';
+						} else {
+							// If not available or does not meet the time condition
+
+							// dump($row);
+							if($row["appointmentId"] == $_POST["appointmentId"]):
+								$hint .= '<option '.$selected.' value="' . $row["slotId"] . '" class="text-success">' . $row["timeSlot"] . ' - Available</option>';
+							else:
+								$hint .= '<option '.$selected.' value="" disabled class="text-danger">' . $row["timeSlot"] . ' - Not Available</option>';
+							endif;
+						}
+					endforeach;
+				$hint .= '</select>
+				</div>';
+				echo($hint);
+
+			else:
+				$hint = '
+				<div class="form-group">
+					<label>Time Slot</label>
+					<select required name="timeSlot" class="form-control">';
+					foreach($schedulesDoctors as $row):
+						$startTime = $row['startTime'];
+						$selected = ($appointment["timeSet"] == $row["slotId"]) ? 'selected' : '';
+						if ($row["availability"] == "Available") {
+							// If available and meets the time condition
+							$hint .= '<option '.$selected.' value="' . $row["slotId"] . '" class="text-success">' . $row["timeSlot"] . ' - Available</option>';
+						} else {
+							// If not available or does not meet the time condition
+							$hint .= '<option '.$selected.' value="" disabled class="text-danger">' . $row["timeSlot"] . ' - Not Available</option>';
+						}
+					endforeach;
+				$hint .= '</select>
+				</div>';
+				echo($hint);
+			endif;
 		
 
 
 		elseif($_POST["action"] == "rescheduleModal"):
 			
-
+			// dump($_POST);
 			$appointment = query("select * from appointment where appointmentId = ?", $_POST["appointmentId"]);
 			$appointment = $appointment[0];
-
-
-
-
-
-
-
-
-
-
 			// dump($_POST);
 			$appointment = query("select a.*, u.*, t.timeSlot from appointment a
 								left join users u
@@ -593,24 +676,25 @@ require("includes/google_class.php");
                   <div class="input-group-prepend">
                     <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                   </div>
-                  <input value="'.$appointment["dateSet"].'" placeholder="Select Date of Appointment here" required type="date" name="appointment_date" class="form-control" >
+                  <input value="'.$appointment["dateSet"].'" id="reSchedDoctorAppointmentDate" placeholder="Select Date of Appointment here" required type="date" name="appointment_date" class="form-control" >
               
                 </div>
 
 				<br>
-
-				<div class="form-group">
-                        <label>Time Slot</label>
-                        <select name="timeSlot" class="form-control">';
-						foreach($timeslot as $row):
-							if($row["slotId"] == $appointment["timeSet"]):
-								$hint.='<option selected value="'.$row["slotId"].'">'.$row["timeSlot"].'</option>';
-							else:
-								$hint.='<option value="'.$row["slotId"].'">'.$row["timeSlot"].'</option>';
-							endif;
-						endforeach;
-                        $hint.='</select>
-                      </div>
+				<div id="timeSlotDiv">
+					<div class="form-group">
+							<label>Time Slot</label>
+							<select name="timeSlot" class="form-control">';
+							foreach($timeslot as $row):
+								if($row["slotId"] == $appointment["timeSet"]):
+									$hint.='<option selected value="'.$row["slotId"].'">'.$row["timeSlot"].'</option>';
+								else:
+									$hint.='<option value="'.$row["slotId"].'">'.$row["timeSlot"].'</option>';
+								endif;
+							endforeach;
+							$hint.='</select>
+					</div>
+				</div>
           
 			 
 			  </div>
