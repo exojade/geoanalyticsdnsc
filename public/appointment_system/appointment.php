@@ -218,9 +218,9 @@ require("includes/google_class.php");
 			endforeach;
 
 			$Client = [];
-			$client = query("select * from users");
+			$client = query("select * from client");
 			foreach($client as $row):
-				$Client[$row["userid"]] = $row;
+				$Client[$row["clientId"]] = $row;
 			endforeach;
 
 			$Doctors = [];
@@ -246,8 +246,8 @@ require("includes/google_class.php");
 				// dump($row);
 				
 
-				$data[$i]["client"] = $Client[$row["clientId"]]["fullname"];
-				$data[$i]["email"] = $Client[$row["clientId"]]["username"];
+				$data[$i]["client"] = $Client[$row["clientId"]]["lastname"] . ", " . $Client[$row["clientId"]]["firstname"];
+				// $data[$i]["email"] = $Client[$row["clientId"]]["username"];
 				if($row["appointmentStatus"] == "PENDING"):
 					$data[$i]["action"] = '
 				<form class="generic_form_trigger" style="display:inline;" data-url="appointment">
@@ -342,9 +342,9 @@ require("includes/google_class.php");
 				endforeach;
 	
 				$Client = [];
-				$client = query("select * from users");
+				$client = query("select * from client");
 				foreach($client as $row):
-					$Client[$row["userid"]] = $row;
+					$Client[$row["clientId"]] = $row;
 				endforeach;
 	
 				$Doctors = [];
@@ -377,35 +377,57 @@ require("includes/google_class.php");
 
 				foreach($data as $row):
 					// dump($row);
-					$data[$i]["action"] = '
 
 
-				<div class="btn-group btn-block" width="100%">
-				<a href="#" data-id="'.$row["appointmentId"].'" data-target="#modalAppointmentDetails" data-toggle="modal" class="btn btn-flat btn-sm btn-info" ><i class="fa fa-eye mb-0"></i></a>
+					if($row["type"] != "WALK IN"):
+						$data[$i]["action"] = '
+						<div class="btn-group btn-block" width="100%">
+						<a href="#" data-id="'.$row["appointmentId"].'" data-target="#modalAppointmentDetails" data-toggle="modal" class="btn btn-flat btn-sm btn-info" ><i class="fa fa-eye mb-0"></i></a>
+		
+						<form class="generic_form_trigger mb-0" data-url="appointment" >
+							<input type="hidden" name="action" value="markDoneAppointment">
+							<input type="hidden" name="appointmentId" value="'.$row["appointmentId"].'">		
+								<button class="btn btn-sm btn-success btn-flat"><i class="fa fa-check"></i></button>
+						</form>
+						<a href="#" data-id="'.$row["appointmentId"].'" data-target="#rescheduleModal" data-toggle="modal" class="btn btn-flat btn-sm btn-warning" ><i class="fa fa-edit mb-0"></i></a>
+		
+							 <form class="generic_form_trigger" data-url="appointment">
+							<input type="hidden" name="action" value="markDoneAppointment">
+							<input type="hidden" name="appointmentId" value="'.$row["appointmentId"].'">		
+								<button class="btn btn-sm btn-danger btn-flat"><i class="fa fa-times"></i></button>
+							</form> 			
+							  </div>
+					
+							';
 
-				<form class="generic_form_trigger mb-0" data-url="appointment" >
-					<input type="hidden" name="action" value="markDoneAppointment">
-					<input type="hidden" name="appointmentId" value="'.$row["appointmentId"].'">		
-						<button class="btn btn-sm btn-success btn-flat"><i class="fa fa-check"></i></button>
-					</form>
-				<a href="#" data-id="'.$row["appointmentId"].'" data-target="#rescheduleModal" data-toggle="modal" class="btn btn-flat btn-sm btn-warning" ><i class="fa fa-edit mb-0"></i></a>
 
-                     <form class="generic_form_trigger" data-url="appointment">
-					<input type="hidden" name="action" value="markDoneAppointment">
-					<input type="hidden" name="appointmentId" value="'.$row["appointmentId"].'">		
-						<button class="btn btn-sm btn-danger btn-flat"><i class="fa fa-times"></i></button>
-					</form> 
-											
+							$data[$i]["doctor"] = "<a href='".$row["meetId"]."' target='_blank' class='btn btn-sm btn-block btn-info'>Proceed to Google Meet</a>
+							";
+					else:
+						$data[$i]["action"] = '
+						<div class="btn-group btn-block" width="100%">
+						<a href="#" data-id="'.$row["appointmentId"].'" data-target="#modalAppointmentDetails" data-toggle="modal" class="btn btn-flat btn-sm btn-info" ><i class="fa fa-eye mb-0"></i></a>
+		
+						<form class="generic_form_trigger mb-0" data-url="appointment" >
+							<input type="hidden" name="action" value="markDoneAppointment">
+							<input type="hidden" name="appointmentId" value="'.$row["appointmentId"].'">		
+								<button class="btn btn-sm btn-success btn-flat"><i class="fa fa-check"></i></button>
+						</form>
+		
+							
+							  </div>
+					
+							';
 
-									
-                      </div>
-			
-					';
+							$data[$i]["doctor"] = " --N / A -- ";
+					endif;
+
+
+					
 	
-					$data[$i]["client"] = $Client[$row["clientId"]]["fullname"];
-					$data[$i]["email"] = $Client[$row["clientId"]]["username"];
-					$data[$i]["doctor"] = "<a href='".$row["meetId"]."' target='_blank' class='btn btn-sm btn-block btn-info'>Proceed to Google Meet</a>
-					";
+					$data[$i]["client"] = $Client[$row["clientId"]]["lastname"] .", " .  $Client[$row["clientId"]]["firstname"];
+					// $data[$i]["email"] = $Client[$row["clientId"]]["username"];
+				
 
 					$data[$i]["timeSet"] = $TimeSlot[$row["timeSet"]]["timeSlot"];
 	
