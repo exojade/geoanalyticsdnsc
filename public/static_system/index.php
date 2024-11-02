@@ -70,7 +70,7 @@
               <h6>
               Parvo
               </h6>
-              <p class="text-justify" style="padding-left:150px; padding-right: 150px;">
+              <p class="text-center" style="padding-left:150px; padding-right: 150px;">
               a highly contagious viral disease of dogs that commonly causes acute gastrointestinal illness in puppies. 
               </p>
             </div>
@@ -89,7 +89,7 @@
               <h6>
               Flu
               </h6>
-              <p class="text-justify" style="padding-left:150px; padding-right: 150px;">
+              <p class="text-center" style="padding-left:150px; padding-right: 150px;">
               a contagious respiratory illness caused by influenza viruses that infect the nose, throat, and sometimes the lungs.
               </p>
             </div>
@@ -108,7 +108,7 @@
               <h6>
               Dengue
               </h6>
-              <p class="text-justify" style="padding-left:150px; padding-right: 150px;">
+              <p class="text-center" style="padding-left:150px; padding-right: 150px;">
               a highly contagious viral disease of dogs that commonly causes acute gastrointestinal illness in puppies. 
               </p>
             </div>
