@@ -26,8 +26,19 @@
 			$i = 0;
 			foreach($data as $row):
 				// dump($row);
-				$data[$i]["action"] = '<a href="#" class="btn btn-block btn-sm btn-warning">Update</a>';
-				$data[$i]["banner_image"]='<a data-toggle="modal" data-target="#modal_'.$row["banner_image"].'"  href="#" ><img style="border: 2px solid black;" src="'.$row["banner_image"].'" width="100" height="100"></a>';
+				$data[$i]["action"] = '
+					<form class="generic_form_trigger" data-url="announcement">
+						<input type="hidden" name="action" value="deleteAnnouncement">
+						<input type="hidden" name="announcementId" value="'.$row["tblid"].'">
+						<div class="btn-group btn-block">
+							<button class="btn btn-danger" type="submit">Delete</button>
+							<a href="#" class="btn btn-warning">Update</a>
+						</div>
+					</form>
+					';
+				$data[$i]["banner_image"]='
+					<a data-toggle="modal" data-target="#modal_'.$row["tblid"].'"  href="#" ><img style="border: 2px solid black;" src="'.$row["banner_image"].'" width="100" height="100"></a>
+				';
 				
 				// $data[$i]["appointmentDate"] = $row["dateSet"] . " - " . $TimeSlot[$row["timeSet"]]["timeSlot"];
 				// dump();	
@@ -40,19 +51,23 @@
                 "aaData" => $data
             );
             echo json_encode($json_data);
-
-			
-
-
-
-
-
-
-
 		endif;
 
-      
+		if($_POST["action"] == "deleteAnnouncement"):
+			// dump($_POST);
+			// dump($_POST);
 
+			query("delete from announcements where tblid = ?", $_POST["announcementId"]);
+
+			$res_arr = [
+				"result" => "success",
+				"title" => "Success",
+				"message" => "Success on updating data",
+				"link" => "refresh",
+				// "html" => '<a href="#">View or Print '.$transaction_id.'</a>'
+				];
+				echo json_encode($res_arr); exit();
+		endif;
 
         if($_POST["action"] == "addAnnouncement"):
             // dump($_FILES);

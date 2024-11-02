@@ -12,6 +12,29 @@
       <div class="container-fluid">
 
 
+      <?php
+      $announcements = query("select * from announcements");
+      foreach($announcements as $row): ?>
+        <div class="modal fade" id="modal_<?php echo($row["tblid"]); ?>">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content ">
+              <div class="modal-header bg-primary">
+                <h4 class="modal-title"><?php echo($row["title"]); ?></h4>
+              </div>
+              <div class="modal-body">
+              <img class="img-fluid" src="<?php echo($row["banner_image"]); ?>">
+          
+              </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
+      </div>
+      <?php
+      endforeach;
+      ?>
+
+
       <div class="modal fade" id="addAnnouncementModal">
         <div class="modal-dialog modal-lg">
           <div class="modal-content ">
@@ -65,10 +88,9 @@
                 </h5>
               </div>
               <div class="card-body table-responsive">
-                <br>
                 <table class="table table-bordered" id="ajax_datatable" style="width: 100%; table-layout: fixed;">
                   <thead>
-                    <th width="10%">Action</th>
+                    <th>Action</th>
                     <th>Title</th>
                     <th>Description</th>
                     <th>Status</th>
