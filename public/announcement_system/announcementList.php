@@ -129,9 +129,20 @@ var datatable =
                 'columns': [
                     { data: 'action', "orderable": false, visible: true },
                     { data: 'title', "orderable": false, visible: true  },
-                    { data: 'description', "orderable": false, visible: true  },
+                    {
+    data: 'description',
+    orderable: false,
+    visible: true,
+    render: function(data, type, row) {
+        // Shorten the description to 20 characters and add ellipsis
+        let shortDescription = data.length > 50 ? data.substr(0, 50) + '...' : data;
+        
+        // Return the short description with the full description in the title attribute
+        return `<span title="${data}">${shortDescription}</span>`;
+    }
+},
                     { data: 'status', "orderable": false, visible: true  },
-                    { data: 'status', "orderable": false, visible: true  },
+                    { data: 'banner_image', "orderable": false, visible: true  },
        
                 ],
     //             columnDefs: [

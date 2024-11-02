@@ -51,7 +51,7 @@
                   foreach($announcements as $row): ?>
                     <div class="carousel-item <?php echo $i == 0 ? 'active' : ''; ?>" >
                       <img class="d-block w-100" src="<?php echo($row["banner_image"]); ?>" alt="First slide">
-                      <div class="carousel-caption d-none d-md-block" style="background-color: rgba(0, 0, 0, 0.5);">
+                      <div class="carousel-caption d-none d-md-block" style="background-color: rgba(0, 0, 0, 0.8);">
                           <h5><?php echo($row["title"]); ?></h5>
                           <p><?php echo($row["description"]); ?></p>
                       </div>

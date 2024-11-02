@@ -27,6 +27,8 @@
 			foreach($data as $row):
 				// dump($row);
 				$data[$i]["action"] = '<a href="#" class="btn btn-block btn-sm btn-warning">Update</a>';
+				$data[$i]["banner_image"]='<a data-toggle="modal" data-target="#modal_'.$row["banner_image"].'"  href="#" ><img style="border: 2px solid black;" src="'.$row["banner_image"].'" width="100" height="100"></a>';
+				
 				// $data[$i]["appointmentDate"] = $row["dateSet"] . " - " . $TimeSlot[$row["timeSet"]]["timeSlot"];
 				// dump();	
                 $i++;

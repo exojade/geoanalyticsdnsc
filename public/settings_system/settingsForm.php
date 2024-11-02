@@ -9,13 +9,13 @@
   <link rel="stylesheet" href="AdminLTE_new/dist/css/adminlte.min.css">
 <div class="content-wrapper">
 
-<style>
+<!-- <style>
 .cityvet-logo {
     max-width: 400px; /* Adjust to your preferred width */
     height: auto; /* Ensures the image maintains its aspect ratio */
     object-fit: contain; /* Preserves the image quality */
 }
-</style>
+</style> -->
 
 <?php
 $siteOptions = query("select * from siteoptions");
@@ -34,13 +34,13 @@ $siteOptions = $siteOptions[0];
               <div class="card-body">
 
                 <div class="row">
-                  <div class="col-4">
+                  <div class="col-12 col-lg-4 col-md-4">
                     <div>
                         <!-- <img class="img-fluid pad" src="resources/logocityvet.png" alt="Photo"> -->
-                        <img src="<?= $siteOptions["mainLogo"] == "" ? 'resources/logocityvet_old.png' : $siteOptions["mainLogo"]; ?>" class="img-thumbnail cityvet-logo" alt="Logo">
+                        <img src="<?= $siteOptions["mainLogo"] == "" ? 'resources/logocityvet_old.png' : $siteOptions["mainLogo"]; ?>" class="img-thumbnail img-fluid cityvet-logo" alt="Logo">
                     </div>
                   </div>
-                  <div class="col-8">
+                  <div class="col-12 col-lg-8 col-md-8">
                   <form class="generic_form_trigger" data-url="settings">
                     <input type="hidden" name="action" value="updateSettings">
                   <div class="form-group">
