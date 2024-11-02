@@ -57,6 +57,8 @@
 
 			else if ($request == 'data_analysis')
 				require 'public/data_analysis_system/data_analysis.php';
+			else if ($request == 'announcement')
+				require 'public/announcement_system/announcement.php';
 
 
 			else if ($request == 'static')
