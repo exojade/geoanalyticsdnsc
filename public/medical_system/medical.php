@@ -84,19 +84,20 @@
 										left join disease d on d.diseaseId = cd.diseaseId ";
 				$parameterDisease = ",GROUP_CONCAT(d.diseaseName SEPARATOR ', ') as disease_names ";
 			} else {
-				$joinDiseaseTable = "";
-				$parameterDisease = "";
+				$joinDiseaseTable = " left join checkup_disease cd on c.checkupId = cd.checkupId
+										left join disease d on d.diseaseId = cd.diseaseId ";
+				$parameterDisease = ",GROUP_CONCAT(d.diseaseName SEPARATOR ', ') as disease_names ";
 			}
 
 			if(isset($_REQUEST["from"])):
 				if($_REQUEST["from"] != ""):
-					$where .=" and dateCheckup >= '".$_REQUEST["from"]." 00:00:00'";
+					$where .=" and c.dateCheckup >= '".$_REQUEST["from"]." 00:00:00'";
 				endif;
 			endif;
 
 			if(isset($_REQUEST["to"])):
 				if($_REQUEST["to"] != ""):
-					$where .=" and dateCheckup <= '".$_REQUEST["to"]." 23:59:00'";
+					$where .=" and c.dateCheckup <= '".$_REQUEST["to"]." 23:59:00'";
 				endif;
 			endif;
 
@@ -104,16 +105,7 @@
 			if($_SESSION["dnsc_geoanalytics"]["role"] == "DOCTOR"):
 				$where = " and doctorId = '".$_SESSION["dnsc_geoanalytics"]["userid"]."'";
 			endif;
-
-
-			
-
-			// $baseQuery = "select c.*, p.clientId from checkup c 
-			// left join pet p
-			// on p.petId = c.petId" . $where;
-
 			$baseQuery = "select c.*, p.clientId
-
                   $parameterDisease
                   from checkup c 
                   left join pet p on p.petId = c.petId 
@@ -125,14 +117,11 @@
 			$data = query($baseQuery . " order by dateCheckup desc " . $limitString . " " . $offsetString);
 			$all_data = query($baseQuery . " order by dateCheckup desc ");
 
-
 			$Clients = [];
 			$clients = query("select * from client");
 			foreach($clients as $row):
 				$Clients[$row["clientId"]] = $row;
 			endforeach;
-
-
 			$Disease = [];
 			$disease = query("select cd.*, d.diseaseName from checkup_disease cd
 								left join disease d
@@ -140,28 +129,13 @@
 			foreach($disease as $row):
 				$Disease[$row["checkupId"]][$row["diseaseName"]] = $row;
 			endforeach;
-
-			// dump($Disease);
-
-
-
-
 			$Pets = [];
 			$pets = query("select * from pet");
 			foreach($pets as $row):
 				$Pets[$row["petId"]] = $row;
 			endforeach;
-			
-
-
-
 			$i = 0;
 			foreach($data as $row):
-				// dump($row);
-
-				// dump($Clients[$Pets[$row["petId"]]["clientId"]]);
-
-
 				$data[$i]["action"] = '<a href="#" data-toggle="modal" data-target="#medicalRecordModal" data-id="'.$row["checkupId"].'" class="btn btn-block btn-sm btn-success">Open Record</a>';
 				$data[$i]["owner"] = $Clients[$Pets[$row["petId"]]["clientId"]]["lastname"] . ", " . $Clients[$Pets[$row["petId"]]["clientId"]]["firstname"];
 				$data[$i]["pet"] = $Pets[$row["petId"]]["petName"];
@@ -169,19 +143,6 @@
 				if($parameterDisease != ""):
 					$data[$i]["disease"] = $row["disease_names"];
 				endif;
-				
-
-
-
-				// $data[$i]["address"] = $row["province"] . ", " . $row["cityMun"] . ", " . strtoupper($row["barangay"]) . ", " . $row["address"];
-				// $data[$i]["pets"] = 0;
-				// if(isset($PetCount[$row["clientId"]])):
-				// 	$data[$i]["pets"] = $PetCount[$row["clientId"]]["count"];
-				// endif;
-
-				
-				// $data[$i]["appointmentDate"] = $row["dateSet"] . " - " . $TimeSlot[$row["timeSet"]]["timeSlot"];
-				// dump();	
                 $i++;
             endforeach;
             $json_data = array(
@@ -238,9 +199,6 @@
 
 					</div>
 				</div>';
-
-
-
 				if($medRecord["diagnosis"] != ""):
 					$hint .='<div class="card">
 					<div class="card-body">
