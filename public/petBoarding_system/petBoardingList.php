@@ -561,7 +561,7 @@ var datatable =
 
 
 
-            datatable.ajax.url('medical?action=medicalRecordMasterList&clientId=' + clientId+'&from='+from+'&to='+to+'&service='+service+'&type='+type).load();
+            datatable.ajax.url('petBoarding?action=petBoardingList&clientId=' + clientId+'&from='+from+'&to='+to).load();
 });
 
 

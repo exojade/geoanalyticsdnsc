@@ -193,7 +193,7 @@ var datatable =
             // Redraw the DataTable when column visibility changes
             buttonRedraw();
         });
-
+        $('.dt-buttons').addClass('float-left');
             function buttonRedraw() {
     var datatable = $('#ajax_datatable').DataTable();
     datatable.columns.adjust().responsive.recalc(); // Adjust the DataTable
