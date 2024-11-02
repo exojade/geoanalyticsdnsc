@@ -38,7 +38,53 @@
 					// "html" => '<a href="#">View or Print '.$transaction_id.'</a>'
 					];
 					echo json_encode($res_arr); exit();
+
+			
+
+
+
 			endif;
+
+
+			elseif($_POST["action"] == "newPetBoardingAdmin"):
+
+				// dump($_POST);
+
+
+
+				$checkIn = DateTime::createFromFormat('Y-m-d h:i A', ($_POST["dateCheckIn"] . " " . $_POST["checkin"]))->format("Y-m-d H:i:00");
+				$checkOut = DateTime::createFromFormat('Y-m-d h:i A', ($_POST["dateCheckOut"] . " " . $_POST["checkout"]))->format("Y-m-d H:i:00");
+				// dump($checkIn);
+				if ($checkOut <= $checkIn):
+					$res_arr = [
+						"result" => "failed",
+						"title" => "Failed",
+						"message" => "Check-out time must be greater than check-in time.",
+						"link" => "refresh",
+						// "html" => '<a href="#">View or Print '.$transaction_id.'</a>'
+						];
+						echo json_encode($res_arr); exit();
+				endif;
+
+				
+				if (query("insert INTO pet_boarding (clientId, from_date, to_date, numberPets, dateSet, status) 
+					VALUES(?,?,?,?,?,?)", 
+					$_POST["clientId"],$checkIn, $checkOut, $_POST["numberPets"], date("Y-m-d H:i:00"),"ONGOING") === false)
+					{
+						echo("not_success");
+					}
+				  else;
+	
+				$res_arr = [
+					"result" => "success",
+					"title" => "Success",
+					"message" => "Success on updating data",
+					"link" => "refresh",
+					// "html" => '<a href="#">View or Print '.$transaction_id.'</a>'
+					];
+					echo json_encode($res_arr); exit();
+
+		
 
 
 			// dump($_POST);

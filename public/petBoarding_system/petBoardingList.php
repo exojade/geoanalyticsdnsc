@@ -134,19 +134,19 @@
               <div class="modal-body" style="-webkit-user-select: none;  /* Chrome all / Safari all */
               -moz-user-select: none;     /* Firefox all */
               -ms-user-select: none;  ">
-                  <form class="generic_form_trigger" url="petBoarding" autocomplete="off" id="newPetboardingForm">
-                    <input type="hidden" name="action" value="newPetBoarding">
-                    <input type="hidden" name="role" value="user">
+                  <form class="generic_form_trigger" url="petBoarding" autocomplete="off" id="newPetboardingFormAdmin">
+                    <input type="hidden" name="action" value="newPetBoardingAdmin">
 
-
-                    <select id="petOwnerSelectRegister" class="form-control selectFilter" style="width: 100%;">
+                    <div class="form-group">
+                    <label>Client<span class="text-red">*</span></label>
+                    <select id="petOwnerSelectRegister" name="clientId" required class="form-control" style="width: 100%;">
                           <option></option>
                           <?php foreach($client as $row): ?>
                               <option value="<?php echo($row["clientId"]); ?>"><?php echo($row["lastname"] . ", " . $row["firstname"]); ?></option>
                           <?php endforeach; ?>
                         </select>
+                          </div>
 
-                        <br>
 
 
                     <div class="row">
@@ -162,8 +162,8 @@
                       <div class="bootstrap-timepicker">
                           <div class="form-group">
                               <label>Time Check In <span class="text-red">*</span></label>
-                              <div class="input-group date" id="timepickerIn" data-target-input="#timepickerInInput">
-                                  <input required name="checkin" placeholder="Select Time" type="text" id="timepickerInInput" class="form-control datetimepicker-input" data-target="#timepickerIn" data-toggle="datetimepicker"/>
+                              <div class="input-group date" id="timepickerInAdmin" data-target-input="#timepickerInInputAdmin">
+                                  <input required name="checkin" placeholder="Select Time" type="text" id="timepickerInInputAdmin" class="form-control datetimepicker-input" data-target="#timepickerInAdmin" data-toggle="datetimepicker"/>
                                   <div class="input-group-append">
                                       <div class="input-group-text"><i class="far fa-clock"></i></div>
                                   </div>
@@ -188,8 +188,8 @@
                       <div class="bootstrap-timepicker">
                         <div class="form-group">
                             <label>Time Check Out <span class="text-red">*</span></label>
-                            <div class="input-group date" id="timepickerOut" data-target-input="#timepickerOutInput">
-                                <input required name="checkout" placeholder="Select Time" type="text" id="timepickerOutInput" class="form-control datetimepicker-input" data-target="#timepickerOut" data-toggle="datetimepicker"/>
+                            <div class="input-group date" id="timepickerOutAdmin" data-target-input="#timepickerOutInputAdmin">
+                                <input required name="checkout" placeholder="Select Time" type="text" id="timepickerOutInputAdmin" class="form-control datetimepicker-input" data-target="#timepickerOutAdmin" data-toggle="datetimepicker"/>
                                 <div class="input-group-append">
                                     <div class="input-group-text"><i class="far fa-clock"></i></div>
                                 </div>
@@ -345,7 +345,7 @@
                     <?php if($_SESSION["dnsc_geoanalytics"]["role"] != "admin"): ?>
                       <a href="#" data-toggle="modal" data-target="#modalNewBoardUser" class="btn btn-primary float-right">ADD NEW</a>
                     <?php else: ?>
-                      <a href="#" data-toggle="modal" data-target="#modalNewBoardAdmin" class="btn btn-primary float-right">ADD NEW</a>
+                      <a href="#" data-toggle="modal" data-target="#modalNewBoardAdmin" class="btn btn-primary float-right">ADD WALK IN</a>
                     <?php endif; ?>
                   </div>
 
@@ -407,6 +407,20 @@ $('#timepickerIn').datetimepicker({
       // useCurrent: false
     })
     $('#timepickerOut').datetimepicker({
+    format: 'hh:mm A',
+    stepping: 60,
+    // defaultDate: moment('2024-01-08T12:00:00'),
+    // useCurrent: false
+});
+
+
+$('#timepickerInAdmin').datetimepicker({
+      format: 'hh:mm A',
+      stepping: 60,
+      // defaultDate: moment('2024-01-08T12:00:00'),
+      // useCurrent: false
+    })
+    $('#timepickerOutAdmin').datetimepicker({
     format: 'hh:mm A',
     stepping: 60,
     // defaultDate: moment('2024-01-08T12:00:00'),
@@ -562,6 +576,26 @@ var datatable =
 
 $(function () {
   $('#newPetboardingForm').validate({
+    errorElement: 'span',
+    errorPlacement: function (error, element) {
+      error.addClass('invalid-feedback');
+      element.closest('.form-group').append(error);
+    },
+    highlight: function (element, errorClass, validClass) {
+      $(element).addClass('is-invalid').removeClass('is-valid');
+    },
+    unhighlight: function (element, errorClass, validClass) {
+      $(element).removeClass('is-invalid').addClass('is-valid');
+    },
+    success: function (label, element) {
+      $(element).addClass('is-valid'); // Adds green border when valid
+      // Add a green check icon or any valid styling you want to apply
+      $(element).closest('.form-group').find('span.valid-feedback').remove();
+      // $(element).closest('.form-group').append('<span class="valid-feedback">✓</span>'); // Adds a check mark
+    }
+  });
+
+  $('#newPetboardingFormAdmin').validate({
     errorElement: 'span',
     errorPlacement: function (error, element) {
       error.addClass('invalid-feedback');
