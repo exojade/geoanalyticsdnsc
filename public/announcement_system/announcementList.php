@@ -68,7 +68,7 @@
                 <br>
                 <table class="table table-bordered" id="ajax_datatable" style="width: 100%; table-layout: fixed;">
                   <thead>
-                    <th>Action</th>
+                    <th width="10%">Action</th>
                     <th>Title</th>
                     <th>Description</th>
                     <th>Status</th>
