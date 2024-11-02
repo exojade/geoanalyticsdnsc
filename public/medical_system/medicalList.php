@@ -106,13 +106,19 @@
 
                   <div class="col-md-3">
                     <div class="form-group">
-                      <label>Service</label>
-                        <select id="serviceSelect" class="form-control selectFilter" style="width: 100%;">
-                          <option disabled selected value="" disabled>Select Service</option>
-                          <option value="Checkup">Checkup</option>
-                          <option value="Vaccination">Vaccination</option>
-                          <option value="Anti Rabies">Anti Rabies</option>
-                        </select>
+                      <label>Disease</label>
+                        <select id="diseaseSelect" multiple="multiple" class="selectFilter" style="width: 100%;">
+                          <?php
+                          $diseases = query("select * from disease");
+                          foreach ($diseases as $row):
+                          ?>
+                              <option value="<?php echo $row['diseaseId']; ?>" data-disease="<?php echo htmlspecialchars($row['diseaseName']); ?>">
+                                  <?php echo htmlspecialchars($row['diseaseName']); ?>
+                              </option>
+                          <?php
+                          endforeach;
+                          ?>
+                      </select>
                     </div>
                   </div>
                 </div>
@@ -126,7 +132,7 @@
                     <th>Pet</th>
                     <th>Date</th>
                     <th>Type</th>
-                    <th>Service</th>
+                    <th>Disease</th>
                     <!-- <th>Diagnosis</th> -->
                     <!-- <th>Treatment</th> -->
                     <!-- <th>Disease</th> -->
@@ -228,7 +234,7 @@ var datatable =
                     { data: 'pet', "orderable": false  },
                     { data: 'dateCheckup', "orderable": false  },
                     { data: 'type', "orderable": false  },
-                    { data: 'service', "orderable": false },
+                    { data: 'disease', "orderable": false },
                     //{ data: 'diagnosis', "orderable": false  },
                     //{ data: 'treatment', "orderable": false  },
                     //{ data: 'disease', "orderable": false  },
@@ -274,15 +280,10 @@ var datatable =
   // var type = $('#typeSelect').val();
 
   var type = $('#typeSelect').val() || "";
-  var service = $('#serviceSelect').val() || "";
+  var diseases = $('#diseaseSelect').val() || [];  // This will be an array of selected values
+  var diseasesParam = diseases.join(',');
   // var service = $('#serviceSelect').val();
-
-
-
-
-
-
-            datatable.ajax.url('medical?action=medicalRecordMasterList&clientId=' + clientId+'&from='+from+'&to='+to+'&service='+service+'&type='+type).load();
+            datatable.ajax.url('medical?action=medicalRecordMasterList&clientId=' + clientId+'&from='+from+'&to='+to+'&diseases='+diseasesParam+'&type='+type).load();
 });
 
 
@@ -292,7 +293,10 @@ var datatable =
 // });
 
 
-
+$('#diseaseSelect').select2({
+        placeholder: "Select diseases",
+        allowClear: true
+    });
 
 
 </script>

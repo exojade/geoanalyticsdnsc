@@ -83,8 +83,22 @@ require("includes/google_class.php");
 			$i = 0;
 			foreach($data as $row):
 				// dump($row);
-				$data[$i]["action"] = '<a href="#"  class="btn btn-warning btn-block">Update</a>';
+				if($row["appointmentStatus"] == "DONE"):
+					$data[$i]["action"] = '<a href="#" disabled class="btn btn-default btn-block">No Action</a>';
+				else:
+					$data[$i]["action"] = '
+					
+					<form class="generic_form_trigger" data-url="myAppointments">
+						<input type="hidden" name="action" value="deleteAppointment">
+						<input type="hidden" name="appointmentId" value="'.$row["appointmentId"].'">
+						<button class="btn btn-danger btn-block">Delete</button>
+					</form>
+					';
+				endif;
+				
+				
 				$data[$i]["appointmentDate"] = $row["dateSet"] . " - " . $TimeSlot[$row["timeSet"]]["timeSlot"];
+				$data[$i]["meetId"] = "<a href='".$row["meetId"]."' class='btn btn-info' target='_blank'>Google Meet</a>";
 				// dump();	
                 $i++;
             endforeach;
@@ -98,7 +112,18 @@ require("includes/google_class.php");
 
 		
 
-			
+		elseif($_POST["action"] == "deleteAppointment"):
+
+			query("delete from appointment where appointmentId = ?", $_POST["appointmentId"]);
+			$res_arr = [
+				"result" => "success",
+				"title" => "Success",
+				"message" => "Delete Appointment Successfully",
+				"link" => "refresh",
+				// "html" => '<a href="#">View or Print '.$transaction_id.'</a>'
+				];
+				echo json_encode($res_arr); exit();
+
 
 		elseif($_POST["action"] == "addNewAppointment"):
 			// dump($_POST);

@@ -77,11 +77,16 @@
 				endif;
 			endif;
 
-			if(isset($_REQUEST["service"])):
-				if($_REQUEST["service"] != ""):
-					$where .=" and service = '".$_REQUEST["service"]."'";
-				endif;
-			endif;
+			if(isset($_REQUEST["diseases"]) && !empty($_REQUEST["diseases"])) {
+				$diseaseList = $_REQUEST["diseases"];
+				$where .= " and cd.diseaseId IN (".$diseaseList.")";
+				$joinDiseaseTable = " left join checkup_disease cd on c.checkupId = cd.checkupId
+										left join disease d on d.diseaseId = cd.diseaseId ";
+				$parameterDisease = ",GROUP_CONCAT(d.diseaseName SEPARATOR ', ') as disease_names ";
+			} else {
+				$joinDiseaseTable = "";
+				$parameterDisease = "";
+			}
 
 			if(isset($_REQUEST["from"])):
 				if($_REQUEST["from"] != ""):
@@ -103,9 +108,19 @@
 
 			
 
-			$baseQuery = "select c.*, p.clientId from checkup c 
-			left join pet p
-			on p.petId = c.petId" . $where;
+			// $baseQuery = "select c.*, p.clientId from checkup c 
+			// left join pet p
+			// on p.petId = c.petId" . $where;
+
+			$baseQuery = "select c.*, p.clientId
+
+                  $parameterDisease
+                  from checkup c 
+                  left join pet p on p.petId = c.petId 
+                  $joinDiseaseTable 
+                  $where 
+                  group by c.checkupId ";
+			// dump($baseQuery);
 
 			$data = query($baseQuery . " order by dateCheckup desc " . $limitString . " " . $offsetString);
 			$all_data = query($baseQuery . " order by dateCheckup desc ");
@@ -151,16 +166,10 @@
 				$data[$i]["owner"] = $Clients[$Pets[$row["petId"]]["clientId"]]["lastname"] . ", " . $Clients[$Pets[$row["petId"]]["clientId"]]["firstname"];
 				$data[$i]["pet"] = $Pets[$row["petId"]]["petName"];
 				$data[$i]["disease"] = "";
-
-				if(isset($Disease[$row["checkupId"]])):
-					$diseaseNames = [];
-					foreach ($Disease[$row["checkupId"]] as $disease) {
-						$diseaseNames[] = $disease['diseaseName'];
-					}
-					
-					// Convert the array of disease names to a comma-separated string
-					$data[$i]["disease"] = implode(', ', $diseaseNames);
+				if($parameterDisease != ""):
+					$data[$i]["disease"] = $row["disease_names"];
 				endif;
+				
 
 
 
