@@ -31,8 +31,7 @@
 						<input type="hidden" name="action" value="deleteAnnouncement">
 						<input type="hidden" name="announcementId" value="'.$row["tblid"].'">
 						<div class="btn-group btn-block">
-							<button class="btn btn-danger" type="submit">Delete</button>
-							<a href="#" class="btn btn-warning">Update</a>
+							<button class="btn btn-danger btn-sm" type="submit">Delete</button>
 						</div>
 					</form>
 					';

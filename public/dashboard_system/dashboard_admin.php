@@ -697,12 +697,12 @@ $(document).ready(function(){
             elem.requestFullscreen().catch(err => {
                 alert(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
             });
-            $("#map").css("height", "800px"); // Set height to 800px when entering fullscreen
+            $("#map").css("height", "90vh"); // Set height to 800px when entering fullscreen
         } else {
             if (document.exitFullscreen) {
                 document.exitFullscreen();
             }
-            $("#map").css("height", "400px"); // Set height to 400px when exiting fullscreen
+            $("#map").css("height", "50vh"); // Set height to 400px when exiting fullscreen
         }
     });
 });

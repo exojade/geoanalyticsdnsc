@@ -1,5 +1,63 @@
 <?php
     if($_SERVER["REQUEST_METHOD"] === "POST") {
+
+
+		if($_POST["action"] == "getData"):
+			// dump($_POST);
+			$pds = query("select d.*, u.username from doctors d 
+							left join users u on u.userid = d.doctorsId
+							where d.doctorsId = ?", $_REQUEST["doctorsId"]);
+			$data = $pds[0];
+			echo json_encode($pds);
+		endif;
+
+		if($_POST["action"] == "updatedoctorInfo"):
+			// dump($_POST);
+
+			$doctor = $_POST["doctor"];
+
+			query("update doctors set
+					doctorsFirstname = ?,
+					doctorsMiddlename = ?,
+					doctorsLastname = ?,
+					doctorsExtension = ?,
+					doctorsRegion = ?,
+					doctorsProvince = ?,
+					doctorsCitymun = ?,
+					doctorsBarangay = ?,
+					doctorsAddress = ?,
+					doctorsContactNumber = ?,
+					doctorsSex = ?,
+					doctorsBirthday = ?,
+					doctorsLicenseNumber = ?
+					where doctorsId = ?",
+					$doctor["doctorsFirstname"],
+					$doctor["doctorsMiddlename"],
+					$doctor["doctorsLastname"],
+					$doctor["doctorsExtension"],
+					$doctor["doctorsRegion"],
+					$doctor["doctorsProvince"],
+					$doctor["doctorsCitymun"],
+					$doctor["doctorsBarangay"],
+					$doctor["doctorsAddress"],
+					$doctor["doctorsContactNumber"],
+					$doctor["doctorsSex"],
+					$doctor["doctorsBirthday"],
+					$doctor["doctorsLicenseNumber"],
+					$doctor["doctorsId"]
+				);
+
+
+				query("update users set
+					username = ?
+					where userid = ?",
+					$doctor["username"],
+					$doctor["doctorsId"]
+				);
+
+				echo(1);
+		endif;
+
 		if($_POST["action"] == "doctorsList"):
 			// dump($_POST);
 
@@ -35,8 +93,7 @@
 			$i = 0;
 			foreach($data as $row):
 				// dump($row);
-				$data[$i]["action"] = '<a href="#" class="btn btn-block btn-sm btn-success">View</a>
-										
+				$data[$i]["action"] = '<a href="doctors?action=update&id='.$row["doctorsId"].'" class="btn btn-block btn-sm btn-warning">Update</a>
 				';
 				$data[$i]["name"] = $row["doctorsLastname"] . ", " . $row["doctorsFirstname"];
 				$data[$i]["address"] = $row["doctorsProvince"] . ", " . $row["doctorsCitymun"] . ", " . strtoupper($row["doctorsBarangay"]) . ", " . $row["doctorsAddress"];
@@ -89,7 +146,6 @@
 
     }
 	else {
-
 		if(!isset($_GET["action"])):
 				render("public/doctors_system/doctorsList.php",[]);
 		else:
@@ -117,6 +173,9 @@
 				
 			elseif($_GET["action"] == "doctorAdd"):
 				render("public/doctors_system/doctorAddForm.php",[]);
+			elseif($_GET["action"] == "update"):
+		
+				render("public/doctors_system/updateDoctorForm.php",[]);
 			endif;
 		endif;
 

@@ -19,7 +19,7 @@
               <h4 class="modal-title">Add Disease</h4>
             </div>
             <div class="modal-body">
-            <form class="generic_form_trigger" data-url="disease">
+            <form class="generic_form_trigger" data-url="disease" id="AddDiseaseForm">
               <input type="hidden" name="action" value="addDisease">
             <div class="form-group">
               <label for="exampleInputEmail1">Disease Name <span class="color-red">*</span></label>
@@ -64,6 +64,30 @@
               <textarea name="treatment" required class="form-control"></textarea>
             </div>
             <hr>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+            </form>
+        
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+
+
+
+      <div class="modal fade" id="updateDiseaseModal">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content ">
+            <div class="modal-header bg-warning">
+              <h4 class="modal-title">Update Disease</h4>
+            </div>
+            <div class="modal-body">
+            <form class="generic_form_trigger" data-url="disease" id="updateDiseaseForm">
+              <input type="hidden" name="action" value="updateDisease">
+              <div class="fetched-data"></div>
+           
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             <button type="submit" class="btn btn-primary">Save changes</button>
             </div>
@@ -121,6 +145,39 @@
 
 
 <script>
+
+
+$('#updateDiseaseModal').on('show.bs.modal', function (e) {
+        var rowid = $(e.relatedTarget).data('id');
+        Swal.fire({ title: 'Please wait...', 
+              showClass: {
+    popup: `
+      animate__animated
+      animate__bounceIn
+      animate__faster
+    `
+  },
+  hideClass: {
+    popup: `
+      animate__animated
+      animate__bounceOut
+      animate__faster
+    `
+  },
+              imageUrl: 'AdminLTE_new/dist/img/loader.gif', showConfirmButton: false });
+        $.ajax({
+            type : 'post',
+            url : 'disease', //Here you will fetch records 
+            data: {
+                diseaseId: rowid, action: "updateDiseaseModal"
+            },
+            success : function(data){
+                $('#updateDiseaseModal .fetched-data').html(data);
+                Swal.close();
+                // $(".select2").select2();//Show fetched data from database
+            }
+        });
+     });
   
   $('.summernote').summernote()
 var datatable = 
@@ -225,7 +282,28 @@ var datatable =
             
 
 $(function () {
-  $('.generic_form_trigger').validate({
+  $('#AddDiseaseForm').validate({
+    errorElement: 'span',
+    errorPlacement: function (error, element) {
+      error.addClass('invalid-feedback');
+      element.closest('.form-group').append(error);
+    },
+    highlight: function (element, errorClass, validClass) {
+      $(element).addClass('is-invalid').removeClass('is-valid');
+    },
+    unhighlight: function (element, errorClass, validClass) {
+      $(element).removeClass('is-invalid').addClass('is-valid');
+    },
+    success: function (label, element) {
+      $(element).addClass('is-valid'); // Adds green border when valid
+      // Add a green check icon or any valid styling you want to apply
+      $(element).closest('.form-group').find('span.valid-feedback').remove();
+      // $(element).closest('.form-group').append('<span class="valid-feedback">✓</span>'); // Adds a check mark
+    }
+  });
+
+
+  $('#updateDiseaseForm').validate({
     errorElement: 'span',
     errorPlacement: function (error, element) {
       error.addClass('invalid-feedback');
