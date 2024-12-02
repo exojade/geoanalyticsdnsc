@@ -127,6 +127,9 @@
   </li>
 
 
+  
+
+
 
   <!-- <li class="nav-item">
       <a href="prescription" class="nav-link">
@@ -173,6 +176,16 @@
         <i class="nav-icon fas fa-bullhorn"></i>
         <p>
           Announcements
+          <span class="right badge badge-danger"></span>
+        </p>
+      </a>
+  </li>
+
+  <li class="nav-item">
+      <a href="#" data-target="#modalUserGuideAdmin" data-toggle="modal" class="nav-link">
+        <i class="nav-icon fas fa-question-circle"></i>
+        <p>
+          User's Guide
           <span class="right badge badge-danger"></span>
         </p>
       </a>

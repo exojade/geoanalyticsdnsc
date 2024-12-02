@@ -104,6 +104,8 @@ use Google\Service\Calendar;
 			render("public/dashboard_system/dashboard_admin.php",[]);
 		}
 		else if($role == "CLIENT"){
+
+
 			render("public/dashboard_system/dashboard_client.php",[]);
 		}
 	}

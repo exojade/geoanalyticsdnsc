@@ -1,6 +1,7 @@
 
 <!-- <link rel="stylesheet" href="AdminLTE/bower_components/jvectormap/jquery-jvectormap.css"> -->
 <!-- <link rel="stylesheet" href="AdminLTE_new/plugins/jqvmap/jqvmap.min.css"> -->
+
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <!-- <section class="content-header">
