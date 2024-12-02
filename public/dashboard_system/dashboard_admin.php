@@ -186,74 +186,188 @@
         </div>
 
 
-
-        <div class="card">
+        <div class="row">
+            <div class="col-5">
+            <div class="card">
         <div class="card-header">
-          <h3 >Data Visualization
-          <form class="sales_chart_form float-right" data-url="data_analysis">
-              <input type="hidden" name="action" value="chart">
+        <form class="sales_chart_form" data-url="data_analysis">
+                            <input type="hidden" name="action" value="chart">
+                            <button  class="btn btn-primary float-right ml-3" type="submit">Filter</button>
+                            <div style="width: 25%;" class="form-group float-right mr-2">
+                                <input  name="year" type="number" value="<?php echo(date("Y")); ?>" class="form-control" id="exampleInputEmail1" placeholder="---">
+                                </div>
+                                <div  style="width: 20%;" class="form-group float-right mr-2">
+                                <select name="to" class="form-control">
+                                    <option value="01">January</option>
+                                    <option value="02">February</option>
+                                    <option value="03">March</option>
+                                    <option value="04">April</option>
+                                    <option value="05">May</option>
+                                    <option value="06">June</option>
+                                    <option value="07">July</option>
+                                    <option value="08">August</option>
+                                    <option value="09">September</option>
+                                    <option value="10">October</option>
+                                    <option value="11">November</option>
+                                    <option selected value="12">December</option>
+                                    <!-- <option selected value="<?php echo(date("m")); ?>"><?php echo(date("F")); ?></option> -->
+                                </select>
+                                </div>
+                            <div  style="width: 20%;" class="form-group float-right mr-2">
+                                <select name="from" class="form-control">
+                                    <option selected value="01">January</option>
+                                    <option value="02">February</option>
+                                    <option value="03">March</option>
+                                    <option value="04">April</option>
+                                    <option value="05">May</option>
+                                    <option value="06">June</option>
+                                    <option value="07">July</option>
+                                    <option value="08">August</option>
+                                    <option value="09">September</option>
+                                    <option value="10">October</option>
+                                    <option value="11">November</option>
+                                    <option value="12">December</option>
+                                </select>
+                                </div>
+                            </form>
+
+          
+        </div>
+        <div class="card-body" style="overflow: auto;">
+            <div class="highcharts-figure">
+                <div id="container"></div>
+            </div>
+        </div>
+     
+        <!-- /.card-footer-->
+      </div>
+
+            </div>
+            <div class="col-7">
+
+            <div class="card">
+        <div class="card-header">
+        <form class="lineChartForm" data-url="data_analysis">
+                            <input type="hidden" name="action" value="lineChart">
+                            <button  class="btn btn-primary float-right ml-1" type="submit">Filter</button>
+                            <div style="width: 15%;" class="form-group float-right mr-2">
+                                <input  name="year" type="number" value="<?php echo(date("Y")); ?>" class="form-control" id="exampleInputEmail1" placeholder="---">
+                                </div>
+                                <div  style="width: 15%;" class="form-group float-right mr-2">
+                                <select name="to" class="form-control">
+                                    <option value="01">January</option>
+                                    <option value="02">February</option>
+                                    <option value="03">March</option>
+                                    <option value="04">April</option>
+                                    <option value="05">May</option>
+                                    <option value="06">June</option>
+                                    <option value="07">July</option>
+                                    <option value="08">August</option>
+                                    <option value="09">September</option>
+                                    <option value="10">October</option>
+                                    <option value="11">November</option>
+                                    <option selected value="12">December</option>
+                                    <!-- <option selected value="<?php echo(date("m")); ?>"><?php echo(date("F")); ?></option> -->
+                                </select>
+                                </div>
+                            <div  style="width: 15%;" class="form-group float-right mr-2">
+                                <select name="from" class="form-control">
+                                    <option selected value="01">January</option>
+                                    <option value="02">February</option>
+                                    <option value="03">March</option>
+                                    <option value="04">April</option>
+                                    <option value="05">May</option>
+                                    <option value="06">June</option>
+                                    <option value="07">July</option>
+                                    <option value="08">August</option>
+                                    <option value="09">September</option>
+                                    <option value="10">October</option>
+                                    <option value="11">November</option>
+                                    <option value="12">December</option>
+                                </select>
+                                </div>
+
+                                <div class="form-group float-right mr-2" style="width:20%;">
+                                <select name="disease" class="form-control" >
+                                <option selected value="" >Select Disease</option>
+                                    <?php $disease = query("select * from disease"); ?>
+                                    <?php foreach($disease as $row): ?>
+                                        <option value="<?php echo($row["diseaseId"]); ?>"><?php echo($row["diseaseName"]); ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                                </div>
+                            </form>
+
+          
+        </div>
+        <div class="card-body">
+        <div class="chart">
+                  <canvas id="lineChart" style="min-height: 350px; height: auto; max-height: 430px; max-width: 100%;"></canvas>
+                </div>
+          
+        </div>
+      </div>
+                
+            </div>
+        </div>
+
+
+
+        
+
+
+
+
+
+
+
+
+
+
+
+      <div class="card">
+        <div class="card-header">
+        <div class="d-flex justify-content-start float-left">
+                <p class="mr-3"><span style="display: inline-block; width: 20px; height: 10px; background-color: #2C6E49;"></span> Low Risk</p>
+                <p class="mr-3"><span style="display: inline-block; width: 20px; height: 10px; background-color: #F39237;"></span> Warning</p>
+                <p class="mr-3"><span style="display: inline-block; width: 20px; height: 10px; background-color: #D63230;"></span> Danger</p>
+            </div>
+          <form class="barChartForm float-right" data-url="data_analysis">
+              <input type="hidden" name="action" value="barChart">
               <button  class="btn btn-primary float-right ml-3" type="submit">Filter</button>
               <div style="margin-left: 5px;" class="form-group float-right">
-                  <input name="year" type="number" value="<?php echo(date("Y")); ?>" class="form-control" id="exampleInputEmail1" placeholder="---">
-                </div>
-                <div style="margin-left: 5px;" class="form-group float-right">
-                  <select name="to" class="form-control">
-                    <option value="01">January</option>
-                    <option value="02">February</option>
-                    <option value="03">March</option>
-                    <option value="04">April</option>
-                    <option value="05">May</option>
-                    <option value="06">June</option>
-                    <option value="07">July</option>
-                    <option value="08">August</option>
-                    <option value="09">September</option>
-                    <option value="10">October</option>
-                    <option value="11">November</option>
-                    <option selected value="12">December</option>
-                    <!-- <option selected value="<?php echo(date("m")); ?>"><?php echo(date("F")); ?></option> -->
+                  <select name="disease" class="form-control">
+                  <option selected value="" >Select Disease</option>
+                    <?php $disease = query("select * from disease"); ?>
+                    <?php foreach($disease as $row): ?>
+                        <option value="<?php echo($row["diseaseId"]); ?>"><?php echo($row["diseaseName"]); ?></option>
+                    <?php endforeach; ?>
                   </select>
                 </div>
               <div style="margin-left: 5px;" class="form-group float-right">
-                  <select name="from" class="form-control">
-                    <option selected value="01">January</option>
-                    <option value="02">February</option>
-                    <option value="03">March</option>
-                    <option value="04">April</option>
-                    <option value="05">May</option>
-                    <option value="06">June</option>
-                    <option value="07">July</option>
-                    <option value="08">August</option>
-                    <option value="09">September</option>
-                    <option value="10">October</option>
-                    <option value="11">November</option>
-                    <option value="12">December</option>
+                  <select name="barangay" class="form-control">
+                  <option selected value="" >Select Barangay</option>
+                    <?php $barangays = getBarangay(); ?>
+                    <?php foreach($barangays as $row): ?>
+                        <option value="<?php echo($row["id"]); ?>"><?php echo($row["name"]); ?></option>
+                    <?php endforeach; ?>
+
+                    
                   </select>
                 </div>
             </form>
 
 
-                    </h3>
+        
 
           
         </div>
         <div class="card-body">
-        
+        <div class="chart">
+                  <canvas id="barChart" style="min-height: 250px; height: 450px; max-height: 450px; max-width: 100%;"></canvas>
+                </div>
+        </div>
 
-
-        <div class="row">
-            <div class="col-4">
-            <div class="highcharts-figure">
-    <div id="container"></div>
-   
-</div>
-            </div>
-        </div>
-        </div>
-        <!-- /.card-body -->
-        <div class="card-footer">
-          Data Analysis
-        </div>
-        <!-- /.card-footer-->
       </div>
 
      
@@ -277,6 +391,7 @@
 <script src="AdminLTE_new/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
 <script src="AdminLTE_new/plugins/datatables-buttons/js/buttons.print.min.js"></script>
 <script src="AdminLTE_new/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+<script src="AdminLTE_new/plugins/chart.js/Chart.js"></script>
 
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
@@ -744,6 +859,8 @@ $(document).ready(function() {
       // Trigger the form submit during document ready
       // $('.deceased_chart_form').submit();
       $('.sales_chart_form').submit();
+      $('.barChartForm').submit();
+      $('.lineChartForm').submit();
     });
   </script>
 
@@ -930,6 +1047,217 @@ success: function (results) {
 
 
 });
+
+
+
+
+
+$('.barChartForm').submit(function (e) {
+    e.preventDefault(); // Prevent the form from submitting
+
+    var form = $(this)[0];
+    var formData = new FormData(form);
+    var url = $(this).data('url');
+
+    Swal.fire({
+        title: 'Please wait...',
+        showClass: {
+    popup: `
+      animate__animated
+      animate__bounceIn
+      animate__faster
+    `
+  },
+  hideClass: {
+    popup: `
+      animate__animated
+      animate__bounceOut
+      animate__faster
+    `
+  },
+        imageUrl: 'AdminLTE_new/dist/img/loader.gif',
+        showConfirmButton: false
+    });
+
+    $.ajax({
+
+      type: 'POST',
+url: url,
+data: formData,
+processData: false,
+contentType: false,
+success: function (results) {
+    var response = JSON.parse(results);
+        var data = response.dataset; // Adjust based on the response structure
+
+            var labels = data.map(item => item.name);
+            var counts = data.map(item => item.count);
+
+            // Generate the background color for each count value based on the condition
+            var backgroundColors = counts.map(function (count) {
+                return count > 300 ? '#D63230' :
+                       count > 200 ? '#F39237' :
+                       count > 100 ? '#2C6E49' :
+                       count >= 1  ? '#2C6E49' :
+                                     '#5E6572'; // Default color for counts less than 1
+            });
+
+            var barChartData = {
+                labels: labels,
+                datasets: [{
+                    label: 'Cases',
+                    backgroundColor: backgroundColors, // Assign the dynamic colors to the bars
+                    borderColor: 'rgba(60,141,188,0.8)',
+                    data: counts
+                }]
+            };
+
+            var barChartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                datasetFill: false,
+                scales: {
+                    y: {
+                        ticks: {
+                            callback: function (val) {
+                                return val + '%'; // Optionally append '%' to Y axis ticks
+                            }
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            autoSkip: false,
+                            maxRotation: 90, // Rotate the labels 90 degrees
+                            minRotation: 90
+                        }
+                    }
+                }
+            };
+
+            var barChartCanvas = $('#barChart').get(0).getContext('2d');
+
+            new Chart(barChartCanvas, {
+                type: 'bar',
+                data: barChartData,
+                options: barChartOptions
+            });
+
+            Swal.close();
+    
+
+}
+});
+
+
+
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+$('.lineChartForm').submit(function (e) {
+    e.preventDefault(); // Prevent the form from submitting
+
+    var form = $(this)[0];
+    var formData = new FormData(form);
+    var url = $(this).data('url');
+
+    Swal.fire({
+        title: 'Please wait...',
+        showClass: {
+    popup: `
+      animate__animated
+      animate__bounceIn
+      animate__faster
+    `
+  },
+  hideClass: {
+    popup: `
+      animate__animated
+      animate__bounceOut
+      animate__faster
+    `
+  },
+        imageUrl: 'AdminLTE_new/dist/img/loader.gif',
+        showConfirmButton: false
+    });
+
+    $.ajax({
+
+      type: 'POST',
+url: url,
+data: formData,
+processData: false,
+contentType: false,
+success: function (results) {
+    var response = JSON.parse(results);
+        var data = response.dataset; // Adjust based on the response structure
+
+            var labels = data.map(item => item.name);
+            var counts = data.map(item => item.count);
+
+            // Generate the background color for each count value based on the condition
+    
+
+            var LineChartData = {
+                labels: labels,
+                datasets: [{
+                    label: 'Cases',
+                    borderColor: 'rgba(60,141,188,0.8)',
+                    data: counts,
+                    lineTension: 0,
+                }]
+            };
+
+            var LineChartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                datasetFill: false,
+                scales: {
+                    y: {
+                        ticks: {
+                            callback: function (val) {
+                                return val + '%'; // Optionally append '%' to Y axis ticks
+                            }
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            autoSkip: false,
+                            maxRotation: 90, // Rotate the labels 90 degrees
+                            minRotation: 90
+                        }
+                    }
+                }
+            };
+
+            var LineChartCanvas = $('#lineChart').get(0).getContext('2d');
+
+            new Chart(LineChartCanvas, {
+                type: 'line',
+                data: LineChartData,
+                options: LineChartOptions
+            });
+
+            Swal.close();
+    
+
+}
+});
+
+});
+
+
+
 
 
 

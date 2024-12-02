@@ -10,6 +10,74 @@
     function getRandomColor() {
         return sprintf('#%06X', mt_rand(0, 0xFFFFFF));
     }
+    
+    function getBarangay(){
+$barangays = [
+    ["id" => 1, "name" => "A. O. Floirendo"],
+    ["id" => 2, "name" => "Datu Abdul Dadia"],
+    ["id" => 3, "name" => "Buenavista"],
+    ["id" => 4, "name" => "Cacao"],
+    ["id" => 5, "name" => "Cagangohan"],
+    ["id" => 6, "name" => "Consolacion"],
+    ["id" => 7, "name" => "Dapco"],
+    ["id" => 8, "name" => "Gredu (Poblacion)"],
+    ["id" => 9, "name" => "J.P. Laurel"],
+    ["id" => 10, "name" => "Kasilak"],
+    ["id" => 11, "name" => "Katipunan"],
+    ["id" => 12, "name" => "Katualan"],
+    ["id" => 13, "name" => "Kauswagan"],
+    ["id" => 14, "name" => "Kiotoy"],
+    ["id" => 15, "name" => "Little Panay"],
+    ["id" => 16, "name" => "Lower Panaga (Roxas)"],
+    ["id" => 17, "name" => "Mabunao"],
+    ["id" => 18, "name" => "Maduao"],
+    ["id" => 19, "name" => "Malativas"],
+    ["id" => 20, "name" => "Manay"],
+    ["id" => 21, "name" => "Nanyo"],
+    ["id" => 22, "name" => "New Malaga (Dalisay)"],
+    ["id" => 23, "name" => "New Malitbog"],
+    ["id" => 24, "name" => "New Pandan (Poblacion)"],
+    ["id" => 25, "name" => "New Visayas"],
+    ["id" => 26, "name" => "Quezon"],
+    ["id" => 27, "name" => "Salvacion"],
+    ["id" => 28, "name" => "San Francisco (Poblacion)"],
+    ["id" => 29, "name" => "San Nicolas"],
+    ["id" => 30, "name" => "San Pedro"],
+    ["id" => 31, "name" => "San Roque"],
+    ["id" => 32, "name" => "San Vicente"],
+    ["id" => 33, "name" => "Santa Cruz"],
+    ["id" => 34, "name" => "Santo Niño (Poblacion)"],
+    ["id" => 35, "name" => "Sindaton"],
+    ["id" => 36, "name" => "Southern Davao"],
+    ["id" => 37, "name" => "Tagpore"],
+    ["id" => 38, "name" => "Tibungol"],
+    ["id" => 39, "name" => "Upper Licanan"],
+    ["id" => 40, "name" => "Waterfall"]
+];
+
+return $barangays;
+
+    }
+
+
+
+    function getMonths(){
+        $months = [
+            ["id" => 1, "name" => "Jan"],
+            ["id" => 2, "name" => "Feb"],
+            ["id" => 3, "name" => "Mar"],
+            ["id" => 4, "name" => "Apr"],
+            ["id" => 5, "name" => "May"],
+            ["id" => 6, "name" => "Jun"],
+            ["id" => 7, "name" => "Jul"],
+            ["id" => 8, "name" => "Aug"],
+            ["id" => 9, "name" => "Sep"],
+            ["id" => 10, "name" => "Oct"],
+            ["id" => 11, "name" => "Nov"],
+            ["id" => 12, "name" => "Dec"],
+        ];
+        return $months;
+            }
 
     function generateMonthArray($from, $to) {
         $from = max(1, min(12, (int)$from)); // Ensure $from is between 1 and 12.

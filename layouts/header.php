@@ -146,7 +146,7 @@
               <div class="modal-body" style="-webkit-user-select: none;  /* Chrome all / Safari all */
               -moz-user-select: none;     /* Firefox all */
               -ms-user-select: none;  ">
-                  <div class="bs-stepper" id="stepperExample">
+                  <div class="bs-stepper user-stepper" id="stepperExample">
                           <div class="bs-stepper-header" role="tablist">
                             <!-- Step 1 -->
                             <div class="step" data-target="#step-1">
@@ -508,10 +508,28 @@ $('#modalNewUserGuide').modal({
 
 
   document.addEventListener('DOMContentLoaded', function () {
-    window.stepper = new Stepper(document.querySelector('.bs-stepper'))
+    <?php if($_SESSION["dnsc_geoanalytics"]["role"] == "CLIENT"): ?>
+    window.stepper = new Stepper(document.querySelector('.user-stepper'))
+
+    <?php else: ?>
     window.stepper = new Stepper(document.querySelector('.admin-stepper'))
+    
+    <?php endif; ?>
   })
+
+
+  
   </script>
+
+<script>
+    $(document).ready(function() {
+        // When the bars icon is clicked
+        $('.nav-link[data-widget="pushmenu"]').click(function() {
+            // Toggle the visibility of the user panel
+            $('#userPanel').toggle(); 
+        });
+    });
+</script>
 
 
 

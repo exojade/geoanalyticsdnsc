@@ -18,7 +18,7 @@
 
 <aside class="main-sidebar sidebar-dark-primary elevation-4" >
     <!-- Brand Logo -->
-    <div class="user-panel mt-3 pb-3 mb-3 text-center">
+    <div class="user-panel mt-3 pb-3 mb-3 text-center" id="userPanel">
         <div class="image" style="display:block;">
             <!-- <img style="width: 5rem;" src="resources/panabologo.png" class="img-circle elevation-2" alt="User Image"> -->
             <img style="width: 5rem;" src="<?php echo($siteOptions["mainLogo"]); ?>" class="img-circle elevation-2" alt="User Image">
@@ -233,6 +233,17 @@
         <?php if($pending[0]["count"] != 0): ?>
           <span class="badge badge-danger right"><?php echo($pending[0]["count"]); ?></span>
         <?php endif; ?>
+        </p>
+      </a>
+  </li>
+
+
+  <li class="nav-item">
+      <a href="#" data-target="#modalNewUserGuide" data-toggle="modal" class="nav-link">
+        <i class="nav-icon fas fa-question-circle"></i>
+        <p>
+          User's Guide
+          <span class="right badge badge-danger"></span>
         </p>
       </a>
   </li>

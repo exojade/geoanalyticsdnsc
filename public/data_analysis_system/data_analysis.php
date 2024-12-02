@@ -1,4 +1,7 @@
 <?php
+
+use PgSql\Lob;
+
     if($_SERVER["REQUEST_METHOD"] === "POST") {
 
 		if($_POST["action"] == "chart"):
@@ -192,6 +195,102 @@ endfor;
 					"dataset" => $JSON,
 				);
 				echo json_encode($json_data);
+
+			elseif($_POST["action"] == "barChart"):
+				$where = "where 1=1";
+
+				if(isset($_POST["barangay"])):
+					if($_POST["barangay"] != ""):
+						$where .= " and barangay = '".$_POST["barangay"]."'";
+					endif;
+				endif;
+				if(isset($_POST["disease"])):
+					if($_POST["disease"] != ""):
+						$where .= " and diseaseId = '".$_POST["disease"]."'";
+					endif;
+				endif;
+				$BarCount = [];
+				$barChartCount = query("select count(*) as count, barangay, diseaseId
+										from checkup_disease " . $where . " group by barangay");
+				foreach($barChartCount as $row):
+					$BarCount[$row["barangay"]] = $row;
+				endforeach;
+				$TheFinalCount = [];
+				$barangay = getBarangay();
+				$i = 0;
+				foreach($barangay as $row):
+					$TheFinalCount[$i]["id"] = $row["id"];
+					$TheFinalCount[$i]["name"] = $row["name"];
+					if(isset($BarCount[$row["id"]])):
+						$TheFinalCount[$i]["count"] = $BarCount[$row["id"]]["count"];
+ 					else:
+						$TheFinalCount[$i]["count"] = 0;
+					endif;
+					$i++;
+				endforeach;
+				$json_data = array(
+					"dataset" => $TheFinalCount,
+				);
+				echo json_encode($json_data);
+
+
+				elseif($_POST["action"] == "lineChart"):
+					// dump($_POST);
+					$_POST["from"] = intval($_POST["from"]);
+					$_POST["to"] = intval($_POST["to"]);
+					// dump($_POST);
+					$Month = [];
+					$months = getMonths();
+					foreach($months as $row):
+						$Month[$row["id"]] = $row;
+					endforeach;
+					// dump($Month);
+					$where = "WHERE
+						YEAR(dateCheckUp) = '".$_POST["year"]."'
+						AND MONTH(dateCheckUp) BETWEEN '".$_POST["from"]."' AND '".$_POST["to"]."'";
+					if(isset($_POST["disease"])):
+						if($_POST["disease"] != ""):
+							$where .= " and diseaseId = '".$_POST["disease"]."'";
+						endif;
+					endif;
+					$TheFinalCount = [];
+					$BarCount = [];
+					$barChartCount = query("
+					SELECT
+						MONTH(dateCheckUp) AS month,
+						COUNT(*) AS count
+					FROM
+						checkup_disease
+						$where
+					GROUP BY
+						MONTH(dateCheckUp)
+					ORDER BY
+						MONTH ASC;
+					");
+					
+					foreach($barChartCount as $row):
+						$BarCount[$row["month"]] = $row;
+					endforeach;
+
+					$j=0;
+					for($i = $_POST["from"]; $i<=$_POST["to"]; $i++):
+						$TheFinalCount[$j]["name"] = $Month[$i]["name"];
+						if(isset($BarCount[$i])):
+							$TheFinalCount[$j]["count"] = $BarCount[$i]["count"];
+						else:
+							$TheFinalCount[$j]["count"] = 0;
+						endif;
+						$j++;
+					endfor;
+			
+					$json_data = array(
+						"dataset" => $TheFinalCount,
+					);
+					echo json_encode($json_data);
+
+
+
+			
 		endif;
 
 	

@@ -34,7 +34,7 @@
 						"result" => "success",
 						"title" => "Success",
 						"message" => "Success on updating data",
-						"link" => "index",
+						"link" => "index?isNew",
 						// "html" => '<a href="#">View or Print '.$transaction_id.'</a>'
 						];
 						echo json_encode($res_arr); exit();
