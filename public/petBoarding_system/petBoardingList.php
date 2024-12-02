@@ -280,6 +280,31 @@
         </div>
 
 
+        <div class="modal fade" id="modalPetBoardingCancel">
+          <div class="modal-dialog">
+            <div class="modal-content ">
+              <div class="modal-header bg-danger">
+					    <h3 class="modal-title text-center">Cancel Pet Boarding</h3>
+              </div>
+              <form class="generic_form_trigger" data-url="petBoarding" style="display: inline;">
+                <input type="hidden" name="action" value="cancelPetBoard">
+              <div class="modal-body" style="-webkit-user-select: none;  /* Chrome all / Safari all */
+              -moz-user-select: none;     /* Firefox all */
+              -ms-user-select: none;  ">
+                  <!-- <form class="generic_form" url="employees" autocomplete="off"> -->
+                    <div class="fetched-data"></div>
+                      <div class="modal-footer">
+                        <button class="btn btn-danger pull-right" data-dismiss="modal" aria-label="Close">Close</button>
+                          <button type="submit" class="btn btn-primary">Save</button>
+                        </form>
+                      </div>
+                  <!-- </form> -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+
         <div class="modal fade" id="modalPetBoardingDetails">
           <div class="modal-dialog">
             <div class="modal-content ">
@@ -468,6 +493,24 @@ $('#petOwnerSelect').select2({
             },
             success : function(data){
                 $('#modalPetBoardingDetails .fetched-data').html(data);
+                Swal.close();
+                // $(".select2").select2();//Show fetched data from database
+            }
+        });
+     });
+
+
+     $('#modalPetBoardingCancel').on('show.bs.modal', function (e) {
+        var rowid = $(e.relatedTarget).data('id');
+        Swal.fire({title: 'Please wait...', imageUrl: 'AdminLTE_new/dist/img/loader.gif', showConfirmButton: false});
+        $.ajax({
+            type : 'post',
+            url : 'petBoarding', //Here you will fetch records 
+            data: {
+                petBoardingId: rowid, action: "modalPetBoardingCancel"
+            },
+            success : function(data){
+                $('#modalPetBoardingCancel .fetched-data').html(data);
                 Swal.close();
                 // $(".select2").select2();//Show fetched data from database
             }

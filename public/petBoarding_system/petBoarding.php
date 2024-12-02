@@ -167,17 +167,23 @@ ORDER BY
 				// dump($row);
 
 				// dump($Clients[$Pets[$row["petId"]]["clientId"]]);
+				// <form class="generic_form_trigger" style="display:inline;" data-url="petBoarding">
+				// 		<input type="hidden" name="action" value="cancelPetBoarding">
+				// 				<div class="btn-group btn-block" width="100%">
+				// 				<a href="#" data-toggle="modal" data-id="'.$row["petBoardingId"].'" data-target="#modalPetBoardingApprove" class="btn btn-sm btn-success"><i class="fa fa-check"></i></a>
+				// 				<a href="#" data-toggle="modal" data-id="'.$row["petBoardingId"].'" data-target="#modalPetBoardingApprove" class="btn btn-sm btn-success"><i class="fa fa-check"></i></a>
+				// 				<button class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button>
+				// 		</div>
+				// 	  </form>
 
 				if($row["display_status"] == "PENDING"):
 					$data[$i]["action"] = '
 					
-					<form class="generic_form_trigger" style="display:inline;" data-url="petBoarding">
-						<input type="hidden" name="action" value="cancelPetBoarding">
-								<div class="btn-group btn-block" width="100%">
-								<a href="#" data-toggle="modal" data-id="'.$row["petBoardingId"].'" data-target="#modalPetBoardingApprove" class="btn btn-sm btn-success"><i class="fa fa-check"></i></a>
-								<button class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button>
+				
+						<div class="btn-group btn-block" width="100%">
+							<a href="#" data-toggle="modal" data-id="'.$row["petBoardingId"].'" data-target="#modalPetBoardingApprove" class="btn btn-sm btn-success"><i class="fa fa-check"></i></a>
+							<a href="#" data-toggle="modal" data-id="'.$row["petBoardingId"].'" data-target="#modalPetBoardingCancel" class="btn btn-sm btn-danger"><i class="fa fa-times"></i></a>
 						</div>
-					  </form>
 					';
 				elseif($row["display_status"] == "OVERDUE" || $row["display_status"] == "ONGOING"):
 					$data[$i]["action"] = '
@@ -191,12 +197,9 @@ ORDER BY
 						</div>
 					  </form>
 					';
-				elseif($row["display_status"] == "DONE"):
+				elseif($row["display_status"] == "DONE" || $row["display_status"] == "CANCELLED"):
 					$data[$i]["action"] = '
-					
-				
 								<a href="#" data-toggle="modal" data-id="'.$row["petBoardingId"].'" data-target="#modalPetBoardingDetails" class="btn btn-sm btn-info btn-block"><i class="fa fa-eye"></i></a>
-						
 					';
 				endif;
 				// $data[$i]["action"] = '<a href="#" data-toggle="modal" data-target="#medicalRecordModal" data-id="'.$row["checkupId"].'" class="btn btn-block btn-sm btn-success">Open Record</a>';
@@ -308,6 +311,101 @@ ORDER BY
             echo json_encode($json_data);
 
 		endif;
+
+		elseif($_POST["action"] == "cancelPetBoard"):
+
+		// dump($_POST);
+		
+		$petBoarding = query("select * from pet_boarding pb
+								left join users u
+								on u.userid = pb.clientId
+								where petBoardingId = ?", $_POST["petBoardingId"]);
+		$petBoarding = $petBoarding[0];
+		query("update pet_boarding set status = 'CANCELLED', reasonCancellation = ? where petBoardingId = ?", $_POST["reason"], $_POST["petBoardingId"]);
+		$siteOptions = query("select * from siteoptions");
+		$siteOptions = $siteOptions[0];
+
+		$theEmail = $petBoarding["username"];
+					$message = '
+					<html>
+						<body>';
+
+					$message.='
+					Good Day, '.$petBoarding["fullname"].',
+					<br>
+					<br>
+					We regret to inform you that your pet boarding appointment scheduled for '.date("l, F j, Y h:i A", strtotime($petBoarding["dateSet"])).' has been canceled due to '.$_POST["reason"].'.
+					<br>
+					<br>
+					We understand the inconvenience this may cause and deeply apologize for the disruption. Please feel free to contact us to reschedule or discuss any concerns you may have.
+					<br>
+					<br>
+					Thank you for your understanding, and we appreciate your continued trust in our services.
+					<br>
+					<br>
+					Best regards,<br>
+					'.$siteOptions["mainTitle"].'
+												
+											';
+
+		$mail = new PHPMailer();
+						try {
+							$mail->isSMTP();
+							$mail->SMTPAuth = true;
+							$mail->SMTPSecure = "ssl";
+							$mail->Host = "smtp.gmail.com";
+							$mail->Port = "465";
+							$mail->isHTML();
+							$mail->Username = "valientedogawa@gmail.com";
+							$mail->Password = "fhshyevehmebbfje";
+							$mail->SetFrom("no-reply@vetwebapplication");
+							$mail->Subject = "Pet Boarding Cancellation";
+							$mail->Body = $message;
+							$mail->AddAddress($theEmail);
+							$mail->Send();
+							$res_arr = [
+								"result" => "success",
+								"title" => "Success",
+								"message" => "Success on updating data",
+								"link" => "refresh",
+								// "html" => '<a href="#">View or Print '.$transaction_id.'</a>'
+								];
+								echo json_encode($res_arr); exit();
+								} catch (phpmailerException $e) {
+									$res_arr = [
+										"result" => "success",
+										"title" => "Success",
+										"message" => $e->errorMessage(),
+										"link" => "refresh",
+										// "html" => '<a href="#">View or Print '.$transaction_id.'</a>'
+										];
+										echo json_encode($res_arr); exit();
+								} catch (Exception $e) {
+			
+									$res_arr = [
+										"result" => "success",
+										"title" => "Success",
+										"message" => $e->getMessage(),
+										"link" => "refresh",
+										// "html" => '<a href="#">View or Print '.$transaction_id.'</a>'
+										];
+										echo json_encode($res_arr); exit();
+								}
+
+		elseif($_POST["action"] == "modalPetBoardingCancel"):
+			// dump($_POST);
+
+			$hint = '
+			<input type="hidden" name="petBoardingId" value="'.$_POST["petBoardingId"].'">
+			<div class="form-group">
+			<label>Reason for Cancellation</label>
+				<textarea class="form-control" name="reason"></textarea>
+			</div>
+			
+			
+			';
+
+			echo($hint);
 
 			
 
