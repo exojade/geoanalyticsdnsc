@@ -432,7 +432,7 @@ require("includes/google_class.php");
 				
 
 					$data[$i]["timeSet"] = $TimeSlot[$row["timeSet"]]["timeSlot"];
-	
+					$data[$i]["dateSet"] = date("M d, Y", strtotime($row["dateSet"]));
 					
 					// $data[$i]["appointmentDate"] = $row["dateSet"] . " - " . $TimeSlot[$row["timeSet"]]["timeSlot"];
 					// dump();	

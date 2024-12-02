@@ -114,7 +114,7 @@
                 <table id="ajax_datatable" class="table table-bordered table-striped" >
                   <thead>
                   <tr>
-                    <th>Action</th>
+                    <!-- <th>Action</th> -->
                     <th>Username / Email</th>
                     <th>Role</th>
                     <th>Fullname</th>
@@ -202,7 +202,7 @@ var datatable =
                      }
                 },
                 'columns': [
-                    { data: 'action', "orderable": false },
+                    // { data: 'action', "orderable": false },
                     { data: 'username', "orderable": false  },
                     { data: 'role', "orderable": false  },
                     { data: 'fullname', "orderable": false  },

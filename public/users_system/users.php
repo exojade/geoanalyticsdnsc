@@ -82,7 +82,7 @@
 					// dump($Clients[$Pets[$row["petId"]]["clientId"]]);
 	
 	
-					$data[$i]["action"] = '<a href="#" data-toggle="modal" data-target="#medicalRecordModal" data-id="'.$row["userid"].'" class="btn btn-block btn-sm btn-success">Update</a>';
+					// $data[$i]["action"] = '<a href="#" data-toggle="modal" data-target="#medicalRecordModal" data-id="'.$row["userid"].'" class="btn btn-block btn-sm btn-success">Update</a>';
 				
 					if($row["role"] == "admin"):
 						$data[$i]["fullname"] = $row["fullname"];
