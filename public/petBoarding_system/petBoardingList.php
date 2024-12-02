@@ -286,7 +286,7 @@
               <div class="modal-header bg-danger">
 					    <h3 class="modal-title text-center">Cancel Pet Boarding</h3>
               </div>
-              <form class="generic_form_trigger" data-url="petBoarding" style="display: inline;">
+              <form class="generic_form_trigger" data-url="petBoarding" style="display: inline;" data-message="Are you sure you want cancel this pet boarding?" data-title="Pet Boarding Cancellation">
                 <input type="hidden" name="action" value="cancelPetBoard">
               <div class="modal-body" style="-webkit-user-select: none;  /* Chrome all / Safari all */
               -moz-user-select: none;     /* Firefox all */

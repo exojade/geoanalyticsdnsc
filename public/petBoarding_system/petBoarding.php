@@ -264,7 +264,7 @@ ORDER BY
 						</div>
 					
 					';
-				elseif($row["display_status"] == "DONE"):
+				elseif($row["display_status"] == "DONE" || $row["display_status"] == "CANCELLED"):
 					$data[$i]["action"] = '
 					
 				
