@@ -176,7 +176,7 @@ endforeach; ?>
                       <th>Type of Consultation:</th>
                       <td><?php echo($row["type"]); ?></td>
                       <th>Date of Consultation:</th>
-                      <td><?php echo($row["dateCheckup"]); ?></td>
+                      <td><?php echo date("M d, Y h:i a", strtotime($row["dateCheckup"])); ?></td>
                     </tr>
                     <tr>
                       <th>Diagnosis:</th>
@@ -255,16 +255,16 @@ endforeach; ?>
                       <td><?php echo($pet["petGender"]); ?></td>
                     </tr>
                     <tr>
-                      <th>Condition:</th>
-                      <td><?php echo($pet["petCondition"]); ?></td>
+                    
                       <th>Age:</th>
                       <td><?php echo($pet["petAge"]); ?></td>
-                    </tr>
-                    <tr>
                       <th>Description:</th>
                       <td><?php echo($pet["petDescription"]); ?></td>
+                    </tr>
+                    <tr>
+                      
                       <th>Owner's Name:</th>
-                      <td><?php echo($client["lastname"] . ", " . $client["firstname"]); ?></td>
+                      <td colspan="3"><?php echo($client["lastname"] . ", " . $client["firstname"]); ?></td>
                       
                     </tr>
                   </table>
@@ -309,7 +309,7 @@ endforeach; ?>
                     <?php foreach($medicalRecords as $row): ?>
                     <tr data-widget="expandable-table" aria-expanded="false">
                       <td><a href="#" data-toggle="modal" data-target="#medRecordModal_<?php echo($row["checkupId"]); ?>" class="btn btn-primary btn-block">Open Record</a></td>
-                      <td><?php echo($row["dateCheckup"]); ?></td>
+                      <td><?php echo date("M d, Y h:i a", strtotime($row["dateCheckup"])); ?></td>
                       <td><?php echo($row["type"]); ?></td>
                       <td><?php echo($row["service"]); ?></td>
                       <td><?php echo($row["diagnosis"]); ?></td>

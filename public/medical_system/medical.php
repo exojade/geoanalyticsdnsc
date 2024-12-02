@@ -139,6 +139,7 @@
 				$data[$i]["action"] = '<a href="#" data-toggle="modal" data-target="#medicalRecordModal" data-id="'.$row["checkupId"].'" class="btn btn-block btn-sm btn-success">Open Record</a>';
 				$data[$i]["owner"] = $Clients[$Pets[$row["petId"]]["clientId"]]["lastname"] . ", " . $Clients[$Pets[$row["petId"]]["clientId"]]["firstname"];
 				$data[$i]["pet"] = $Pets[$row["petId"]]["petName"];
+				$data[$i]["dateCheckup"] = date("M d, Y h:i a", strtotime($row["dateCheckup"]));
 				$data[$i]["disease"] = "";
 				if($parameterDisease != ""):
 					$data[$i]["disease"] = $row["disease_names"];

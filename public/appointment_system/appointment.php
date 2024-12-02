@@ -287,6 +287,8 @@ require("includes/google_class.php");
 					$data[$i]["doctor"] = $Doctors[$row["doctorId"]]["doctorsLastname"] . ", " . $Doctors[$row["doctorId"]]["doctorsFirstname"];
 				endif;
 				$data[$i]["timeSet"] = $TimeSlot[$row["timeSet"]]["timeSlot"];
+				$data[$i]["dateSet"] = date("M d, Y", strtotime($row["dateSet"]));
+
 
 
 				switch ($row["appointmentStatus"]) {
