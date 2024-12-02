@@ -301,6 +301,7 @@
           
         </div>
         <div class="card-body">
+            <div class="resultLineDiv"></div>
         <div class="chart">
                   <canvas id="lineChart" style="min-height: 350px; height: auto; max-height: 430px; max-width: 100%;"></canvas>
                 </div>
@@ -363,6 +364,7 @@
           
         </div>
         <div class="card-body">
+        <div class="resultBarDiv"></div>
         <div class="chart">
                   <canvas id="barChart" style="min-height: 250px; height: 450px; max-height: 450px; max-width: 100%;"></canvas>
                 </div>
@@ -1051,7 +1053,7 @@ success: function (results) {
 
 
 
-
+let barChartInstance;
 $('.barChartForm').submit(function (e) {
     e.preventDefault(); // Prevent the form from submitting
 
@@ -1089,6 +1091,9 @@ contentType: false,
 success: function (results) {
     var response = JSON.parse(results);
         var data = response.dataset; // Adjust based on the response structure
+        var disease = response.disease; // Adjust based on the response structure
+        var totalCount = response.totalCount; // Adjust based on the response structure
+        var barangayName = response.barangayName; // Adjust based on the response structure
 
             var labels = data.map(item => item.name);
             var counts = data.map(item => item.count);
@@ -1134,13 +1139,26 @@ success: function (results) {
                 }
             };
 
+            if (barChartInstance) {
+                barChartInstance.destroy();
+            }
+
             var barChartCanvas = $('#barChart').get(0).getContext('2d');
 
-            new Chart(barChartCanvas, {
+            barChartInstance = new Chart(barChartCanvas, {
                 type: 'bar',
                 data: barChartData,
                 options: barChartOptions
             });
+
+
+            $('.resultBarDiv').html(`
+                    <div class="alert alert-info" role="alert">
+                        <strong>Disease:</strong> ${disease} <br>
+                        <strong>Barangay:</strong> ${barangayName} <br>
+                        <strong>Total Cases:</strong> ${totalCount}
+                    </div>
+                `);
 
             Swal.close();
     
@@ -1162,7 +1180,7 @@ success: function (results) {
 
 
 
-
+let lineChartInstance;
 
 $('.lineChartForm').submit(function (e) {
     e.preventDefault(); // Prevent the form from submitting
@@ -1201,6 +1219,8 @@ contentType: false,
 success: function (results) {
     var response = JSON.parse(results);
         var data = response.dataset; // Adjust based on the response structure
+        var disease = response.disease; // Adjust based on the response structure
+        var totalCount = response.totalCount; // Adjust based on the response structure
 
             var labels = data.map(item => item.name);
             var counts = data.map(item => item.count);
@@ -1240,15 +1260,35 @@ success: function (results) {
                 }
             };
 
+
+            if (lineChartInstance) {
+                lineChartInstance.destroy();
+            }
             var LineChartCanvas = $('#lineChart').get(0).getContext('2d');
 
-            new Chart(LineChartCanvas, {
+            lineChartInstance = new Chart(LineChartCanvas, {
                 type: 'line',
                 data: LineChartData,
                 options: LineChartOptions
             });
 
+            
+
+            
+
             Swal.close();
+
+            // if (disease !== "") {
+                $('.resultLineDiv').html(`
+                    <div class="alert alert-info" role="alert">
+                        <strong>Disease:</strong> ${disease} <br>
+                        <strong>Total Cases:</strong> ${totalCount}
+                    </div>
+                `);
+            // }
+
+            // if()
+            // resultLineDiv.html();
     
 
 }

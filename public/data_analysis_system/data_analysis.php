@@ -218,7 +218,10 @@ endfor;
 				$TheFinalCount = [];
 				$barangay = getBarangay();
 				$i = 0;
+				$totalCount = 0;
+				$TheBarangay = [];
 				foreach($barangay as $row):
+					$TheBarangay[$row["id"]] = $row;
 					$TheFinalCount[$i]["id"] = $row["id"];
 					$TheFinalCount[$i]["name"] = $row["name"];
 					if(isset($BarCount[$row["id"]])):
@@ -226,11 +229,27 @@ endfor;
  					else:
 						$TheFinalCount[$i]["count"] = 0;
 					endif;
+					$totalCount+=$TheFinalCount[$i]["count"];
 					$i++;
 				endforeach;
-				$json_data = array(
-					"dataset" => $TheFinalCount,
-				);
+
+					$myDisease = "All";
+					if($_POST["disease"] != ""):
+						$theDisease = query("select * from disease where diseaseId = ?", $_POST["disease"]);
+						$myDisease = $theDisease[0]["diseaseName"];
+					endif;
+					$barangayName = "All";
+					if($_POST["barangay"] != ""):
+						$barangayName = $TheBarangay[$_POST["barangay"]]["name"];
+					endif;
+			
+					$json_data = array(
+						"dataset" => $TheFinalCount,
+						"disease" => $myDisease,
+						"totalCount" => $totalCount,
+						"barangayName" => $barangayName,
+					);
+		
 				echo json_encode($json_data);
 
 
@@ -273,6 +292,7 @@ endfor;
 					endforeach;
 
 					$j=0;
+					$totalCount = 0;
 					for($i = $_POST["from"]; $i<=$_POST["to"]; $i++):
 						$TheFinalCount[$j]["name"] = $Month[$i]["name"];
 						if(isset($BarCount[$i])):
@@ -280,11 +300,20 @@ endfor;
 						else:
 							$TheFinalCount[$j]["count"] = 0;
 						endif;
+						$totalCount += $TheFinalCount[$j]["count"];
 						$j++;
 					endfor;
+
+					$myDisease = "All";
+					if($_POST["disease"] != ""):
+						$theDisease = query("select * from disease where diseaseId = ?", $_POST["disease"]);
+						$myDisease = $theDisease[0]["diseaseName"];
+					endif;
 			
 					$json_data = array(
 						"dataset" => $TheFinalCount,
+						"disease" => $myDisease,
+						"totalCount" => $totalCount,
 					);
 					echo json_encode($json_data);
 
