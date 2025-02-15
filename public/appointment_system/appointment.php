@@ -314,7 +314,13 @@ require("includes/google_class.php");
 					$data[$i]["action"] = '
 					<a href="#" data-toggle="modal" data-id="'.$row["appointmentId"].'" data-target="#modalAppointmentDetails" class="btn btn-block btn-sm btn-info"><i class="fa fa-eye"></i> Details</a>
 					';
-					$data[$i]["doctor"] = $Doctors[$row["doctorId"]]["doctorsLastname"] . ", " . $Doctors[$row["doctorId"]]["doctorsFirstname"];
+
+					$data[$i]["doctor"] = "";
+
+					if($row["doctorId"] != ""):
+						$data[$i]["doctor"] = $Doctors[$row["doctorId"]]["doctorsLastname"] . ", " . $Doctors[$row["doctorId"]]["doctorsFirstname"];
+					endif;
+
 				endif;
 				$data[$i]["timeSet"] = $TimeSlot[$row["timeSet"]]["timeSlot"];
 				$data[$i]["dateSet"] = date("M d, Y", strtotime($row["dateSet"]));
@@ -945,17 +951,6 @@ require("includes/google_class.php");
                     <input disabled type="text" value="'.$appointment["fullname"].' - '.$appointment["username"].'" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
                   </div>
 
-				  <div class="form-group">
-					<label>Doctor</label>
-					<select name="doctorId" required class="form-control">
-					<option value="" selected disabled>Please select doctor</option>
-					';
-					
-					foreach($doctors as $row):
-							$hint.='<option value="'.$row["doctorsId"].'">'.$row["doctorsLastname"] . ', ' . $row["doctorsFirstname"].'</option>';
-					endforeach;
-					$hint.='</select>
-				</div>
 
 
 
@@ -1009,19 +1004,24 @@ require("includes/google_class.php");
 			$appointment = $appointment[0];
 			// dump($_POST);
 
+			$DoctorSchedule = [];
+			$doctorSchedule = query("select * from doctor_schedule where schedule_date = ?", $_POST["dateSet"]);
+			foreach($doctorSchedule as $row):
+				$DoctorSchedule[$row["slotId"]] = $row;
+			endforeach;
+
 			
 			$schedulesDoctors = query("SELECT 
 					t.slotId, 
 					t.timeSlot, 
 					t.startTime, 
 					t.endTime,
-					IF(a.appointmentId IS NOT NULL, 'Not Available', 'Available') AS availability
+					IF(a.appointmentId IS NOT NULL AND a.appointmentId != ?, 'Not Available', 'Available') AS availability
 				FROM timeslot t
 				LEFT JOIN appointment a ON t.slotId = a.timeSet 
-					AND a.dateSet = ?  -- Replace with the selected date
-					AND a.doctorId = ?        -- Replace with the selected doctor ID
+					AND a.dateSet = ?
 				WHERE t.remarks = 'active'
-				ORDER BY t.startTime", $_POST["dateSet"], $_POST["doctorId"]);
+				ORDER BY t.startTime", $_POST["appointmentId"], $_POST["dateSet"]);
 			// dump($schedulesDoctors);
 
 			$currentDateTime = new DateTime(); // Get the current date and time
@@ -1057,8 +1057,13 @@ require("includes/google_class.php");
 						$startTime = $row['startTime'];
 						$selected = ($appointment["timeSet"] == $row["slotId"]) ? 'selected' : '';
 						if ($row["availability"] == "Available" && $startTime >= $currentFormattedTime) {
+
+							if(isset($DoctorSchedule[$row["slotId"]])):
+								$hint .= '<option '.$selected.' value="" disabled class="text-danger">' . $row["timeSlot"] . ' - Not Available</option>';
+							else:
+								$hint .= '<option '.$selected.' value="' . $row["slotId"] . '" class="text-success">' . $row["timeSlot"] . ' - Available</option>';
+							endif;
 							// If available and meets the time condition
-							$hint .= '<option '.$selected.' value="' . $row["slotId"] . '" class="text-success">' . $row["timeSlot"] . ' - Available</option>';
 						} else {
 							// If not available or does not meet the time condition
 							$hint .= '<option '.$selected.' value="" disabled class="text-danger">' . $row["timeSlot"] . ' - Not Available</option>';
@@ -1077,8 +1082,13 @@ require("includes/google_class.php");
 						$startTime = $row['startTime'];
 						$selected = ($appointment["timeSet"] == $row["slotId"]) ? 'selected' : '';
 						if ($row["availability"] == "Available") {
+
+							if(isset($DoctorSchedule[$row["slotId"]])):
+								$hint .= '<option '.$selected.' value="" disabled class="text-danger">' . $row["timeSlot"] . ' - Not Available</option>';
+							else:
+								$hint .= '<option '.$selected.' value="' . $row["slotId"] . '" class="text-success">' . $row["timeSlot"] . ' - Available</option>';
+							endif;
 							// If available and meets the time condition
-							$hint .= '<option '.$selected.' value="' . $row["slotId"] . '" class="text-success">' . $row["timeSlot"] . ' - Available</option>';
 						} else {
 							// If not available or does not meet the time condition
 							$hint .= '<option '.$selected.' value="" disabled class="text-danger">' . $row["timeSlot"] . ' - Not Available</option>';
@@ -1181,12 +1191,12 @@ require("includes/google_class.php");
 
 
 		elseif($_POST["action"] == "acceptAppointment"):
-			// dump($_SESSION);
+			// dump($_POST);
 
-			$doctor = query("select concat(doctorsFirstname, ' ', doctorsLastname, ' ', doctorsExtension) as doctorName from doctors where doctorsId = ?", $_POST["doctorId"]);
-			$doctorName = $doctor[0]["doctorName"];
+			// $doctor = query("select concat(doctorsFirstname, ' ', doctorsLastname, ' ', doctorsExtension) as doctorName from doctors where doctorsId = ?", $_POST["doctorId"]);
+			// $doctorName = $doctor[0]["doctorName"];
 
-			query("update appointment set dateSet = ?, timeSet = ?, doctorId = ?, appointmentStatus = 'ONGOING' where appointmentId = ?", $_POST["appointment_date"], $_POST["timeSlot"], $_POST["doctorId"], $_POST["appointmentId"]);
+			query("update appointment set dateSet = ?, timeSet = ?, appointmentStatus = 'ONGOING' where appointmentId = ?", $_POST["appointment_date"], $_POST["timeSlot"], $_POST["appointmentId"]);
 			$appointment = query("select doctorUser.username as doctorEmail, a.*, u.*, t.timeSlot, t.startTime, t.endTime from appointment a
 								left join users u
 								on a.clientId = u.userid
@@ -1215,7 +1225,7 @@ require("includes/google_class.php");
 			// $events = $results->getItems();
 			// dump($events);
 
-			$description = " Booked an appointment for checkup. \n\nPet Owner: ".$appointment["fullname"]." \n\nNotes: " . $appointment["notes"] . "\n\nVet to attend: " . $doctorName;
+			$description = " Booked an appointment for checkup. \n\nPet Owner: ".$appointment["fullname"]." \n\nNotes: " . $appointment["notes"];
 			query("update appointment set notes = ? where appointmentId = ?", $description, $_POST["appointmentId"]);
 			$event = new Google_Service_Calendar_Event(array(
 				'summary' => 'CHECKUP for CITY VET - ' . $appointment["fullname"],
@@ -1232,8 +1242,6 @@ require("includes/google_class.php");
 				'attendees' => array(
 				  array('email' => $_SESSION["dnsc_geoanalytics"]["uname"]),
 				  array('email' => ''.$appointment["username"].''),
-				  array('email' => ''.$appointment["doctorEmail"].''),
-				//   array('email' => 'sbrin@example.com'),
 				),
 				'reminders' => array(
 				  'useDefault' => FALSE,

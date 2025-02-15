@@ -319,20 +319,6 @@
             </div>
         </div>
 
-
-
-        
-
-
-
-
-
-
-
-
-
-
-
       <div class="card">
         <div class="card-header">
         <div class="d-flex justify-content-start float-left">
@@ -699,7 +685,7 @@ info.onAdd = function (map) {
 // method that we will use to update the control based on feature properties passed
 info.update = function (props) {
     if (!props) {
-        this._div.innerHTML = '<h4>Disease Density</h4>Hover over a barangay';
+        this._div.innerHTML = '<h4>Disease Density</h4>Select Disease on Filter';
         return;
     }
     let selectedDiseases = [];

@@ -1,5 +1,5 @@
 <?php
-$where = "WHERE 1=1";
+$where = "WHERE 1=1 and cd.barangay is not null";
 $selectedDiseases = $_REQUEST['selectedDiseases'] ?? [];
 $dateRange = $_REQUEST['dateRange'] ?? '';
 
@@ -7,6 +7,7 @@ if (!empty($dateRange)) {
     list($dateFrom, $dateTo) = explode(' to ', $dateRange);
     $where .= " AND dateCheckUp BETWEEN '$dateFrom 00:00:00' AND '$dateTo 23:59:59'";
 }
+// dump($where);
 
 $diseaseIds = "''";
 if(!empty($selectedDiseases)):

@@ -348,6 +348,7 @@ $('#modalAppointment').on('show.bs.modal', function (e) {
         },
         success : function(data){
             $('#modalAppointment .fetched-data').html(data);
+            checkSchedule();
             Swal.close();
             // $(".select2").select2();//Show fetched data from database
         }
@@ -356,17 +357,21 @@ $('#modalAppointment').on('show.bs.modal', function (e) {
 
 
   $(document).on('change', 'select[name="doctorId"], input[name="appointment_date"]', function() {
-    var doctorId = $('select[name="doctorId"]').val();
+    checkSchedule();
+});
+
+function checkSchedule(){
+  // var doctorId = $('select[name="doctorId"]').val();
     var dateSet = $('input[name="appointment_date"]').val(); // Assuming you have an input for the date
     var appointmentId = $('input[name="appointmentId"]').val();
     // alert(dateSet);
     // Check if both doctorId and dateSet are selected
-    if (doctorId && dateSet) {
+    if (dateSet) {
         $.ajax({
             type: 'post',
             url: 'appointment', // Here you will fetch records 
             data: {
-                doctorId: doctorId, 
+                // doctorId: doctorId, 
                 dateSet: dateSet, // Include the selected date
                 appointmentId: appointmentId, 
                 action: "checkDoctorSchedule"
@@ -378,7 +383,8 @@ $('#modalAppointment').on('show.bs.modal', function (e) {
             }
         });
     }
-});
+
+}
 
 
 
