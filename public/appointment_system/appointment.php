@@ -5,6 +5,26 @@ require("includes/google_class.php");
 		if($_POST["action"] == "availSchedules"):
 			// dump($_POST);
 			$the_date = $_POST["the_date"];
+
+
+			$DoctorSchedule = [];
+			$doctorSchedule = query("select * from doctor_schedule where schedule_date = ?", $_POST["the_date"]);
+			foreach($doctorSchedule as $row):
+				$DoctorSchedule[$row["slotId"]] = $row;
+			endforeach;
+
+			$Appointment = [];
+			$appointment = query("select * from appointment where dateSet = ? and appointmentStatus in ('PENDING', 'ONGOING', 'DONE')", $_POST["the_date"]);
+			foreach($appointment as $row):
+				$Appointment[$row["timeSet"]] = $row;
+			endforeach;
+
+	
+
+
+
+
+
 			// dump($type);
 			$sql = query("select timeSet, count(*) as count from appointment where appointmentStatus in ('PENDING', 'ACCEPTED') and dateSet = ? group by timeSet",
 							$the_date);
@@ -76,6 +96,17 @@ require("includes/google_class.php");
 				if($the_date < date("Y-m-d")){
 					$return_cue = false;
 				}
+
+
+				if(isset($DoctorSchedule[$s["slotId"]])):
+					$return_cue = false;
+				endif;
+
+				if(isset($Appointment[$s["slotId"]])):
+					$return_cue = false;
+				endif;
+
+				// $Appointment
 				
 			
 			
@@ -271,9 +302,8 @@ require("includes/google_class.php");
 					$data[$i]["action"] = '
 					<form class="generic_form_trigger" style="display:inline;" data-url="appointment">
 					<input type="hidden" name="action" value="cancelAppointment">
-					<div class="btn-group" width="100%">
-							<a href="#" data-toggle="modal" data-id="'.$row["appointmentId"].'" data-target="#modalAppointment" class="btn btn-sm btn-success">Accept</a>
-												<button disabled class="btn btn-sm btn-danger">NO ACTION</button>
+					<div class="btn-group btn-block" width="100%">
+												<button disabled class="btn btn-sm btn-block btn-danger">NO ACTION</button>
 						  </div>
 						  </form>
 					';
@@ -304,6 +334,10 @@ require("includes/google_class.php");
 					case "PENDING":
 						$data[$i]["appointmentStatus"] = "<span class='text-yellow'>".$row["appointmentStatus"]."</span>";
 						break;
+
+						case "CANCELLED":
+							$data[$i]["appointmentStatus"] = "<span class='text-red'>".$row["appointmentStatus"]."</span>";
+							break;
 				
 					default:
 						// Code for handling unknown status
@@ -517,7 +551,10 @@ require("includes/google_class.php");
 				case "PENDING":
 					$appointment["appointmentStatus"] = "<span class='text-yellow'>".$appointment["appointmentStatus"]."</span>";
 					break;
-			
+				// case "CANCELLED":
+				// 	$appointment["appointmentStatus"] = "<span class='text-yellow'>".$appointment["appointmentStatus"]."</span>";
+				// 	break;
+		
 				default:
 					// Code for handling unknown status
 					$appointment["appointmentStatus"] = "<span class='text-red'>".$appointment["appointmentStatus"]."</span>";

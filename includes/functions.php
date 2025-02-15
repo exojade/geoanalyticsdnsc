@@ -59,7 +59,29 @@ return $barangays;
 
     }
 
-
+    function adjustBrightness($hex, $steps) {
+        // Ensure hex code is 6 characters
+        $hex = str_replace('#', '', $hex);
+        if (strlen($hex) == 3) {
+            $hex = str_repeat(substr($hex, 0, 1), 2) . 
+                   str_repeat(substr($hex, 1, 1), 2) . 
+                   str_repeat(substr($hex, 2, 1), 2);
+        }
+        
+        // Convert to RGB
+        $r = hexdec(substr($hex, 0, 2));
+        $g = hexdec(substr($hex, 2, 2));
+        $b = hexdec(substr($hex, 4, 2));
+        
+        // Adjust brightness
+        $r = max(0, min(255, $r + $steps));
+        $g = max(0, min(255, $g + $steps));
+        $b = max(0, min(255, $b + $steps));
+        
+        // Convert back to hex
+        return sprintf("#%02x%02x%02x", $r, $g, $b);
+    }
+    
 
     function getMonths(){
         $months = [

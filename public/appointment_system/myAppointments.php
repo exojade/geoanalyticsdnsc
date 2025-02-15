@@ -60,7 +60,7 @@ require("includes/google_class.php");
 
 			$limitString = " limit " . $limit;
 			$offsetString = " offset " . $offset;
-			$baseQuery = "select * from appointment where clientId = '".$_SESSION["dnsc_geoanalytics"]["userid"]."'";
+			$baseQuery = "select * from appointment where clientId = '".$_SESSION["dnsc_geoanalytics"]["userid"]."' order by dateSet desc";
 
 			$TimeSlot = [];
 			$timeslot = query("select * from timeslot");
@@ -85,20 +85,27 @@ require("includes/google_class.php");
 				// dump($row);
 				if($row["appointmentStatus"] == "DONE"):
 					$data[$i]["action"] = '<a href="#" disabled class="btn btn-default btn-block">No Action</a>';
+					$data[$i]["meetId"] = "<a href='".$row["meetId"]."' class='btn btn-info btn-block' target='_blank'>Google Meet</a>";
+
+					elseif($row["appointmentStatus"] == "CANCELLED"):
+						$data[$i]["action"] = '<a href="#" disabled class="btn btn-default btn-block">No Action</a>';
+						$data[$i]["meetId"] = "No Google Meet Created";
+
 				else:
 					$data[$i]["action"] = '
 					
 					<form class="generic_form_trigger" data-url="myAppointments">
 						<input type="hidden" name="action" value="deleteAppointment">
 						<input type="hidden" name="appointmentId" value="'.$row["appointmentId"].'">
-						<button class="btn btn-danger btn-block">Delete</button>
+						<button class="btn btn-danger btn-block">CANCEL</button>
 					</form>
 					';
+				$data[$i]["meetId"] = "<a href='".$row["meetId"]."' class='btn btn-info btn-block' target='_blank'>Google Meet</a>";
+
 				endif;
 				
 				
-				$data[$i]["appointmentDate"] = $row["dateSet"] . " - " . $TimeSlot[$row["timeSet"]]["timeSlot"];
-				$data[$i]["meetId"] = "<a href='".$row["meetId"]."' class='btn btn-info' target='_blank'>Google Meet</a>";
+				$data[$i]["appointmentDate"] = date("M d, Y", strtotime($row["dateSet"])) . "<br>" . $TimeSlot[$row["timeSet"]]["timeSlot"];
 				// dump();	
                 $i++;
             endforeach;
@@ -114,11 +121,11 @@ require("includes/google_class.php");
 
 		elseif($_POST["action"] == "deleteAppointment"):
 
-			query("delete from appointment where appointmentId = ?", $_POST["appointmentId"]);
+			query("update appointment set appointmentStatus = 'CANCELLED' where appointmentId = ?", $_POST["appointmentId"]);
 			$res_arr = [
 				"result" => "success",
 				"title" => "Success",
-				"message" => "Delete Appointment Successfully",
+				"message" => "Cancelled Appointment Successfully",
 				"link" => "refresh",
 				// "html" => '<a href="#">View or Print '.$transaction_id.'</a>'
 				];

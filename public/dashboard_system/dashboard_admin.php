@@ -6,11 +6,17 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
 <link rel="stylesheet" href="AdminLTE_new/plugins/daterangepicker/daterangepicker.css">
 <link rel="stylesheet" href="AdminLTE/bower_components/select2/dist/css/select2.min.css">
+<link rel="stylesheet" href="AdminLTE_new/dist/css/adminlte.min.css">
 
 
 
 <style>
-
+.info {
+    /* height: 500px; */
+    overflow-y: auto;
+    max-height:300px;
+    overflow-y: auto;
+}
 .highcharts-figure,
 .highcharts-data-table table {
     min-width: 500px;
@@ -133,7 +139,7 @@
 
           <div class="card bg-gradient-gray" id="fullscreenDiv">
              
-              <div class="card-body" style="height: 60vh; overflow: hidden;">
+              <div class="card-body" style="height: 80vh; overflow: hidden;">
 
               <div class="row">
                   <div class="col-3">
@@ -151,7 +157,8 @@
 
                     </div>
                   <div class="col-8">
-                    <select id="diseaseSelect" multiple="multiple" onchange="updateMapColors()" style="width: 100%;">
+                    <select id="diseaseSelect" onchange="updateMapColors()" style="width: 100%;">
+                        <option value="" selected disabled>Select Filter Here!</option>
                         <?php
                         $diseases = query("select * from disease");
                         foreach ($diseases as $row):
@@ -169,7 +176,7 @@
                     <button class="btn btn-info btn-block"  id="toggleFullscreen"><i class="fa fa-expand"></i></button>  
                     </div>
                 </div>
-              <div id="map" style="height: 50vh;"></div>
+              <div id="map" style="height: 70vh;"></div>
   <!-- <button id="focus-single">Focus on Australia</button>
   <button id="focus-multiple">Focus on Australia and Japan</button>
   <button id="focus-coords">Focus on Cyprus</button>
@@ -579,17 +586,15 @@ L.control.layers(baseLayers, overlays).addTo(map);
 
 
 function getColor(d) {
-    return d > 300 ? '#D63230' :
-           d > 200  ? '#F39237' :
-           d > 100  ? '#2C6E49' :
-           d >= 1  ? '#2C6E49' :
-                      '#5E6572';
+    // console.log(d);
+    return (typeof d === 'string' && d.trim() !== '') ? d : '#5E6572';
 }
+
 
 function style(feature) {
   // console.log(feature);
     return {
-        fillColor: getColor(feature.properties.density),
+        fillColor: getColor(feature.properties.color),
         weight: 2,
         opacity: 1,
         color: 'white',
@@ -614,12 +619,12 @@ function highlightFeature(e) {
         layer.bringToFront();
     }
 
-    info.update(layer.feature.properties);
+    // info.update(layer.feature.properties);
 }
 
 function resetHighlight(e) {
     geojson.resetStyle(e.target);
-    info.update();
+    // info.update();
 }
 
 var geojson;
@@ -697,10 +702,52 @@ info.update = function (props) {
         this._div.innerHTML = '<h4>Disease Density</h4>Hover over a barangay';
         return;
     }
-
-    // Collect the selected diseases
     let selectedDiseases = [];
     let selectedDiseasesId = [];
+    $('#diseaseSelect option:selected').each(function () {
+        let disease = $(this).data('disease'); // Get the disease name
+        let disease_id = $(this).val(); // Get the disease ID
+       
+        selectedDiseases.push(disease);  
+        selectedDiseasesId.push(disease_id);  
+    });
+
+
+    let total = 0;
+    let total_cat = 0;
+    let total_dog = 0;
+    // console.log(props);
+    props.forEach((properties, index) => {
+        // console.log(properties["properties"]);
+            total += properties["properties"]["density"];  // Accumulate total density
+            total_cat += properties["properties"]["cat"];
+            total_dog += properties["properties"]["dog"];
+        i++;
+    });
+
+    var i = 0;
+    let content = `<h4>Disease Density</h4><b>${selectedDiseases}<span style="float: right;">${total}</span></b><br>`;
+    content += `&nbsp;&nbsp;&nbsp;<b>Total Dog :</b> <span style="float: right;">${total_dog}</span><br>`;
+    content += `&nbsp;&nbsp;&nbsp;<b>Total Cat :</b> <span style="float: right;">${total_cat}</span><br><br>`;
+    props.forEach((properties, index) => {
+
+            if(properties["properties"]["density"] != 0){
+                content += `<b>${properties["properties"]["name"].toUpperCase()}:</b> <span style="float: right;">${properties["properties"]["density"]}</span><br>`;
+            if(properties["properties"]["dog"] != 0){
+                content += `&nbsp;&nbsp;&nbsp;<b>Dog :</b> <span style="float: right;">${properties["properties"]["dog"]}</span><br>`;
+            }
+            if(properties["properties"]["cat"] != 0){
+                content += `&nbsp;&nbsp;&nbsp;<b>Cat :</b> <span style="float: right;">${properties["properties"]["cat"]}</span><br>`;
+            }
+            }
+
+
+            
+        i++;
+    });
+
+    // Collect the selected diseases
+
 
     $('#diseaseSelect option:selected').each(function () {
         let disease = $(this).data('disease'); // Get the disease name
@@ -710,21 +757,20 @@ info.update = function (props) {
         selectedDiseasesId.push(disease_id);  
     });
 
-    // Build the dynamic content based on selected diseases
-    let content = `<h4>Disease Density</h4><b>${props.name}</b><br><br>`;
-    let total = 0;
+    // // Build the dynamic content based on selected diseases
+    
 
-    selectedDiseasesId.forEach((diseaseId, index) => {
-        if (props[diseaseId] !== undefined) {
-            content += `<b>${selectedDiseases[index].toUpperCase()}:</b> <span style="float: right;">${props[diseaseId]}</span><br>`;
-            total += props[diseaseId];  // Accumulate total density
-        }
-    });
+    // selectedDiseasesId.forEach((diseaseId, index) => {
+    //     if (props[diseaseId] !== undefined) {
+    //         content += `<b>${selectedDiseases[index].toUpperCase()}:</b> <span style="float: right;">${props[diseaseId]}</span><br>`;
+    //         total += props[diseaseId];  // Accumulate total density
+    //     }
+    // });
 
-    // Add the total density if there are selected diseases
-    if (selectedDiseases.length > 0) {
-        content += `<b>TOTAL:</b> <span style="float: right;">${total}</span>`;
-    }
+    // // Add the total density if there are selected diseases
+    // if (selectedDiseases.length > 0) {
+    //     content += `<b>TOTAL:</b> <span style="float: right;">${total}</span>`;
+    // }
 
     // Update the info div with the new content
     this._div.innerHTML = content;
@@ -770,7 +816,6 @@ function updateMapColors() {
     let dateRange = $('#reservation').val();
     let selectedDiseases = $('#diseaseSelect').val(); // Get selected values from Select2
 
-    console.log('Selected Diseases:', selectedDiseases);
 
     $.ajax({
         type: 'POST',
@@ -782,14 +827,25 @@ function updateMapColors() {
         },
         success: function(data) {
             let densityData = JSON.parse(data);
-            console.log(densityData);
-
+            // console.log(densityData);
             panabodataa.features.forEach(function(feature) {
                 let id = feature.properties.id;
-                if (densityData.hasOwnProperty(id)) {
-                    feature.properties.density = Object.values(densityData[id]).reduce((a, b) => a + b, 0);
-                    Object.assign(feature.properties, densityData[id]);
-                }
+                let name = feature.properties.name;
+                // console.log(densityData[id]);
+
+                // let the_density = feature.properties.density;
+                // console.log(the_density);
+                // console.log(densityData[id].density);
+                // if (densityData.hasOwnProperty(id)) {
+                    feature.properties.density = Object.values(densityData[id].density).reduce((a, b) => a + b, 0);
+                    feature.properties = {
+                        ...densityData[id],
+                        
+                        name: name,
+                        id: id // Keep the id if needed
+                    };
+                    // Object.assign(feature.properties, densityData[id]);
+                // }
             });
 
             polygondata.clearLayers();
@@ -797,6 +853,9 @@ function updateMapColors() {
                 style: style,
                 onEachFeature: onEachFeature
             }).addTo(map);
+            console.log(panabodataa.features);
+
+            info.update(panabodataa.features);
 
             legend.addTo(map);
         }

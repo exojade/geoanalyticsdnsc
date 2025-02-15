@@ -262,6 +262,16 @@
 </li>
 
 <li class="nav-item">
+      <a href="doctorSchedule" class="nav-link">
+        <i class="nav-icon fas fa-calendar"></i>
+        <p>
+          My Schedules
+          <span class="right badge badge-danger"></span>
+        </p>
+      </a>
+  </li>
+
+<li class="nav-item">
       <a href="patient" class="nav-link">
         <i class="nav-icon fas fa-paw"></i>
         <p>

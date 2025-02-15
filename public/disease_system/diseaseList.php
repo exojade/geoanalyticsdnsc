@@ -5,7 +5,8 @@
   <link rel="stylesheet" href="AdminLTE_new/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" href="AdminLTE_new/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
   <link rel="stylesheet" href="AdminLTE_new/plugins/summernote/summernote-bs4.min.css">
-  <!-- Theme style -->
+  <link rel="stylesheet" href="AdminLTE_new/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css">
+    <!-- Theme style -->
   <link rel="stylesheet" href="AdminLTE_new/dist/css/adminlte.min.css">
 <div class="content-wrapper">
     <section class="content">
@@ -110,6 +111,7 @@
                 <table class="table table-bordered" id="ajax_datatable" style="width: 100%; table-layout: fixed;">
                   <thead>
                     <th>Action</th>
+                    <th></th>
                     <th>Disease</th>
                     <th>Transmission Type</th>
                     <th>Species</th>
@@ -142,7 +144,7 @@
 
 <script src="AdminLTE_new/plugins/jquery-validation/jquery.validate.min.js"></script>
 <script src="AdminLTE_new/plugins/jquery-validation/additional-methods.min.js"></script>
-
+<script src="AdminLTE_new/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
 
 <script>
 
@@ -173,6 +175,11 @@ $('#updateDiseaseModal').on('show.bs.modal', function (e) {
             },
             success : function(data){
                 $('#updateDiseaseModal .fetched-data').html(data);
+                $('.my-colorpicker2').colorpicker()
+
+                $('.my-colorpicker2').on('colorpickerChange', function(event) {
+                  $('.my-colorpicker2 .fa-square').css('color', event.color.toString());
+                })
                 Swal.close();
                 // $(".select2").select2();//Show fetched data from database
             }
@@ -203,6 +210,7 @@ var datatable =
                 },
                 'columns': [
                     { data: 'action', "orderable": false, visible: true },
+                    { data: 'color', "orderable": false, visible: true },
                     { data: 'name', "orderable": false, visible: true  },
                     { data: 'transmission_type', "orderable": false, visible: true  },
                     { data: 'species_affected', "orderable": false, visible: false  },
@@ -214,13 +222,14 @@ var datatable =
                 ],
                 columnDefs: [
         { width: "4%", targets: 0 }, // Action column
-        { width: "20%", targets: 1 }, // Pet Owner
+        { width: "2%", targets: 1 }, // Pet Owner
         { width: "10%", targets: 2 }, // Address
         { width: "10%", targets: 3 }, // Gender
         { width: "10%", targets: 4 }, // Gender
         { width: "10%", targets: 5 },  // # of Pets
         { width: "10%", targets: 6 },  // # of Pets
-        { width: "10%", targets: 7 }  // # of Pets
+        { width: "10%", targets: 7 } , // # of Pets
+        { width: "10%", targets: 8 }  // # of Pets
     ],
     "initComplete": function () {
         var api = this.api();

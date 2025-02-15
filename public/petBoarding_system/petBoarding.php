@@ -204,8 +204,8 @@ ORDER BY
 				endif;
 				// $data[$i]["action"] = '<a href="#" data-toggle="modal" data-target="#medicalRecordModal" data-id="'.$row["checkupId"].'" class="btn btn-block btn-sm btn-success">Open Record</a>';
 				$data[$i]["client"] = $Clients[$row["clientId"]]["lastname"] . ", " . $Clients[$row["clientId"]]["firstname"];
-				$data[$i]["from_date"] = (new DateTime($row["from_date"]))->format('l, F j, Y h:i A');
-				$data[$i]["to_date"] = (new DateTime($row["to_date"]))->format('l, F j, Y h:i A');
+				$data[$i]["from_date"] = (new DateTime($row["from_date"]))->format('l, M j, Y h:i A');
+				$data[$i]["to_date"] = (new DateTime($row["to_date"]))->format('l, M j, Y h:i A');
 
 
 

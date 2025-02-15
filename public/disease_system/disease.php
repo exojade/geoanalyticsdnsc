@@ -34,6 +34,11 @@
 				// dump($row);
 				$data[$i]["action"] = '<a href="#" data-toggle="modal" data-target="#updateDiseaseModal" data-id="'.$row["diseaseId"].'" class="btn btn-block btn-sm btn-warning">Update</a>';
 				$data[$i]["name"] = $row["diseaseName"];
+				$data[$i]["color"] = '
+                <div class="color-palette-set">
+                  <div style="background-color: '.$row["color_code"].'; color: '.$row["color_code"].'; " class="color-palette">a</div>
+                </div>
+                ';
 				// $data[$i]["appointmentDate"] = $row["dateSet"] . " - " . $TimeSlot[$row["timeSet"]]["timeSlot"];
 				// dump();	
                 $i++;
@@ -49,8 +54,8 @@
 
         if($_POST["action"] == "updateDisease"):
             // dump($_POST);
-
             query("update disease set
+            color_code = ?,
                     diseaseName = ?,
                     species_affected = ?,
                     transmission_type = ?,
@@ -59,6 +64,7 @@
                     treatment = ?,
                     is_contagious = ?
                     where diseaseId = ?",
+                    $_POST["color_code"],
                     $_POST["diseaseName"],
                     $_POST["speciesAffected"],
                     $_POST["transmission_type"],
@@ -87,6 +93,16 @@
 
             $hint = '
             <input type="hidden" name="diseaseId" value="'.$_POST["diseaseId"].'">
+
+            <div class="form-group">
+                  <label>Disease Label Color <span class="color-red">*</span></label>
+                  <div class="input-group my-colorpicker2">
+                    <input value="'.$disease["color_code"].'" name="color_code" required type="text" class="form-control">
+                    <div class="input-group-append">
+                      <span class="input-group-text"><i class="fas fa-square"></i></span>
+                    </div>
+                  </div>
+                </div>
             <div class="form-group">
               <label for="exampleInputEmail1">Disease Name <span class="color-red">*</span></label>
               <input placeholder="Enter Disease Name Here" type="text" class="form-control" name="diseaseName" value="'.$disease["diseaseName"].'" required>

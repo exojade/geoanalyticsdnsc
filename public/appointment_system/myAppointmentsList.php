@@ -76,9 +76,9 @@
                 <table class="table table-bordered" id="ajax_datatable">
                   <thead>
                     <th>Action</th>
-                    <th>Appointment Date</th>
+                    <th width="20%">Appointment Date</th>
                     <th>Status</th>
-                    <th>Note</th>
+                    <th width="40%">Note</th>
                     <th>Meet Link</th>
                   </thead>
                 </table>
