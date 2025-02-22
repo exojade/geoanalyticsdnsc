@@ -258,11 +258,21 @@
       },
       eventClick: function(calEvent, jsEvent, view) {
 
-        var rowid = calEvent.event.extendedProps.appointmentId;
-      // Swal.fire({title: 'Please wait...', imageUrl: 'AdminLTE/dist/img/loader.gif', showConfirmButton: false});
-      $.ajax({
+        var rowid = calEvent.event.extendedProps.status;
+        
+        if(rowid == "UNAVAILABLE"){
+          data = `<div class="alert alert-danger alert-dismissible">
+                  <h5><i class="icon fas fa-ban"></i> Alert!</h5>
+                  Time is Unavailable
+                </div>`;
+          $('#eventModal .modal-body').html(data);
+          $('#eventModal').modal('show');
+        }
+        else{
+          var rowid = calEvent.event.extendedProps.appointmentId;
+          $.ajax({
           type : 'post',
-          url : 'calendar', //Here you will fetch records 
+          url : 'doctorSchedule', //Here you will fetch records 
           data: {
               appointmentId: rowid, action: "modalCalendar"
           },
@@ -275,6 +285,10 @@
               // $(".select2").select2();//Show fetched data from database
           }
       });
+        }
+
+      // Swal.fire({title: 'Please wait...', imageUrl: 'AdminLTE/dist/img/loader.gif', showConfirmButton: false});
+      
 
    
 

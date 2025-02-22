@@ -8,16 +8,12 @@ require("includes/google_class.php");
 			$events = query("SELECT appointmentId, t.slotId, t.timeslot,
 			CONCAT(u.fullname , ' - ' , u.username) AS title,
 
-
-
 			dateSet as start,
-
-
 			CASE
 				WHEN a.appointmentStatus = 'ONGOING' THEN '#43AA8B' -- Green
 				WHEN a.appointmentStatus = 'CANCELLED' THEN '#F02D3A' -- Red
 				WHEN a.appointmentStatus = 'PENDING' THEN '#F7F052' -- Yellow
-				ELSE '#FFFFFF' -- Default color
+				ELSE '#0d6efd' -- Default color
 			END AS backgroundColor
 		FROM
 			appointment a
@@ -66,6 +62,7 @@ foreach ($allDates as $date) {
 
 				$mergedSchedule[] = [
 					'date' => $date,
+					'appointmentId' => $event["appointmentId"],
 					'slotId' => $slotId,
 					'timeslot' => $timeslot,
 					'status' => $status,
@@ -104,7 +101,6 @@ foreach ($allDates as $date) {
     }
 }
 
-// dump($mergedSchedule);
 
 
 // dump($events);
@@ -133,6 +129,7 @@ foreach ($allDates as $date) {
 			echo $jsonEvents;
 		
 		elseif($_POST["action"] == "modalCalendar"):
+			// dump($_POST);
 			$appointment = query("select a.*, t.timeslot, u.fullname from appointment a
 									left join timeslot t
 									on t.slotId = a.timeSet

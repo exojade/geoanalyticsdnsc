@@ -765,7 +765,7 @@ info.update = function (props) {
 
 info.addTo(map);
 
-var legend = L.control({position: 'bottomleft'});
+// var legend = L.control({position: 'bottomleft'});
 
 legend.onAdd = function (map) {
 

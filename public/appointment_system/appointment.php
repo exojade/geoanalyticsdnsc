@@ -225,7 +225,6 @@ require("includes/google_class.php");
 			");
 
 		elseif($_POST["action"] == "appointmentList" && $_SESSION["dnsc_geoanalytics"]["role"] == "admin"):
-
 			$draw = isset($_POST["draw"]) ? $_POST["draw"] : 1;
             $offset = $_POST["start"];
             $limit = $_POST["length"];
@@ -233,7 +232,25 @@ require("includes/google_class.php");
 
 			$limitString = " limit " . $limit;
 			$offsetString = " offset " . $offset;
-			$baseQuery = "SELECT * FROM appointment
+
+			$where = " WHERE 1=1";
+
+			if (isset($_REQUEST["from"])) {
+				if($_REQUEST["from"] != ""):
+					$from = strtotime($_REQUEST["from"]);
+					$where .= " AND timestampSet >= $from";
+				endif;
+			}
+			// dump($from);
+
+			if (isset($_REQUEST["to"])) {
+				if($_REQUEST["to"] != ""):
+					$to = strtotime($_REQUEST["to"]);
+					$where .= " AND timestampSet <= $to";
+				endif;
+			}
+
+			$baseQuery = "SELECT * FROM appointment $where
               ORDER BY 
               CASE 
                 WHEN appointmentStatus = 'PENDING' THEN 0 
@@ -375,7 +392,8 @@ require("includes/google_class.php");
 	
 				$limitString = " limit " . $limit;
 				$offsetString = " offset " . $offset;
-				$baseQuery = "select a.*, t.timeSlot from appointment a left join timeslot t on t.slotId = a.timeSet where doctorId = '".$_SESSION["dnsc_geoanalytics"]["userid"]."' and appointmentStatus = 'ONGOING' order by timestampSet desc";
+
+				$baseQuery = "select a.*, t.timeSlot from appointment a left join timeslot t on t.slotId = a.timeSet where appointmentStatus = 'ONGOING' order by timestampSet desc";
 	
 				$TimeSlot = [];
 				$timeslot = query("select * from timeslot");
@@ -609,25 +627,32 @@ require("includes/google_class.php");
 
 
 		elseif($_POST["action"] == "checkDoctorRESchedule"):
-			// dump($_SESSION);
+			// dump($_POST);
 		$appointment = query("select * from appointment where appointmentId = ?", $_POST["appointmentId"]);
 			$appointment = $appointment[0];
 			// dump($_POST);
 
 			
+			$DoctorSchedule = [];
+			$doctorSchedule = query("select * from doctor_schedule where schedule_date = ?", $_POST["dateSet"]);
+			foreach($doctorSchedule as $row):
+				$DoctorSchedule[$row["slotId"]] = $row;
+			endforeach;
+
+			// dump($DoctorSchedule);
+
+			
 			$schedulesDoctors = query("SELECT 
-					a.appointmentId,
 					t.slotId, 
 					t.timeSlot, 
 					t.startTime, 
 					t.endTime,
-					IF(a.appointmentId IS NOT NULL, 'Not Available', 'Available') AS availability
+					IF(a.appointmentId IS NOT NULL AND a.appointmentId != ?, 'Not Available', 'Available') AS availability
 				FROM timeslot t
 				LEFT JOIN appointment a ON t.slotId = a.timeSet 
-					AND a.dateSet = ?  -- Replace with the selected date
-					AND a.doctorId = ?        -- Replace with the selected doctor ID
+					AND a.dateSet = ?
 				WHERE t.remarks = 'active'
-				ORDER BY t.startTime", $_POST["dateSet"], $_SESSION["dnsc_geoanalytics"]["userid"]);
+				ORDER BY t.startTime", $_POST["appointmentId"], $_POST["dateSet"]);
 			// dump($schedulesDoctors);
 
 			$currentDateTime = new DateTime(); // Get the current date and time
@@ -663,14 +688,26 @@ require("includes/google_class.php");
 						$startTime = $row['startTime'];
 						$selected = ($appointment["timeSet"] == $row["slotId"]) ? 'selected' : '';
 						if ($row["availability"] == "Available" && $startTime >= $currentFormattedTime) {
-							// If available and meets the time condition
-							$hint .= '<option '.$selected.' value="' . $row["slotId"] . '" class="text-success">' . $row["timeSlot"] . ' - Available</option>';
+							// If available and meets the time condition\
+								// dump($row["slotId"]);
+
+							if(isset($DoctorSchedule[$row["slotId"]])):
+								$hint .= '<option '.$selected.' value="" disabled class="text-danger">' . $row["timeSlot"] . ' - Not Available</option>';
+							else:
+								$hint .= '<option '.$selected.' value="' . $row["slotId"] . '" class="text-success">' . $row["timeSlot"] . ' - Available</option>';
+							endif;
+							
+
 						} else {
 							// If not available or does not meet the time condition
 
 							// dump($row);
 							if($row["appointmentId"] == $_POST["appointmentId"]):
-								$hint .= '<option '.$selected.' value="' . $row["slotId"] . '" class="text-success">' . $row["timeSlot"] . ' - Available</option>';
+								if(isset($DoctorSchedule[$row["slotId"]])):
+									$hint .= '<option '.$selected.' value="" disabled class="text-danger">' . $row["timeSlot"] . ' - Not Available</option>';
+								else:
+									$hint .= '<option '.$selected.' value="' . $row["slotId"] . '" class="text-success">' . $row["timeSlot"] . ' - Available</option>';
+								endif;
 							else:
 								$hint .= '<option '.$selected.' value="" disabled class="text-danger">' . $row["timeSlot"] . ' - Not Available</option>';
 							endif;
@@ -690,7 +727,11 @@ require("includes/google_class.php");
 						$selected = ($appointment["timeSet"] == $row["slotId"]) ? 'selected' : '';
 						if ($row["availability"] == "Available") {
 							// If available and meets the time condition
-							$hint .= '<option '.$selected.' value="' . $row["slotId"] . '" class="text-success">' . $row["timeSlot"] . ' - Available</option>';
+							if(isset($DoctorSchedule[$row["slotId"]])):
+								$hint .= '<option '.$selected.' value="" disabled class="text-danger">' . $row["timeSlot"] . ' - Not Available</option>';
+							else:
+								$hint .= '<option '.$selected.' value="' . $row["slotId"] . '" class="text-success">' . $row["timeSlot"] . ' - Available</option>';
+							endif;
 						} else {
 							// If not available or does not meet the time condition
 							$hint .= '<option '.$selected.' value="" disabled class="text-danger">' . $row["timeSlot"] . ' - Not Available</option>';
@@ -910,7 +951,9 @@ require("includes/google_class.php");
 
 		elseif($_POST["action"] == "markDoneAppointment"):
 			// dump($_POST);
-			query("update appointment set appointmentStatus = 'DONE' where appointmentId = ?", $_POST["appointmentId"]);
+			// dump($_SESSION);
+
+			query("update appointment set appointmentStatus = 'DONE', doctorId = ? where appointmentId = ?",$_SESSION["dnsc_geoanalytics"]["userid"], $_POST["appointmentId"] );
 
 			$res_arr = [
 				"result" => "success",

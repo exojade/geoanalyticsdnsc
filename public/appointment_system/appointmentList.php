@@ -21,6 +21,8 @@
   }
 </style>
 
+
+
 <div class="content-wrapper">
 
 
@@ -123,11 +125,23 @@
     </div>
 </div>
 
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Appointment List</h1>
+          </div>
+          <div class="col">
+            <a href="#" data-toggle="modal" data-target="#walkInModal" class="btn btn-primary float-right">ADD WALK IN</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="content">
       <div class="container-fluid">
 
       <!-- <?php
-        // dump($_SESSION);
       if($_SESSION["dnsc_geoanalytics"]["role"] == "DOCTOR"):  
       
         ?>
@@ -151,12 +165,21 @@
 
         <div class="card">
               <div class="card-header">
-                <h4 class="m-0">Appointment List
-                <!-- <div class="form-group" style="float:right;">
-                  <a href="" data-toggle="modal" data-target="#modalNewPet" class="btn btn-info">Book an Appointment</a>
-                </div> -->
-                <a href="#" data-toggle="modal" data-target="#walkInModal" class="btn btn-primary float-right">ADD WALK IN</a>
-                </h4>
+                <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                      <label>From</label>
+                        <input type="date"  class="form-control selectFilter" id="fromDate" placeholder="Enter email">
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label>To</label>
+                      <input type="date"  class="form-control selectFilter" id="toDate" placeholder="Enter email">
+                    </div>
+                  </div>
+              
+                </div>
 
                 
               </div>
@@ -164,7 +187,7 @@
 
               <!-- <iframe src="https://calendar.google.com/calendar/embed?src=15df82f54cf28baa57c00d9fc76503ed9d5b0fcaef7ec5595fc7e04a87fb72f2%40group.calendar.google.com&ctz=Asia%2FManila" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe> -->
 
-                <table class="table table-bordered table-striped" id="ajax_datatable">
+                <table class="table table-bordered table-striped" id="ajax_datatable" style="width: 100%;">
 
                 <?php if($_SESSION["dnsc_geoanalytics"]["role"] == "DOCTOR"): ?>
                   <thead>
@@ -533,6 +556,7 @@ var datatable =
                     searchPlaceholder: "Search Pet Name"
                 },
                 "bLengthChange": true,
+                dom: 'Brfltip',
                 "ordering": false,
                 'processing': true,
                 'serverSide': true,
@@ -552,30 +576,56 @@ var datatable =
                     { data: 'appointmentStatus', "orderable": false },
                     { data: 'doctor', "orderable": false },
                     { data: 'type', "orderable": false },
-
                 ],
+                "initComplete": function () {
+        var api = this.api();
+        // Set up column visibility button actions
+        $('.column-visibility-button').on('click', function () {
+            var column = api.column($(this).data('column'));
+            column.visible(!column.visible());
+            api.columns.adjust().responsive.recalc(); // Recalculate widths
+        });
+    },
+    buttons: [
+                  {
+        extend: 'excelHtml5',
+        text: 'Export to Excel',
+        title: 'Appointment List',
+        exportOptions: {
+            columns: ':visible', // Export only visible columns
+            format: {
+                body: function (data, row, column, node) {
+                    return data; // Modify this if you need custom formatting
+                }
+            }
+        },
+        filename: 'Disease List' // Set your custom filename here
+    },
+        {
+            extend: 'pdfHtml5',
+            text: 'Export to PDF',
+            orientation: 'landscape',
+            pageSize: 'A4',
+            exportOptions: {
+                columns: ':visible',
+                modifier: {
+                    page: 'current' // Export only the current page data
+                }
+            }
+        },
+      
+        'colvis' // Column visibility button
+    ],
                 "footerCallback": function (row, data, start, end, display) {
-                    // var api = this.api(), data;
-                    
-
-                    // Remove the formatting to get integer data for summation
-                    // var intVal = function (i) {
-                    //     return typeof i === 'string' ?
-                    //         i.replace(/[\$,]/g, '') * 1 :
-                    //         typeof i === 'number' ?
-                    //             i : 0;
-                    // };
-                    // // Total over all pages
-                    // received = api
-                    //     .column(5)
-                    //     .data()
-                    //     .reduce(function (a, b) {
-                    //         return intVal(a) + intVal(b);
-                    //     }, 0);
-                    //     console.log(received);
-
-                    // $('#currentTotal').html('$ ' + received.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                  
                 }
             });
+            $('.dt-buttons').addClass('float-right');
 
+
+$('.selectFilter').on('change', function() {
+  var from = $('#fromDate').val();
+  var to = $('#toDate').val();
+            datatable.ajax.url('appointment?action=appointmentList&from='+from+'&to='+to).load();
+});
 </script> 
