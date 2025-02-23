@@ -18,6 +18,15 @@
   <link rel="icon" href="<?php echo($siteOptions["mainLogo"]); ?>">
 </head>
 
+<style>
+@media (max-width: 576px) {
+    .login-box, .register-box {
+        margin-top: .5rem;
+        width: 90% !important;
+    }
+}
+</style>
+
 
 
 <style>
@@ -52,10 +61,13 @@
 </style>
 <body class="hold-transition login-page" style='
 
-background-image: url("public/static_system/assets/images/background_latest.jpg") !important;
-background-size: 100% auto;
-      background-position: center !important;
-      background-repeat: no-repeat;
+background-image: url(public/static_system/assets/images/background_latest.jpg) !important;
+background-size: cover;  /* Ensures the image covers the entire container */
+background-repeat: no-repeat;
+background-position: center center !important;
+min-height: 398px;  /* Adjust this based on your design needs */
+width: 100%;
+height: 100vh;
 '>
 <div class="login-box" style="width:40%;">
   <!-- /.login-logo -->

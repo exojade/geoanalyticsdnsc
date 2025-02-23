@@ -236,17 +236,16 @@ require("includes/google_class.php");
 			$where = " WHERE 1=1";
 
 			if (isset($_REQUEST["from"])) {
-				if($_REQUEST["from"] != ""):
-					$from = strtotime($_REQUEST["from"]);
-					$where .= " AND timestampSet >= $from";
+				if ($_REQUEST["from"] != ""):
+					$from = $_REQUEST["from"];
+					$where .= " AND UNIX_TIMESTAMP(CONCAT(dateSet, ' 00:00:00')) >= UNIX_TIMESTAMP('$from 00:00:00')";
 				endif;
 			}
-			// dump($from);
-
+			
 			if (isset($_REQUEST["to"])) {
-				if($_REQUEST["to"] != ""):
-					$to = strtotime($_REQUEST["to"]);
-					$where .= " AND timestampSet <= $to";
+				if ($_REQUEST["to"] != ""):
+					$to = $_REQUEST["to"];
+					$where .= " AND UNIX_TIMESTAMP(CONCAT(dateSet, ' 00:00:00')) <= UNIX_TIMESTAMP('$to 23:59:59')";
 				endif;
 			}
 
@@ -276,6 +275,7 @@ require("includes/google_class.php");
 			foreach($doctors as $row):
 				$Doctors[$row["doctorsId"]] = $row;
 			endforeach;
+			// dump($baseQuery);
 
 
 			if($search == ""):

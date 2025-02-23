@@ -599,7 +599,7 @@ var datatable =
                 }
             }
         },
-        filename: 'Disease List' // Set your custom filename here
+        filename: 'Appointment List' // Set your custom filename here
     },
         {
             extend: 'pdfHtml5',

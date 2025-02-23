@@ -16,6 +16,7 @@
     overflow-y: auto;
     max-height:300px;
     overflow-y: auto;
+    min-width: 500px;
 }
 .highcharts-figure,
 .highcharts-data-table table {
@@ -717,15 +718,37 @@ info.update = function (props) {
     content += `&nbsp;&nbsp;&nbsp;<b>Total Cat :</b> <span style="float: right;">${total_cat}</span><br><br>`;
     props.forEach((properties, index) => {
 
-            if(properties["properties"]["density"] != 0){
-                content += `<b>${properties["properties"]["name"].toUpperCase()}:</b> <span style="float: right;">${properties["properties"]["density"]}</span><br>`;
-            if(properties["properties"]["dog"] != 0){
-                content += `&nbsp;&nbsp;&nbsp;<b>Dog :</b> <span style="float: right;">${properties["properties"]["dog"]}</span><br>`;
-            }
-            if(properties["properties"]["cat"] != 0){
-                content += `&nbsp;&nbsp;&nbsp;<b>Cat :</b> <span style="float: right;">${properties["properties"]["cat"]}</span><br>`;
-            }
-            }
+        let density = properties["properties"]["density"];
+        let riskLevel = "";
+        let color = "";
+
+        if (density >= 4) {
+            riskLevel = "HIGH RISK";
+            color = "red";
+        } else if (density >= 2) {
+            riskLevel = "MILD RISK";
+            color = "#FFC107";
+        } else {
+            riskLevel = "LOW RISK";
+            color = "green";
+        }
+
+
+
+
+
+        if (density != 0) {
+        content += `<b>${properties["properties"]["name"].toUpperCase()}:</b> 
+                    <span style="float: right;">${density}</span> 
+                    <span style="color: ${color}; font-weight: bold;">(${riskLevel})</span><br>`;
+
+        if (properties["properties"]["dog"] != 0) {
+            content += `&nbsp;&nbsp;&nbsp;<b>Dog :</b> <span style="float: right;">${properties["properties"]["dog"]}</span><br>`;
+        }
+        if (properties["properties"]["cat"] != 0) {
+            content += `&nbsp;&nbsp;&nbsp;<b>Cat :</b> <span style="float: right;">${properties["properties"]["cat"]}</span><br>`;
+        }
+    }
 
 
             
