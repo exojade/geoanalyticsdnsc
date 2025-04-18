@@ -13,6 +13,11 @@
 <style>
 .info {
     /* height: 500px; */
+   
+}
+
+.leaflet-top.leaflet-right .info {
+    /* your styles here */
     overflow-y: auto;
     max-height:300px;
     overflow-y: auto;
@@ -575,6 +580,9 @@ L.control.layers(baseLayers, overlays).addTo(map);
 function getColor(d) {
     // console.log(d);
     return (typeof d === 'string' && d.trim() !== '') ? d : '#5E6572';
+    // return d > 1000 ? 'red' :
+    //        d > 200 ? 'yellow' :
+                    //  'green';
 }
 
 
@@ -722,15 +730,18 @@ info.update = function (props) {
         let riskLevel = "";
         let color = "";
 
-        if (density >= 4) {
+        if (density >= 801) {
             riskLevel = "HIGH RISK";
             color = "red";
-        } else if (density >= 2) {
+        } else if (density >= 301) {
             riskLevel = "MILD RISK";
             color = "#FFC107";
-        } else {
+        } else if (density >= 1) {
             riskLevel = "LOW RISK";
             color = "green";
+        } else {
+            riskLevel = "NO DATA";
+            color = "#5E6572"; // default gray
         }
 
 
@@ -788,19 +799,17 @@ info.update = function (props) {
 
 info.addTo(map);
 
-// var legend = L.control({position: 'bottomleft'});
+var legend = L.control({position: 'bottomleft'});
 
 legend.onAdd = function (map) {
-
     var div = L.DomUtil.create('div', 'info legend'),
-        grades = [1, 100, 200, 500, 1000],
-        labels = [];
+        colors = ['#00FF00', '#FFFF00', '#FF0000'], // Green, Yellow, Red
+        labels = ['1–300 LOW', '301–800 MEDIUM', '801+ HIGH'];
 
-    // loop through our density intervals and generate a label with a colored square for each interval
-    for (var i = 0; i < grades.length; i++) {
+    for (var i = 0; i < colors.length; i++) {
         div.innerHTML +=
-            '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
-            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+            '<i style="background:' + colors[i] + '; width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7;"></i> ' +
+            labels[i] + '<br>';
     }
 
     return div;

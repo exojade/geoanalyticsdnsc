@@ -120,7 +120,7 @@ require("includes/google_class.php");
 		
 
 		elseif($_POST["action"] == "deleteAppointment"):
-
+			// dump($_POST);
 			query("update appointment set appointmentStatus = 'CANCELLED' where appointmentId = ?", $_POST["appointmentId"]);
 			$res_arr = [
 				"result" => "success",

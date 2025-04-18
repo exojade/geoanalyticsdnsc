@@ -298,22 +298,21 @@ require("includes/google_class.php");
 				// $data[$i]["email"] = $Client[$row["clientId"]]["username"];
 				if($row["appointmentStatus"] == "PENDING"):
 					$data[$i]["action"] = '
-				<form class="generic_form_trigger" style="display:inline;" data-url="appointment">
-				<input type="hidden" name="action" value="cancelAppointment">
+				<form class="generic_form_trigger" style="display:inline;" data-url="myAppointments">
+				<input type="hidden" name="action" value="deleteAppointment">
+				<input type="hidden" name="appointmentId" value="'.$row["appointmentId"].'">
 				<div class="btn-group btn-block" width="100%">
                         <a href="#" data-toggle="modal" data-id="'.$row["appointmentId"].'" data-target="#modalAppointmentDetails" class="btn btn-sm btn-info"><i class="fa fa-eye"></i></a>
 
                         <a href="#" data-toggle="modal" data-id="'.$row["appointmentId"].'" data-target="#modalAppointment" class="btn btn-sm btn-success"><i class="fa fa-check"></i></a>
                       
 											
-											<button class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button>
+						<button class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button>
 									
                       </div>
 					  </form>
 				';
-
-				
-					$data[$i]["doctor"] = "";
+				$data[$i]["doctor"] = "";
 				elseif($row["appointmentStatus"] == "CANCELLED"):
 
 					$data[$i]["action"] = '

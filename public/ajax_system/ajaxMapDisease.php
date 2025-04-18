@@ -83,12 +83,14 @@ foreach ($results as $result) {
         endif;
 
 
-        if($total == 0):
+        if ($total == 0):
             $color = "";
-        elseif($total == 1):
-            $color = adjustBrightness($result["color_code"],2 * 40);
-        elseif($total >= 2):
-            $color = adjustBrightness($result["color_code"],2 * -30);
+        elseif ($total >= 1 && $total <= 300): // LOW
+            $color = adjustBrightness($result["color_code"], 30); // lighten
+        elseif ($total >= 301 && $total <= 800): // MEDIUM
+            $color = adjustBrightness($result["color_code"], -10); // slight darken
+        elseif ($total > 800): // HIGH
+            $color = adjustBrightness($result["color_code"], -50); // darker
         endif;
 
 
