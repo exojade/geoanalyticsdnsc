@@ -234,6 +234,7 @@ require("includes/google_class.php");
 			$offsetString = " offset " . $offset;
 
 			$where = " WHERE 1=1";
+			// dump($where);
 
 			if (isset($_REQUEST["from"])) {
 				if ($_REQUEST["from"] != ""):
@@ -370,16 +371,23 @@ require("includes/google_class.php");
 
 				
 				// $data[$i]["appointmentDate"] = $row["dateSet"] . " - " . $TimeSlot[$row["timeSet"]]["timeSlot"];
-				// dump();	
+				// dump($data);	
                 $i++;
             endforeach;
+
+
+
+$data = utf8ize($data);
+			ob_clean();
             $json_data = array(
                 "draw" => $draw + 1,
                 "iTotalRecords" => count($all_data),
                 "iTotalDisplayRecords" => count($all_data),
                 "aaData" => $data
             );
+			header('Content-Type: application/json'); // Recommended
             echo json_encode($json_data);
+			exit();
 
 
 		elseif($_POST["action"] == "appointmentList" && $_SESSION["dnsc_geoanalytics"]["role"] == "DOCTOR"):

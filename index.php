@@ -87,6 +87,15 @@
 				require 'public/medical_system/medical.php';
 
 
+
+			else if ($request == 'pet_breeds')
+				require 'public/pet_breeds_system/pet_breeds.php';
+
+
+
+
+
+				
 			else if ($request == 'settings')
 				require 'public/settings_system/settings.php';
 

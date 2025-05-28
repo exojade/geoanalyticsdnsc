@@ -273,7 +273,9 @@
               <div class="col-md-8">
                 <div class="form-group">
                   <label for="exampleInputEmail1">Breed <span class="color-red">*</span></label>
-                  <input value="'.$pet["petBreed"].'" required type="text" name="petBreed" class="form-control" id="exampleInputEmail1" placeholder="---">
+                  <select required name="petBreed" class="form-control" id="updatePetBreedSelect">
+                    <option selected value="'.$pet["petBreed"].'">'.$pet["petBreed"].'</option>
+                  </select>
                 </div>
               </div>
 

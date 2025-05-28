@@ -224,16 +224,19 @@ return $barangays;
         exit;
     }
 	
-	function utf8ize($d) {
-    if (is_array($d)) {
-        foreach ($d as $k => $v) {
-            $d[$k] = utf8ize($v);
+function utf8ize($mixed) {
+    if (is_array($mixed)) {
+        foreach ($mixed as $key => $value) {
+            $mixed[$key] = utf8ize($value);
         }
-    } else if (is_string ($d)) {
-        return utf8_encode($d);
+    } elseif (is_string($mixed)) {
+        // Convert only if not valid UTF-8 already
+        if (!mb_check_encoding($mixed, 'UTF-8')) {
+            return mb_convert_encoding($mixed, 'UTF-8', 'ISO-8859-1'); // or other encoding if needed
+        }
     }
-    return $d;
-	}
+    return $mixed;
+}
 
     /**
      * Executes SQL statement, possibly with parameters, returning

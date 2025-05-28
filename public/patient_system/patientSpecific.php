@@ -63,7 +63,9 @@ $pets = query("select *, CONCAT(
               <div class="col-md-8">
                 <div class="form-group">
                   <label for="exampleInputEmail1">Breed <span class="color-red">*</span></label>
-                  <input required type="text" name="petBreed" class="form-control" id="exampleInputEmail1" placeholder="---">
+                  <select required name="petBreed" class="form-control" id="petBreedSelect">
+                    <option value="" selected disabled>Please select a breed</option>
+                  </select>
                 </div>
               </div>
 
@@ -192,6 +194,7 @@ $pets = query("select *, CONCAT(
                   <tr>
                     <th width="7%">Action</th>
                     <th>Pet Name</th>
+                    <th>Image</th>
                     <th>Type</th>
                     <th>Breed</th>
                     <th>Gender</th>
@@ -205,12 +208,26 @@ $pets = query("select *, CONCAT(
                     <tr>
                       <td>
                       <div class="btn-group btn-block" style="width: 100%;">
-                        <a href="pets?action=specific&id=<?php echo($row["petId"]); ?>" class="btn btn-info">Visit</a>
-                        <a href="#" data-id="<?php echo($row["petId"]); ?>" data-toggle="modal" data-target="#modalUpdatePet" class="btn btn-warning">Update</a>
+                        <a href="pets?action=specific&id=<?php echo($row["petId"]); ?>" class="btn btn-sm btn-info">Visit</a>
+                        <a href="#" data-id="<?php echo($row["petId"]); ?>" data-toggle="modal" data-target="#modalUpdatePet" class="btn btn-sm btn-warning">Update</a>
                       </div>
-                        <!-- <a   class="btn btn-primary btn-block">View</a> -->
                       </td>
+                      
                       <td><?php echo($row["petName"]); ?></td>
+                      <td>
+                        <?php 
+                          $imgSrc = !empty($row['image']) 
+                            ? $row['image'] 
+                            : ($row['petType'] === 'Dog' ? 'uploads/dogVector.jpeg' : 'uploads/catVector.jpeg'); 
+                        ?>
+                        <a href="<?php echo $imgSrc; ?>" target="_blank">
+                          <img 
+                            src="<?php echo $imgSrc; ?>" 
+                            class="img-responsive" 
+                            width="50" 
+                            height="50">
+                        </a>
+                      </td>
                       <td><?php echo($row["petType"]); ?></td>
                       <td><?php echo($row["petBreed"]); ?></td>
                       <td><?php echo($row["petGender"]); ?></td>
@@ -397,6 +414,42 @@ $pets = query("select *, CONCAT(
 <script src="AdminLTE_new/plugins/jquery-validation/jquery.validate.min.js"></script>
 <script src="AdminLTE_new/plugins/jquery-validation/additional-methods.min.js"></script>
 
+<script>
+  const dogBreeds = <?php 
+  
+  $dogs = query("select breed from pet_breeds where species = 'Dog'");
+  $dogBreedsArray = [];
+  foreach($dogs as $row):
+    $dogBreedsArray[] = $row["breed"];
+  endforeach;
+  echo json_encode($dogBreedsArray); ?>;
+  const catBreeds = <?php 
+  
+   $cats = query("select breed from pet_breeds where species = 'Cat'");
+     $catBreedsArray = [];
+  foreach($cats as $row):
+    $catBreedsArray[] = $row["breed"];
+  endforeach;
+  echo json_encode($catBreedsArray); ?>;
+
+  $(document).ready(function () {
+    $('[name="typePet"]').on('change', function () {
+      const selectedType = $(this).val();
+      const $breedSelect = $('#petBreedSelect');
+
+      $breedSelect.empty().append('<option value="" selected disabled>Please select a breed</option>');
+
+      const breedList = selectedType === 'Dog' ? dogBreeds : catBreeds;
+
+      $.each(breedList, function (index, breed) {
+        $breedSelect.append($('<option>', {
+          value: breed,
+          text: breed
+        }));
+      });
+    });
+  });
+</script>
 
 <script>
   
@@ -526,6 +579,28 @@ $('#modalUpdatePet').on('show.bs.modal', function (e) {
             success : function(data){
                 $('#modalUpdatePet .fetched-data').html(data);
                 Swal.close();
+
+                $(document).on('change', '[name="typePet"]', function () {
+                  const selectedType = $(this).val();
+                  const $breedSelect = $('#updatePetBreedSelect');
+
+                  $breedSelect.empty().append('<option value="" selected disabled>Please select a breed</option>');
+
+                  const breeds = selectedType === 'Dog' ? dogBreeds : catBreeds;
+
+                  $.each(breeds, function (index, breed) {
+                    $breedSelect.append($('<option>', {
+                      value: breed,
+                      text: breed
+                    }));
+                  });
+                });
+
+
+
+
+
+
                 // $(".select2").select2();//Show fetched data from database
             }
         });

@@ -117,6 +117,16 @@
   </li>
 
   <li class="nav-item">
+      <a href="pet_breeds" class="nav-link">
+        <i class="nav-icon fas fa-list"></i>
+        <p>
+          Pet Breeds
+          <span class="right badge badge-danger"></span>
+        </p>
+      </a>
+  </li>
+
+  <li class="nav-item">
       <a href="disease" class="nav-link">
         <i class="nav-icon fas fa-bacteria"></i>
         <p>
